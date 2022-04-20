@@ -39,11 +39,17 @@ class CategoryProducts extends StatelessWidget {
             List<String> images;
             final Map<String, dynamic> doc = element as Map<String, dynamic>;
             images = doc["images"]?.cast<String>();
-            List<Color> colors = doc["colors"].cast<Color>();
+            List<String> sColors = doc["colors"].cast<String>();
+            List<Color> lstColor = [];
+            for (var element in sColors) {
+              String valueString = element.split('(0x')[1].split(')')[0];
+              int value = int.parse(valueString, radix: 16);
+              lstColor.add(Color(value));
+            }
             Product p = Product(
                 id: doc["id"],
                 images: images,
-                colors: colors,
+                colors: lstColor,
                 title: doc["title"].toString(),
                 price: doc["price"],
                 description: doc["description"].toString(),
