@@ -33,6 +33,7 @@ class ProductCard extends StatelessWidget {
         child: GestureDetector(
           onTap: (){
             c.productDetail(product);
+            c.SetListImage(product, 0);
             Get.to(DetailsScreen());
           },// Detailcreen
           child: Column(

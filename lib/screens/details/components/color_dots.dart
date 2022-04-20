@@ -61,7 +61,7 @@ class _ColorDotsState extends State<ColorDots> {
       onTap: () {
         setState(() {
           selectedColor = index;
-          //homeController.SetListImage(widget.product, index*5);
+          homeController.SetListImage(widget.product, index*5);
         });
 
       },

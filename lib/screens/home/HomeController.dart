@@ -20,10 +20,8 @@ class HomeController extends GetxController {
 
   void SetListImage(Product product, int startIndex) {
     List<String> lstImage = [];
-    for (int i = startIndex; i < startIndex + 5; i++) {
-      if(!product.images[i].isEmpty){
-        lstImage.add(product.images[i]);
-      }
+    for (int i = startIndex; i < startIndex + 5 && i < product.images.length; i++) {
+      lstImage.add(product.images[i]);
     }
     this.lstImage = lstImage.obs;
   }

@@ -13,11 +13,13 @@ class Body extends StatelessWidget {
 
   const Body({Key? key, required this.product}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    final List<String> lstImage = product.images.getRange(0, 4).toList();
     return ListView(
       children: [
-        ProductImages(product: product, lstImage: [],),
+        ProductImages(product: product, lstImage: lstImage,),
         TopRoundedContainer(
           color: Colors.white,
           child: Column(
