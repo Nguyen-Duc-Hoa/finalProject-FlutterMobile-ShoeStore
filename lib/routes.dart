@@ -1,3 +1,5 @@
+import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
+import 'package:final_project_mobile/screens/sign_up/signup.dart';
 import 'package:flutter/widgets.dart';
 import 'package:final_project_mobile/screens/cart/cart_screen.dart';
 import 'package:final_project_mobile/screens/details/details_screen.dart';
@@ -12,4 +14,6 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   DetailsScreen.routeName: (context) => DetailsScreen(),
   CartScreen.routeName: (context) => CartScreen(),
+  Login.routeName: (context) => Login(),
+  Signup.routeName: (context) => Signup(),
 };
