@@ -1,8 +1,13 @@
 import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/screens/home/home_screen.dart';
+import 'package:final_project_mobile/screens/page/page.dart';
+import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
+import 'package:final_project_mobile/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'models/user.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,17 +21,22 @@ void main() async{
     ),
   );
   print('-- WidgetsFlutterBinding.ensureInitialized');
-  runApp(const MyApp());
+  String uid = await AuthService().getUid();
+  runApp( MyApp(uid));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String uid;
+  const MyApp(this.uid);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    return GetMaterialApp(
+    print(uid);
+    return StreamProvider<Users?>.value
+    (value: AuthService().user,
+    initialData: null,
+    child:GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
@@ -34,8 +44,12 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
-      home: HomeScreen(),
-    );
+      home: uid==null?Login():Pages(),
+        routes:{
+          '/home': (context) =>Pages(),
+          '/login': (context) =>Login(),
+        }
+    ));
   }
 }
 
