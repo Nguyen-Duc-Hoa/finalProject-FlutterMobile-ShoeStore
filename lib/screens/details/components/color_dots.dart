@@ -1,12 +1,14 @@
+import 'package:final_project_mobile/screens/home/HomeController.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_mobile/components/rounded_icon_btn.dart';
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class ColorDots extends StatelessWidget {
-  const ColorDots({
+class ColorDots extends StatefulWidget {
+  ColorDots({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -14,24 +16,29 @@ class ColorDots extends StatelessWidget {
   final Product product;
 
   @override
+  State<ColorDots> createState() => _ColorDotsState();
+}
+
+class _ColorDotsState extends State<ColorDots> {
+  int selectedColor = 0;
+  HomeController homeController = Get.put(HomeController());
+
+  @override
   Widget build(BuildContext context) {
     // Now this is fixed and only for demo
-    int selectedColor = 3;
-    print(product.colors);
-    Color clor = Colors.white;
-    print(clor.toString());
-
     return Padding(
       padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Row(
         children: [
           ...List.generate(
-            product.colors.length,
-            (index) => ColorDot(
-              color: product.colors[index],
-              isSelected: index == selectedColor,
-            ),
+            widget.product.colors.length,
+                (index) =>
+                buildColorDot(
+                  index,
+                  widget.product.colors[index],
+                  index == selectedColor,
+                ),
           ),
           Spacer(),
           RoundedIconBtn(
@@ -48,37 +55,51 @@ class ColorDots extends StatelessWidget {
       ),
     );
   }
-}
 
-class ColorDot extends StatelessWidget {
-  const ColorDot({
-    Key? key,
-    required this.color,
-    this.isSelected = false,
-  }) : super(key: key);
+  GestureDetector buildColorDot(int index, Color color, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedColor = index;
+          //homeController.SetListImage(widget.product, index*5);
+        });
 
-  final Color color;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 2),
-      padding: EdgeInsets.all(getProportionateScreenWidth(8)),
-      height: getProportionateScreenWidth(40),
-      width: getProportionateScreenWidth(40),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border:
-            Border.all(color: isSelected ? kPrimaryColor : Colors.transparent),
-        shape: BoxShape.circle,
-      ),
-      child: DecoratedBox(
+      },
+      child: AnimatedContainer(
+        duration: defaultDuration,
+        margin: EdgeInsets.only(right: 2),
+        padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+        height: getProportionateScreenWidth(40),
+        width: getProportionateScreenWidth(40),
         decoration: BoxDecoration(
-          color: color,
+          color: Colors.transparent,
+          border: Border.all(
+              color: index == selectedColor ? kPrimaryColor : Colors.transparent),
           shape: BoxShape.circle,
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );
   }
 }
+
+// class ColorDot extends StatelessWidget {
+//   const ColorDot({
+//     Key? key,
+//     required this.color,
+//     this.isSelected = false,
+//     required this.press,
+//   }) : super(key: key);
+//
+//   final Color color;
+//   final bool isSelected;
+//   final GestureTapCallback press;
+//
+//   @override
+//   Widget build(BuildContext context) {
+

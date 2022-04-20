@@ -77,6 +77,7 @@ class CategoryProducts extends StatelessWidget {
                               product: lstProduct[index],
                               press: () {
                                 c.productDetail(lstProduct[index]);
+                                c.SetListImage(lstProduct[index], 0);
                                 Get.to(DetailsScreen());
                               });
                         }

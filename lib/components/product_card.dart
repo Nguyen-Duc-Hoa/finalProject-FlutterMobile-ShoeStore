@@ -15,11 +15,13 @@ class ProductCard extends StatelessWidget {
     this.aspectRetio = 1.02,
     required this.product,
     required this.press,
+    this.sPopular = "",
   }) : super(key: key);
 
   HomeController c = Get.put(HomeController());
   final double width, aspectRetio;
   final Product product;
+  final String sPopular;
   final GestureTapCallback press;
 
   @override
@@ -45,7 +47,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Hero(
-                    tag: product.id.toString(),
+                    tag: product.id.toString()+sPopular,
                     child: Image.asset(product.images[0]),
                   ),
                 ),

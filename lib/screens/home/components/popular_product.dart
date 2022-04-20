@@ -63,6 +63,7 @@ class PopularProducts extends StatelessWidget {
                         if (demoProducts[index].isPopular)
                           return ProductCard(
                               product: demoProducts[index],
+                              sPopular: "popular",
                               press: () => Navigator.pushNamed(
                                   context, DetailsScreen.routeName));
 

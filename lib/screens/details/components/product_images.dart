@@ -1,5 +1,7 @@
+import 'package:final_project_mobile/screens/home/HomeController.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -7,10 +9,12 @@ import '../../../size_config.dart';
 class ProductImages extends StatefulWidget {
   const ProductImages({
     Key? key,
-    required this.product,
+    required this.product, required this.lstImage,
   }) : super(key: key);
 
   final Product product;
+  final List<String> lstImage;
+
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -18,6 +22,9 @@ class ProductImages extends StatefulWidget {
 
 class _ProductImagesState extends State<ProductImages> {
   int selectedImage = 0;
+  HomeController _homeController =  Get.find();
+
+
   @override
   Widget build(BuildContext context) {
     return Column(

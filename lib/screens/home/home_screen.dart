@@ -9,12 +9,6 @@ class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
   @override
   Widget build(BuildContext context) {
-    Color clor = Colors.white;
-    String colorString = clor.toString();
-    String valueString = colorString.split('(0x')[1].split(')')[0];
-    int value = int.parse(valueString, radix: 16);
-
-    Color otherColor = new Color(value);
     SizeConfig().init(context);
     return Scaffold(
       body: Body(),
