@@ -1,3 +1,4 @@
+import 'package:final_project_mobile/screens/details/components/rating.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_mobile/components/default_button.dart';
 import 'package:final_project_mobile/models/Product.dart';
@@ -51,6 +52,7 @@ class Body extends StatelessWidget {
                   ],
                 ),
               ),
+              Rating()
             ],
           ),
         ),

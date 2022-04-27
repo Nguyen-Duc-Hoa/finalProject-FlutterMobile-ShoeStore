@@ -23,7 +23,7 @@ class _BodyState extends State<Body> {
       Cart(product: demoProducts[3], numOfItem: 1,size: 38,color: Color(0xFFDECB9C)),
     ];
      Address address=Address(id: 1, name: 'Nguyễn Thị Bích Phương', phone: '09886435482', address: 'Thủ Đức,TPHCM');
-    String? x;
+
     return ListView(
       children: [
         Container(
@@ -41,8 +41,13 @@ class _BodyState extends State<Body> {
               leading: Icon(Icons.location_on_outlined,color: Colors.red),
               trailing: IconButton(
                 onPressed: () async {
-                 address =await Get.to(AddressScreen());
 
+                 Address _address = await Get.to(AddressScreen());
+                    setState(() {
+                      address=_address;
+                    });
+
+                    print(address.name);
                 },
                 icon: Icon(Icons.edit),
                 hoverColor: Colors.white,
@@ -50,8 +55,8 @@ class _BodyState extends State<Body> {
                 splashColor: Colors.white,
                 color: Colors.black,
               ),
-              subtitle: Text('${address.name} \n${address.phone} \n${address.address}'),
-
+               subtitle: Text('${address.name} \n${address.phone} \n${address.address}'),
+            //
             ),
 
 

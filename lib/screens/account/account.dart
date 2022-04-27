@@ -1,4 +1,5 @@
 
+import 'package:final_project_mobile/screens/address/address_screen.dart';
 import 'package:final_project_mobile/screens/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,11 @@ class Account extends StatelessWidget {
                         title: Text('Địa chỉ nhận hàng'),
                         leading: Icon(Icons.location_on_outlined,color: Colors.red,),
                         trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                        onTap: (){
 
+                          Get.to(AddressScreen());
+
+                        },
                       ),
                     ),
                     Container(
