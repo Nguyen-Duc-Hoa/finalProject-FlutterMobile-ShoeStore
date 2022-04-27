@@ -1,7 +1,14 @@
 import 'package:final_project_mobile/constants.dart';
+
 import 'package:final_project_mobile/screens/cart/cart_screen.dart';
 import 'package:final_project_mobile/screens/more/more_screen.dart';
+
+import 'package:final_project_mobile/screens/address/address_screen.dart';
+import 'package:final_project_mobile/screens/home/home_screen.dart';
+import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
+
 import 'package:final_project_mobile/screens/page/page.dart';
+import 'package:final_project_mobile/screens/payment/checkout.dart';
 import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
 import 'package:final_project_mobile/services/auth.dart';
 import 'package:final_project_mobile/size_config.dart';
@@ -39,6 +46,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<Users?>.value
     (value: AuthService().user,
     initialData: null,
+
     child:GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -48,7 +56,7 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
       // home: uid==null?Login():Pages(),
-        home: MoreScreen(),
+        home: Pages(),
         routes:{
           '/home': (context) =>Pages(),
           '/login': (context) =>Login(),

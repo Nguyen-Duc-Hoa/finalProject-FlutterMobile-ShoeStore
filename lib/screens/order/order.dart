@@ -1,6 +1,9 @@
 import 'package:final_project_mobile/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../models/user.dart';
 import 'package:final_project_mobile/screens/order/components/body.dart';
+
 class Order extends StatefulWidget  {
   Order({Key? key}) : super(key: key);
 
