@@ -57,7 +57,7 @@ class Profile extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   CircleAvatar(
-                    backgroundImage: user.avatar==null? AssetImage("assets/images/user.png"):AssetImage("assets/images/${user.avatar}"),
+                    backgroundImage: user.avatar==null? AssetImage("assets/images/user.png"):AssetImage("${user.avatar}"),
                     //backgroundImage:  AssetImage("assets/images/user.png")
                   ),
                   Align(

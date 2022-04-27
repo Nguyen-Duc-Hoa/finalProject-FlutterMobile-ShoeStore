@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
-      home: OrderDetail(),
+      home: Pages(),
         routes:{
           '/home': (context) =>Pages(),
           '/login': (context) =>Login(),
