@@ -17,41 +17,40 @@ class Pages extends StatefulWidget {
   _PagesState createState() => _PagesState();
 }
 
-
 class _PagesState extends State<Pages> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-
-  HomeScreen(),
-  Order(),
+    HomeScreen(),
+    Order(),
     Account(),
-
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body:Center(
+      body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-       bottomNavigationBar: BottomNavigationBar(
-         backgroundColor: Colors.white,
-         items:const <BottomNavigationBarItem> [
-           BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Trang chủ'),
-           BottomNavigationBarItem(icon: Icon(Icons.list_alt),label: 'Đơn hàng'),
-           BottomNavigationBarItem(icon: Icon(Icons.account_circle),label: 'Tài khoản'),
-         ],
-         currentIndex: _selectedIndex,
-         selectedItemColor: Colors.pinkAccent,
-         onTap: _onItemTapped,
-       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt), label: 'Đơn hàng'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Tài khoản'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.pinkAccent,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
-

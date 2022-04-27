@@ -1,17 +1,26 @@
+import 'package:final_project_mobile/models/Cart.dart';
+import 'package:final_project_mobile/screens/cart/CartController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_project_mobile/components/default_button.dart';
-
+import 'package:get/get.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class CheckoutCard extends StatelessWidget {
+class CheckoutCard extends StatefulWidget {
   const CheckoutCard({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<CheckoutCard> createState() => _CheckoutCardState();
+}
+
+class _CheckoutCardState extends State<CheckoutCard> {
+  @override
   Widget build(BuildContext context) {
+    CartController _cartController = Get.find();
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: getProportionateScreenWidth(15),
@@ -49,8 +58,9 @@ class CheckoutCard extends StatelessWidget {
                   ),
                   child: SvgPicture.asset("assets/icons/receipt.svg"),
                 ),
+                Text("Voucher", style: TextStyle(color: Colors.black),),
                 Spacer(),
-                Text("Add voucher code"),
+                Text("Chọn hoặc nhập mã"),
                 const SizedBox(width: 10),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -60,28 +70,30 @@ class CheckoutCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: "Total:\n",
-                    children: [
-                      TextSpan(
-                        text: "\$337.15",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ],
+            GetBuilder<CartController>(
+              builder: (s) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: "Tổng thanh toán:\n",
+                      children: [
+                        TextSpan(
+                          text: "\$${_cartController.totalCart(_cartController.listOrder)}",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: getProportionateScreenWidth(190),
-                  child: DefaultButton(
-                    text: "Check Out",
-                    press: () {},
+                  SizedBox(
+                    width: getProportionateScreenWidth(190),
+                    child: DefaultButton(
+                      text: "Mua hàng (${_cartController.listOrder.length})",
+                      press: () {},
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

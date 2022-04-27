@@ -22,7 +22,7 @@ class ProductImages extends StatefulWidget {
 
 class _ProductImagesState extends State<ProductImages> {
   int selectedImage = 0;
-  HomeController _homeController =  Get.find();
+  final HomeController _homeController =  Get.find();
 
 
   @override

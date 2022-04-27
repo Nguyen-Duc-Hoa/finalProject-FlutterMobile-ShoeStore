@@ -1,8 +1,10 @@
 import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/home/home_screen.dart';
+import 'package:final_project_mobile/screens/cart/cart_screen.dart';
+import 'package:final_project_mobile/screens/more/more_screen.dart';
 import 'package:final_project_mobile/screens/page/page.dart';
 import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
 import 'package:final_project_mobile/services/auth.dart';
+import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'models/user.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     name: "final project shoeStore",
     options: const FirebaseOptions(
@@ -45,6 +48,7 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
       home: uid==null?Login():Pages(),
+      //   home: MoreScreen(),
         routes:{
           '/home': (context) =>Pages(),
           '/login': (context) =>Login(),

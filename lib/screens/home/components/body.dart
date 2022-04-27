@@ -1,5 +1,6 @@
 import 'package:final_project_mobile/screens/home/components/category_product.dart';
 import 'package:final_project_mobile/size_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:final_project_mobile/screens/home/components/categories.dart';
@@ -10,13 +11,16 @@ import 'special_offers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:final_project_mobile/models/mCategories.dart';
+import 'package:final_project_mobile/screens/cart/CartController.dart';
+import 'package:get/get.dart';
 
 class Body extends StatelessWidget {
   Body({Key? key}) : super(key: key);
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference category =
-  FirebaseFirestore.instance.collection('categories');
+      FirebaseFirestore.instance.collection('categories');
+  List<mCategories> lstCate = demoType;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +56,48 @@ class Body extends StatelessWidget {
                   ),
                   DiscountBanner(),
                   Categories(),
+                  SizedBox(
+                    height: getProportionateScreenHeight(30),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: lstCate.length,
+                      itemBuilder: (context, index) =>
+                          buildCategory(context, index),
+                    ),
+                  ),
                   SpecialOffers(),
                   SizedBox(height: getProportionateScreenWidth(30)),
                   PopularProducts(),
                   SizedBox(height: getProportionateScreenWidth(30)),
-                  ...List.generate(
-                      lstCategories.length,
-                          (index) {
-                        return CategoryProducts(category: lstCategories[index]);
-                      }
-
-                  ),
+                  ...List.generate(lstCategories.length, (index) {
+                    return CategoryProducts(category: lstCategories[index]);
+                  }),
                 ],
               ),
             ),
           );
         });
+  }
+
+  Widget buildCategory(BuildContext context, int index) {
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(30)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            demoType[index].name,
+            style: TextStyle(fontWeight: FontWeight.bold, color: selectedIndex == index ? Colors.black : Color(0xFF656464)),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: getProportionateScreenWidth(10) / 4),
+            height: getProportionateScreenHeight(3),
+            width: getProportionateScreenWidth(30),
+            color:selectedIndex == index ? Colors.black : Colors.transparent   ,
+          )
+        ],
+      ),
+    );
   }
 }

@@ -17,8 +17,8 @@ class CategoryProducts extends StatelessWidget {
   final mCategories category;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference products =
-      FirebaseFirestore.instance.collection('products');
+  var products =
+      FirebaseFirestore.instance.collection('products').orderBy("title").limit(15);
   HomeController c = Get.put(HomeController());
 
   @override
