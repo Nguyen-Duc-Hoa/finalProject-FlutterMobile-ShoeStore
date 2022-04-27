@@ -1,3 +1,7 @@
+
+import 'package:final_project_mobile/screens/address/address_screen.dart';
+import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
+import 'package:final_project_mobile/screens/payment/checkout.dart';
 import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
 import 'package:final_project_mobile/screens/sign_up/signup.dart';
 import 'package:flutter/widgets.dart';
@@ -16,4 +20,7 @@ final Map<String, WidgetBuilder> routes = {
   CartScreen.routeName: (context) => CartScreen(),
   Login.routeName: (context) => Login(),
   Signup.routeName: (context) => Signup(),
+  Checkout.routeName: (context) => Checkout(),
+  AddressScreen.routeName: (context) => AddressScreen(),
+  OrderDetail.routeName: (context) => OrderDetail(),
 };

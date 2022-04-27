@@ -7,7 +7,7 @@ class AuthService{
   final storage= new FlutterSecureStorage();
   Users? _userFromFirebaseUser(User? user){
 
-    return user != null ? Users(email:user.email,name:user.displayName,avatar: user.photoURL) : null;
+    return user != null ? Users(uid:user.uid,email:user.email,name:user.displayName,avatar: user.photoURL,phone: user.phoneNumber) : null;
   }
   Stream<Users?> get user{
 
