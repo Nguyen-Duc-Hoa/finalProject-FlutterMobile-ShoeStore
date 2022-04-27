@@ -1,4 +1,5 @@
 
+import 'package:final_project_mobile/screens/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,42 @@ class Account extends StatelessWidget {
     final user=Provider.of<Users>(context);
     if(user==null)
       {
-        return Login();
+        return Center(
+
+          child: Container(
+            width: 250,
+            height: 50,
+            child:    RaisedButton(
+                  onPressed: () {
+                    Get.to(Login());
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0)),
+                  padding: EdgeInsets.all(0.0),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xfff307c1), Color(0xffff64c6)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Container(
+                      constraints:
+                      BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Login",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ),
+                  ),
+                )
+
+
+          ),
+        );
       }
     else
     {
@@ -35,19 +71,7 @@ class Account extends StatelessWidget {
                     CircleAvatar(
                       backgroundImage: AssetImage("${user.avatar}"),
                     ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: IconButton(
-                        onPressed: (){
 
-                        },
-                        icon: Icon(Icons.edit),
-                        hoverColor: Colors.white,
-                        highlightColor: Colors.white,
-                        splashColor: Colors.white,
-                        color: Colors.black,
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -65,7 +89,11 @@ class Account extends StatelessWidget {
                         title: Text('Thông tin'),
                         leading: Icon(Icons.account_circle,color: Colors.blue),
                         trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                        onTap: (){
 
+                          Get.to(Profile());
+
+                        },
                       ),
                     ),
                     Container(
@@ -74,7 +102,7 @@ class Account extends StatelessWidget {
                       color: Colors.black12,
                       child: ListTile(
                         title: Text('Địa chỉ nhận hàng'),
-                        leading: Icon(Icons.add_location_alt_outlined,color: Colors.red,),
+                        leading: Icon(Icons.location_on_outlined,color: Colors.red,),
                         trailing: Icon(Icons.keyboard_arrow_right_sharp),
 
                       ),
