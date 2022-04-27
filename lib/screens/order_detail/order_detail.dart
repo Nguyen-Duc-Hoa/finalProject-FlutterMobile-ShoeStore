@@ -31,10 +31,10 @@ class OrderDetail extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-
-        title: Text('Thông tin đơn hàng'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        title: Text('Thông tin đơn hàng',),
       ),
       body: ListView(
         children: [

@@ -1,5 +1,6 @@
 import 'package:final_project_mobile/models/Order.dart';
 import 'package:final_project_mobile/screens/cart/CartController.dart';
+import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:final_project_mobile/models/Cart.dart';
@@ -36,105 +37,114 @@ class _BodyState extends State<Body> {
         itemCount: lstResult.length,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(
-                getProportionateScreenWidth(8),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            lstResult[index].name,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                              "Ngày đặt: ${lstResult[index].datetime.toString().substring(0, lstResult[index].datetime.toString().lastIndexOf(":"))}"),
-                        ],
-                      ),
-                      // Container(
-                      //
-                      //    child: const Padding(
-                      //
-                      //       padding: EdgeInsets.only(right: 1, bottom: 1),
-                      //       child: Text("ABCD"),
-                      //     ),
-                      // ),
-                    ],
-                  ),
-                  Divider(
-                    thickness: 2,
-                  ),
-                  IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: GestureDetector(
+            onTap: () {
+              Get.to(OrderDetail());
+            },
+            child: Card(
+              color: Colors.grey[200],
+              child: Padding(
+                padding: EdgeInsets.all(
+                  getProportionateScreenWidth(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Mã đơn",
-                              style: TextStyle(color: Colors.grey),
+                            Text(
+                              lstResult[index].name,
+                              style: const TextStyle(fontSize: 20, color: Colors.black),
                             ),
                             const SizedBox(
                               height: 8,
                             ),
                             Text(
-                              lstResult[index].id.toString().padLeft(6, '0'),
-                              style: const TextStyle(color: Colors.black),
-                            )
+                              "Ngày đặt: ${lstResult[index].datetime.toString().substring(0, lstResult[index].datetime.toString().lastIndexOf(":"))}",
+                              style: TextStyle(color: Colors.black87),
+
+                            ),
                           ],
                         ),
-                        const VerticalDivider(
-                          thickness: 1,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Tổng tiền",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              "\$${lstResult[index].total}",
-                              style: const TextStyle(color: Colors.black),
-                            )
-                          ],
-                        ),
-                        VerticalDivider(
-                          thickness: 1,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Thanh toán",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              lstResult[index].payment,
-                              style: const TextStyle(color: Colors.black),
-                            )
-                          ],
-                        ),
+                        // Container(
+                        //
+                        //    child: const Padding(
+                        //
+                        //       padding: EdgeInsets.only(right: 1, bottom: 1),
+                        //       child: Text("ABCD"),
+                        //     ),
+                        // ),
                       ],
                     ),
-                  ),
-                ],
+                    Divider(
+                      thickness: 2,
+                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Mã đơn",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                lstResult[index].id.toString().padLeft(6, '0'),
+                                style: const TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
+                          const VerticalDivider(
+                            thickness: 1,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Tổng tiền",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "\$${lstResult[index].total}",
+                                style: const TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
+                          VerticalDivider(
+                            thickness: 1,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Thanh toán",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                lstResult[index].payment,
+                                style: const TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

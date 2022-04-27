@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_project_mobile/components/default_button.dart';
 import 'package:get/get.dart';
+import 'package:final_project_mobile/screens/payment/checkout.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
@@ -89,7 +90,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     width: getProportionateScreenWidth(190),
                     child: DefaultButton(
                       text: "Mua hàng (${_cartController.listOrder.length})",
-                      press: () {},
+                      press: () {Get.to(Checkout());},
                     ),
                   ),
                 ],

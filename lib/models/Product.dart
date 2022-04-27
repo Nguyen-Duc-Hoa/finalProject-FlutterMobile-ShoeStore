@@ -103,6 +103,96 @@ List<Product> demoProducts = [
     isFavourite: true,
     category: 0,
   ),
+  Product(
+    id: 2,
+    images: [
+      "assets/images/shoe1.png",
+    ],
+    colors: [
+      Color(0xFFF6625E),
+      Color(0xFF836DB8),
+      Color(0xFFDECB9C),
+      Colors.white,
+    ],
+    title: "Nike Sport White - Man Pant",
+    price: 50.5,
+    description: description,
+    rating: 4.1,
+    isPopular: true,
+    category: 0,
+  ),
+  Product(
+    id: 2,
+    images: [
+      "assets/images/shoe1.png",
+    ],
+    colors: [
+      Color(0xFFF6625E),
+      Color(0xFF836DB8),
+      Color(0xFFDECB9C),
+      Colors.white,
+    ],
+    title: "Nike Sport White - Man Pant",
+    price: 50.5,
+    description: description,
+    rating: 4.1,
+    isPopular: true,
+    category: 0,
+  ),
+  Product(
+    id: 2,
+    images: [
+      "assets/images/shoe1.png",
+    ],
+    colors: [
+      Color(0xFFF6625E),
+      Color(0xFF836DB8),
+      Color(0xFFDECB9C),
+      Colors.white,
+    ],
+    title: "Nike Sport White - Man Pant",
+    price: 50.5,
+    description: description,
+    rating: 4.1,
+    isPopular: true,
+    category: 0,
+  ),
+  Product(
+    id: 2,
+    images: [
+      "assets/images/shoe1.png",
+    ],
+    colors: [
+      Color(0xFFF6625E),
+      Color(0xFF836DB8),
+      Color(0xFFDECB9C),
+      Colors.white,
+    ],
+    title: "Nike Sport White - Man Pant",
+    price: 50.5,
+    description: description,
+    rating: 4.1,
+    isPopular: true,
+    category: 0,
+  ),
+  Product(
+    id: 2,
+    images: [
+      "assets/images/shoe1.png",
+    ],
+    colors: [
+      Color(0xFFF6625E),
+      Color(0xFF836DB8),
+      Color(0xFFDECB9C),
+      Colors.white,
+    ],
+    title: "Nike Sport White - Man Pant",
+    price: 50.5,
+    description: description,
+    rating: 4.1,
+    isPopular: true,
+    category: 0,
+  ),
 ];
 
 const String description =

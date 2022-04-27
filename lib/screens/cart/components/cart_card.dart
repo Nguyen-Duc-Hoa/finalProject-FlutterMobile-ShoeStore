@@ -27,6 +27,7 @@ class _CartCardState extends State<CartCard> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Checkbox(
             value: value1,
@@ -62,21 +63,25 @@ class _CartCardState extends State<CartCard> {
           children: [
             Text(
               widget.cart.product.title,
-              style: TextStyle(color: Colors.black, fontSize: 16),
+              style: const TextStyle(color: Colors.black, fontSize: 16),
               maxLines: 2,
             ),
             SizedBox(height: 10),
-            Text.rich(
-              TextSpan(
-                text: "\$${widget.cart.product.price}",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: kPrimaryColor),
-                children: [
+            Row(
+              children: [
+                Text.rich(
                   TextSpan(
-                      text: " x${widget.cart.numOfItem}",
-                      style: Theme.of(context).textTheme.bodyText1),
-                ],
-              ),
+                    text: "\$${widget.cart.product.price}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: kPrimaryColor),
+                    children: [
+                      TextSpan(
+                          text: " x${widget.cart.numOfItem}",
+                          style: Theme.of(context).textTheme.bodyText1),
+                    ],
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 10),
             Row(

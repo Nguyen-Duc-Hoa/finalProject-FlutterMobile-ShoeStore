@@ -1,20 +1,18 @@
-import 'package:final_project_mobile/screens/cart/CartController.dart';
 import 'package:final_project_mobile/screens/home/components/home_header.dart';
 import 'package:flutter/material.dart';
 
-import '../details/components/custom_app_bar.dart';
-import 'components/body.dart';
-import 'package:final_project_mobile/size_config.dart';
-import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import '../favorite/components/body.dart';
 
-class HomeScreen extends StatelessWidget {
-  static String routeName = "/home";
+class FavoriteScreen extends StatefulWidget {
+  const FavoriteScreen({Key? key}) : super(key: key);
 
   @override
+  _FavoriteScreenState createState() => _FavoriteScreenState();
+}
+
+class _FavoriteScreenState extends State<FavoriteScreen> {
+  @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height + 5),

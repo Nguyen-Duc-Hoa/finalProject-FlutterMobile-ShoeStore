@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project_mobile/screens/favorite/favorite_screen.dart';
 import 'package:final_project_mobile/screens/home/home_screen.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,7 @@ class _PagesState extends State<Pages> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
+    FavoriteScreen(),
     Order(),
     Account(),
   ];
@@ -40,8 +42,10 @@ class _PagesState extends State<Pages> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
+        unselectedItemColor: Colors.black38,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Yêu thích'),
           BottomNavigationBarItem(
               icon: Icon(Icons.list_alt), label: 'Đơn hàng'),
           BottomNavigationBarItem(

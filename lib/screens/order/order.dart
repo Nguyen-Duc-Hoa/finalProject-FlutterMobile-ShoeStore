@@ -46,23 +46,23 @@ class _OrderState extends State<Order> with SingleTickerProviderStateMixin{
         controller: _tabController,
         children: [
           Container(
-            color: kPrimaryColor,
+            color: Colors.white,
               child: const Body(status: 0,),
           ),
           Container(
-            color: kPrimaryColor,
+            color: Colors.white,
             child: const Body(status: 1,),
           ),
           Container(
-            color: kPrimaryColor,
+            color: Colors.white,
             child: const Body(status: 2,),
           ),
           Container(
-            color: kPrimaryColor,
+            color: Colors.white,
             child: const Body(status: 3,),
           ),
           Container(
-            color: kPrimaryColor,
+            color: Colors.white,
             child: const Body(status: -1,),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:final_project_mobile/components/product_card.dart';
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:final_project_mobile/screens/favorite/components/favorite_card.dart';
 import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Product> listFavorite = demoProducts.where((element) => element.isFavourite).toList();
     return SafeArea(
       child: Padding(
           padding: EdgeInsets.symmetric(
@@ -19,9 +21,9 @@ class Body extends StatelessWidget {
             mainAxisSpacing: getProportionateScreenHeight(2),
             childAspectRatio: (1 / 1.3),
             children: [
-              ...List.generate(demoProducts.length, (index) {
+              ...List.generate(listFavorite.length, (index) {
                 return Container(
-                  child: ProductCard(
+                  child: FavoriteCard(
                       product: demoProducts[index],
                       press: () {
                         // c.productDetail(lstProduct[index]);
