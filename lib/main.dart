@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
 
-      home: Checkout(),
+      home: Pages(),
 
         routes:{
           '/home': (context) =>Pages(),

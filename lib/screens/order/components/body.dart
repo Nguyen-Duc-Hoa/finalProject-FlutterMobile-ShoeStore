@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:final_project_mobile/models/Cart.dart';
 import 'package:get/get.dart';
 import 'package:final_project_mobile/screens/cart/components/cart_card.dart';
-
+import 'package:rating_dialog/rating_dialog.dart';
 import '../../../size_config.dart';
 
 class Body extends StatefulWidget {
@@ -21,7 +21,39 @@ class _BodyState extends State<Body> {
   CartController _cartController = Get.find();
   final int page = 1;
   final int num = 10;
+  void _showRatingAppDialog() {
+    final _ratingDialog = RatingDialog(
+      initialRating: 5.0,
+      title: Text(
+        'Đánh giá',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
 
+      message: Text(
+        'Hãy cho chúng tôi biết sự hài lòng của bạn về sản phẩm này nhé ',
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 15),
+      ),
+
+      submitButtonText: 'Submit',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, '
+            'comment: ${response.comment}');
+
+      }
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => _ratingDialog,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     List<Order> lstResult = demoOrder
@@ -134,6 +166,27 @@ class _BodyState extends State<Body> {
                       ],
                     ),
                   ),
+                  if( widget.status==3)
+                    Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
+                        child: FlatButton(onPressed: (){_showRatingAppDialog();},
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.deepOrangeAccent,
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            height: 50,
+
+                            child: Center(
+                              child: Text('Đánh giá',style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600
+                              ),),
+                            ),
+                          ),
+                        )
+                    )
+
                 ],
               ),
             ),
@@ -143,3 +196,4 @@ class _BodyState extends State<Body> {
     );
   }
 }
+
