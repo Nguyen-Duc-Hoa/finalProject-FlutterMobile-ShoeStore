@@ -69,7 +69,7 @@ class Body extends StatelessWidget {
                   SpecialOffers(),
                   SizedBox(height: getProportionateScreenWidth(30)),
                   PopularProducts(),
-                  SizedBox(height: getProportionateScreenWidth(30)),
+                  SizedBox(height: getProportionateScreenHeight(30)),
                   ...List.generate(lstCategories.length, (index) {
                     return CategoryProducts(category: lstCategories[index]);
                   }),
