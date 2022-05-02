@@ -1,3 +1,4 @@
+import 'package:final_project_mobile/constants.dart';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import '../payment/components/body.dart';
@@ -16,7 +17,7 @@ class _CheckoutState extends State<Checkout> {
       Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-
+          backgroundColor: kPrimaryColor,
           title: Text('Thanh toán'),
         ),
         body: Body(),

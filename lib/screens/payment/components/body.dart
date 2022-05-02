@@ -15,6 +15,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  Address address=Address(id: 1, name: 'Nguyễn Thị Bích Phương', phone: '09886435482', address: 'Thủ Đức,TPHCM');
   @override
   Widget build(BuildContext context) {
     List<Cart> items = [
@@ -22,7 +23,7 @@ class _BodyState extends State<Body> {
       Cart(product: demoProducts[1], numOfItem: 1,size: 39,color: Color(0xFFF6625E)),
       Cart(product: demoProducts[3], numOfItem: 1,size: 38,color: Color(0xFFDECB9C)),
     ];
-     Address address=Address(id: 1, name: 'Nguyễn Thị Bích Phương', phone: '09886435482', address: 'Thủ Đức,TPHCM');
+
 
     return ListView(
       children: [
@@ -43,9 +44,13 @@ class _BodyState extends State<Body> {
                 onPressed: () async {
 
                  Address _address = await Get.to(AddressScreen());
-                    setState(() {
-                      address=_address;
-                    });
+                 if(_address!=null){
+                   setState(() {
+                     address=_address;
+
+                   });
+                 }
+
 
                     print(address.name);
                 },
