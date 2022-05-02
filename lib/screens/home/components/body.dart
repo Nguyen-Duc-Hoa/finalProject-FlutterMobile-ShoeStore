@@ -43,6 +43,7 @@ class Body extends StatelessWidget {
 
             lstCategories.add(cate);
           });
+
           return SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -57,7 +58,7 @@ class Body extends StatelessWidget {
                   DiscountBanner(),
                   Categories(),
                   SizedBox(
-                    height: getProportionateScreenHeight(30),
+                    height: getProportionateScreenHeight(50),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: lstCate.length,

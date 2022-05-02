@@ -2,6 +2,7 @@ import 'package:final_project_mobile/screens/home/HomeController.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_mobile/components/rounded_icon_btn.dart';
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
@@ -41,16 +42,37 @@ class _ColorDotsState extends State<ColorDots> {
                 ),
           ),
           Spacer(),
-          RoundedIconBtn(
-            icon: Icons.remove,
-            press: () {},
-          ),
-          SizedBox(width: getProportionateScreenWidth(20)),
-          RoundedIconBtn(
-            icon: Icons.add,
-            showShadow: true,
-            press: () {},
-          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+            decoration: BoxDecoration(
+              color: const Color(0xFFDADADA).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  "${widget.product.rating}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SvgPicture.asset("assets/icons/Star Icon.svg"),
+              ],
+            ),
+          )
+          // RoundedIconBtn(
+          //   icon: Icons.remove,
+          //   showShadow: true,
+          //   press: () {},
+          // ),
+          // SizedBox(width: getProportionateScreenWidth(20)),
+          // RoundedIconBtn(
+          //   icon: Icons.add,
+          //   showShadow: true,
+          //   press: () {},
+          // ),
         ],
       ),
     );

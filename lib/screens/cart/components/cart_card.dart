@@ -58,84 +58,86 @@ class _CartCardState extends State<CartCard> {
           ),
         ),
         SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.cart.product.title,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
-              maxLines: 2,
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: "\$${widget.cart.product.price}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, color: kPrimaryColor),
-                    children: [
-                      TextSpan(
-                          text: " x${widget.cart.numOfItem}",
-                          style: Theme.of(context).textTheme.bodyText1),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _cartController.decreaseQuantity(widget.cart);
-                  }),
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius: BorderRadius.circular(
-                            getProportionateScreenWidth(4))),
-                    child: Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                      size: getProportionateScreenWidth(13),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.cart.product.title,
+                style: const TextStyle(color: Colors.black, fontSize: 16),
+                maxLines: 2,
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: "\$${widget.cart.product.price}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: kPrimaryColor),
+                      children: [
+                        TextSpan(
+                            text: " x${widget.cart.numOfItem}",
+                            style: Theme.of(context).textTheme.bodyText1),
+                      ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenHeight(8)),
-                  child: Text(
-                    "${widget.cart.numOfItem}",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
-                      fontWeight: FontWeight.bold,
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => setState(() {
+                      _cartController.decreaseQuantity(widget.cart);
+                    }),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(
+                              getProportionateScreenWidth(4))),
+                      child: Icon(
+                        Icons.remove,
+                        color: Colors.white,
+                        size: getProportionateScreenWidth(13),
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _cartController.increaseQuantity(widget.cart);
-                  }),
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(
-                            getProportionateScreenWidth(4))),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: getProportionateScreenWidth(13),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenHeight(8)),
+                    child: Text(
+                      "${widget.cart.numOfItem}",
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(14),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                )
-              ],
-            ),
-          ],
+                  GestureDetector(
+                    onTap: () => setState(() {
+                      _cartController.increaseQuantity(widget.cart);
+                    }),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(
+                              getProportionateScreenWidth(4))),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: getProportionateScreenWidth(13),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         )
       ],
     );

@@ -70,11 +70,11 @@ class _BodyState extends State<Body> {
                 child: Row(
                   children: [
                     Container(
-                        width: (MediaQuery.of(context).size.width-100)/2,
+                        width: (MediaQuery.of(context).size.width-170)/2,
                         height: 100,
                         decoration: BoxDecoration(
                             color: Colors.grey,
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(20),
                             boxShadow: [BoxShadow(
                                 spreadRadius: 1,
                                 blurRadius: 0.5,
