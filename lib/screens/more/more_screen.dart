@@ -1,4 +1,6 @@
 import 'package:final_project_mobile/constants.dart';
+import 'package:final_project_mobile/models/mCategories.dart';
+import 'package:final_project_mobile/screens/home/components/categories.dart';
 import 'package:final_project_mobile/screens/home/components/home_header.dart';
 import 'package:final_project_mobile/screens/more/components/more_header.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,9 @@ import 'package:flutter/material.dart';
 import '../more/components/body.dart';
 
 class MoreScreen extends StatefulWidget {
-  const MoreScreen({Key? key}) : super(key: key);
-
+  const MoreScreen({Key? key, required this.categories, required this.gender}) : super(key: key);
+  final Gender gender;
+  final mCategories categories;
 
   @override
   _MoreCreenState createState() => _MoreCreenState();
@@ -27,12 +30,12 @@ class _MoreCreenState extends State<MoreScreen> {
       // ),
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text("Dày thể thao"),
+        title: Text(widget.categories.name),
         actions: [
           IconButton(onPressed: (){}, icon: Icon(Icons.search), color: Colors.white,)
         ],
       ),
-      body: Body(),
+      body: Body(gender: widget.gender, category: widget.categories,),
     );
   }
 }

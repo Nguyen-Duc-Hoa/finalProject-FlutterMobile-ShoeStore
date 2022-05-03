@@ -38,8 +38,11 @@ class PopularProducts extends StatelessWidget {
                 images: images,
                 colors: colors,
                 title: doc["title"].toString(),
-                price: doc["price"],
-                description: doc["description"].toString());
+                price: doc["price"].toDouble(),
+                description: doc["description"].toString(),
+            disCount: doc["discount"],
+            gender: doc["gendet"],
+            size: []);
             lstProduct.add(p);
           });
 

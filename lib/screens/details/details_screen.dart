@@ -1,6 +1,7 @@
 import 'package:final_project_mobile/components/default_button.dart';
 import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/screens/cart/components/check_out_card.dart';
+import 'package:final_project_mobile/screens/details/components/modal_bottom_cart.dart';
 import 'package:final_project_mobile/screens/home/HomeController.dart';
 import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/material.dart';
@@ -61,17 +62,12 @@ class DetailsScreen extends StatelessWidget {
             child: DefaultButton(
               text: "Thêm giỏ hàng",
               press: () {
-                showModalBottomSheet(context: context, builder: (context) {
-                  return Container(
-                    decoration: BoxDecoration(color: Theme
-                        .of(context)
-                        .canvasColor,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),),
-                  );
-                });
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ModalBottomCart(
+                          product: _homeController.productDetail.value);
+                    });
               },
             ),
           ),

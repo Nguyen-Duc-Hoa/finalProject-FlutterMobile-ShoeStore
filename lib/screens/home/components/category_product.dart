@@ -12,15 +12,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:final_project_mobile/screens/home/HomeController.dart';
 
-class CategoryProducts extends StatelessWidget {
-  CategoryProducts({Key? key, required this.category}) : super(key: key);
+class CategoryProducts extends StatefulWidget {
+  CategoryProducts({Key? key, required this.category, required this.gender})
+      : super(key: key);
 
   final mCategories category;
+  final Gender gender;
 
+  @override
+  State<CategoryProducts> createState() => _CategoryProductsState();
+}
+
+class _CategoryProductsState extends State<CategoryProducts> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  var products =
-      FirebaseFirestore.instance.collection('products').orderBy("title").limit(15);
+
+  var products;
+
   HomeController c = Get.put(HomeController());
+
+  @override
+  void initState() {
+    super.initState();
+    products = FirebaseFirestore.instance
+        .collection('products')
+        .orderBy('title')
+        .where("category", isEqualTo: widget.category.id)
+        .where('gender', isEqualTo: widget.gender.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +58,7 @@ class CategoryProducts extends StatelessWidget {
             List<String> images;
             final Map<String, dynamic> doc = element as Map<String, dynamic>;
             images = doc["images"]?.cast<String>();
+
             List<String> sColors = doc["colors"].cast<String>();
             List<Color> lstColor = [];
             for (var element in sColors) {
@@ -47,23 +66,41 @@ class CategoryProducts extends StatelessWidget {
               int value = int.parse(valueString, radix: 16);
               lstColor.add(Color(value));
             }
+
+            List<int> lstSize;
+            lstSize = doc["size"]?.cast<int>();
+
             Product p = Product(
                 id: doc["id"],
                 images: images,
                 colors: lstColor,
                 title: doc["title"].toString(),
-                price: doc["price"],
+                price: doc["price"].toDouble(),
                 description: doc["description"].toString(),
-                category: doc["category"]);
+                category: doc["category"],
+                disCount: doc["discount"],
+                gender: doc["gender"],
+                size: lstSize);
             lstProduct.add(p);
           });
+
+          if (lstProduct.isEmpty) {
+            return const SizedBox.shrink();
+          }
 
           return Column(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
-                child: SectionTitle(title: category.name, press: () {Get.to(MoreScreen());}),
+                child: SectionTitle(
+                    title: widget.category.name,
+                    press: () {
+                      Get.to(MoreScreen(
+                        gender: widget.gender,
+                        categories: widget.category,
+                      ));
+                    }),
               ),
               SizedBox(height: getProportionateScreenWidth(20)),
               SingleChildScrollView(
@@ -73,7 +110,7 @@ class CategoryProducts extends StatelessWidget {
                     ...List.generate(
                       lstProduct.length,
                       (index) {
-                        if (lstProduct[index].category == category.id) {
+                        if (lstProduct[index].category == widget.category.id) {
                           return ProductCard(
                               product: lstProduct[index],
                               press: () {

@@ -7,6 +7,7 @@ import '../screens/details/details_screen.dart';
 import '../screens/home/HomeController.dart';
 import '../size_config.dart';
 import 'package:get/get.dart';
+import 'package:final_project_mobile/common.dart';
 
 class ProductCard extends StatelessWidget {
   ProductCard({
@@ -23,6 +24,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final String sPopular;
   final GestureTapCallback press;
+  Common _common = new Common();
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +66,9 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${product.price}",
+                    _common.formatCurrency(product.disCount == 0 ? product.price : product.price * (1 - product.disCount / 100)),
                     style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
+                      fontSize: getProportionateScreenWidth(15),
                       fontWeight: FontWeight.w600,
                       color: kPrimaryColor,
                     ),
@@ -92,26 +94,26 @@ class ProductCard extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          "${product.rating}",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        SvgPicture.asset("assets/icons/Star Icon.svg"),
-                      ],
-                    ),
-                  )
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(14),
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Text(
+                  //         "${product.rating}",
+                  //         style: const TextStyle(
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(width: 5),
+                  //       SvgPicture.asset("assets/icons/Star Icon.svg"),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               )
             ],

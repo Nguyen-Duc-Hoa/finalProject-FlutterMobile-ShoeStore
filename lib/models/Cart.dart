@@ -9,8 +9,8 @@ class Cart {
   final Product product;
   late int numOfItem;
   final int size;
-  final Color color;
-  Cart({required this.product, required this.numOfItem,required this.size,required this.color});
+  late Color color;
+  Cart({required this.product, required this.numOfItem,required this.size, required this.color});
 }
 
 void IncreaseQuantity(Cart cart){

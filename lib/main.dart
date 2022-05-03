@@ -21,13 +21,22 @@ import 'models/user.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
+  // await Firebase.initializeApp(
+  //   name: "final project shoeStore",
+  //   options: const FirebaseOptions(
+  //     apiKey: "XXX",
+  //     appId: "1:167447585480:android:8c8ba853f4a714b61b3bfd",
+  //     messagingSenderId: "XXX",
+  //     projectId: "final-project-shoestore",
+  //   ),
+  // );
   await Firebase.initializeApp(
     name: "final project shoeStore",
     options: const FirebaseOptions(
       apiKey: "XXX",
-      appId: "1:167447585480:android:8c8ba853f4a714b61b3bfd",
+      appId: "1:851369785064:android:f7ed3b48ce4f4a919bbb5d",
       messagingSenderId: "XXX",
-      projectId: "final-project-shoestore",
+      projectId: "final-project-shoestore-334b6",
     ),
   );
   print('-- WidgetsFlutterBinding.ensureInitialized');

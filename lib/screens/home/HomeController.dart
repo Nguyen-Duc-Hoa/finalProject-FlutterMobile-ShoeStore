@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   Rx<Product> productDetail = Product(
-          id: 0,
-          images: [],
-          colors: [],
-          title: '',
-          price: 0.00,
-          description: '')
-      .obs;
+      id: 0,
+      images: [],
+      colors: [],
+      title: '',
+      price: 0.00,
+      description: '',
+      disCount: 0,
+      gender: 0,
+      size: []).obs;
 
   // ignore: non_constant_identifier_names
   void SetProductDetail(Rx<Product> product) {
@@ -20,7 +22,9 @@ class HomeController extends GetxController {
 
   void SetListImage(Product product, int startIndex) {
     List<String> lstImage = [];
-    for (int i = startIndex; i < startIndex + 5 && i < product.images.length; i++) {
+    for (int i = startIndex;
+        i < startIndex + 5 && i < product.images.length;
+        i++) {
       lstImage.add(product.images[i]);
     }
     this.lstImage = lstImage.obs;

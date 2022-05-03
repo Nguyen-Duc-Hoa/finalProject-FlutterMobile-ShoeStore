@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:final_project_mobile/common.dart';
 import 'package:final_project_mobile/models/Cart.dart';
 
 class CartCard extends StatefulWidget {
@@ -16,6 +17,7 @@ class CartCard extends StatefulWidget {
 
   final Cart cart;
 
+
   @override
   State<CartCard> createState() => _CartCardState();
 }
@@ -23,6 +25,7 @@ class CartCard extends StatefulWidget {
 class _CartCardState extends State<CartCard> {
   CartController _cartController = Get.find();
   bool value1 = false;
+  Common _common = new Common();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,7 @@ class _CartCardState extends State<CartCard> {
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
+              child: Image.asset(widget.cart.product.images[0])
             ),
           ),
         ),
@@ -71,7 +75,7 @@ class _CartCardState extends State<CartCard> {
                 children: [
                   Text.rich(
                     TextSpan(
-                      text: "\$${widget.cart.product.price}",
+                      text: _common.formatCurrency(widget.cart.product.price),
                       style: TextStyle(
                           fontWeight: FontWeight.w600, color: kPrimaryColor),
                       children: [

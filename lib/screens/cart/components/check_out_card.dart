@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:final_project_mobile/screens/payment/checkout.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:final_project_mobile/common.dart';
 
 class CheckoutCard extends StatefulWidget {
   const CheckoutCard({
@@ -18,6 +19,7 @@ class CheckoutCard extends StatefulWidget {
 }
 
 class _CheckoutCardState extends State<CheckoutCard> {
+  Common _common = new Common();
   @override
   Widget build(BuildContext context) {
     CartController _cartController = Get.find();
@@ -80,7 +82,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                       text: "Tổng thanh toán:\n",
                       children: [
                         TextSpan(
-                          text: "\$${_cartController.totalCart(_cartController.listOrder)}",
+                          text: _common.formatCurrency(_cartController.totalCart(_cartController.listOrder)),
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ],

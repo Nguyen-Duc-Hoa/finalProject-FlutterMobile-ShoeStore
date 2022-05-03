@@ -2,12 +2,11 @@ import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/screens/details/components/rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/components/default_button.dart';
 import 'package:final_project_mobile/models/Product.dart';
 import 'package:final_project_mobile/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'color_dots.dart';
+import 'modal_bottom_cart.dart';
 import 'product_description.dart';
 import 'top_rounded_container.dart';
 import 'product_images.dart';
@@ -138,100 +137,4 @@ class Body extends StatelessWidget {
   }
 }
 
-class ModalBottomCart extends StatelessWidget {
-  const ModalBottomCart({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
 
-  final Product product;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          )),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: getProportionateScreenWidth(10),
-                left: getProportionateScreenWidth(20)),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 88,
-                  child: AspectRatio(
-                    aspectRatio: 0.88,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // color: Color(0xFFF5F6F9),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.asset(product.images[0]),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "đ${product.price.toString()}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w500, color: kPrimaryColor),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            text: "Kho: ",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: kSecondaryColor),
-                            children: [
-                              TextSpan(
-                                text: "${product.price}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: kSecondaryColor),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Align(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(60),
-                      // ),
-                      primary: kPrimaryColor,
-                      // backgroundColor: Colors.white,
-                      padding: EdgeInsets.zero,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child: Icon(Icons.close),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            thickness: 2,
-          ),
-        ],
-      ),
-    );
-  }
-}
