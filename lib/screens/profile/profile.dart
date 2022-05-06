@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../constants.dart';
 import '../../models/user.dart';
 
 class Profile extends StatelessWidget {
+  static String routeName = "/profile";
   const Profile({Key? key}) : super(key: key);
 
   @override
@@ -45,7 +47,58 @@ class Profile extends StatelessWidget {
 
 
     }
+    _changePassword() async {
+      await showDialog<String>(
+          context: context,
+
+          builder:(context){
+            return AlertDialog(
+              title: Text('Đổi mật khẩu',style: TextStyle(color: kPrimaryColor,fontSize: 18),),
+              contentPadding: const EdgeInsets.all(16.0),
+              content:
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      obscureText: true,
+                      autofocus: true,
+                      initialValue: null,
+                      decoration: new InputDecoration(
+                          labelText: 'Current Password'),
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      autofocus: true,
+                      initialValue: null,
+                      decoration: new InputDecoration(
+                          labelText: 'New Password'),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                    child: const Text('Cancel',style: TextStyle(color: Colors.red)),
+
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                new FlatButton(
+                    child: const Text('Save',style: TextStyle(color: Colors.blue)),
+                    onPressed: () {
+
+                    })
+              ],
+            );
+          });
+
+
+    }
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          title: Text('Thông tin người dùng'),
+        ),
       body: Container(
         child: Column(
           children: [
@@ -138,6 +191,19 @@ class Profile extends StatelessWidget {
                           color: Colors.black,
                         ),
                         subtitle:  user.phone==null? Text(''):Text('${user.phone}')
+
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(5),
+
+                    child: ListTile(
+                        title: Text('Đổi mật khẩu'),
+                        leading: Icon(Icons.lock_outline,color: Colors.black,),
+                        onTap: (){
+                          _changePassword();
+                        },
+
 
                     ),
                   ),
