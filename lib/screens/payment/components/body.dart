@@ -187,8 +187,7 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Giảm giá', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.black.withOpacity(0.5)),),
-                Text('-${NumberFormat.currency(locale: 'vi').format(voucher.voucherValue)}', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.red),),
-
+                Text('-${NumberFormat.currency(locale: 'vi').format(voucher.voucherValue)}', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.red),)
               ],
 
             ),
