@@ -10,6 +10,7 @@ import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
 import 'package:final_project_mobile/screens/page/page.dart';
 import 'package:final_project_mobile/screens/payment/checkout.dart';
 import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
+import 'package:final_project_mobile/screens/voucher/voucher.dart';
 import 'package:final_project_mobile/services/auth.dart';
 import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,10 @@ void main() async{
   await Firebase.initializeApp(
     name: "final project shoeStore",
     options: const FirebaseOptions(
-      apiKey: "XXX",
-      appId: "1:167447585480:android:8c8ba853f4a714b61b3bfd",
+      apiKey: "AIzaSyCozD7KnAwi1sq-UizuJjxUx0DO5vXxsVc",
+      appId: "1:851369785064:android:f7ed3b48ce4f4a919bbb5d",
       messagingSenderId: "XXX",
-      projectId: "final-project-shoestore",
+      projectId: "final-project-shoestore-334b6",
     ),
   );
   print('-- WidgetsFlutterBinding.ensureInitialized');
@@ -55,9 +56,8 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
               bodyText1: TextStyle(color: kTextColor),
               bodyText2: TextStyle(color: kTextColor))),
-
-      home: Pages(),
-
+      // home: uid==null?Login():Pages(),
+        home: Pages(),
         routes:{
           '/home': (context) =>Pages(),
           '/login': (context) =>Login(),

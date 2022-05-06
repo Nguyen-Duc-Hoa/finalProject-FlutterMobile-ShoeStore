@@ -1,6 +1,7 @@
 import 'package:final_project_mobile/models/mCategories.dart';
 import 'package:final_project_mobile/screens/details/details_screen.dart';
 import 'package:final_project_mobile/screens/home/components/categories.dart';
+import 'package:final_project_mobile/screens/more/more_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_mobile/components/product_card.dart';
 import 'package:final_project_mobile/models/Product.dart';
@@ -62,7 +63,7 @@ class CategoryProducts extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
-                child: SectionTitle(title: category.name, press: () {}),
+                child: SectionTitle(title: category.name, press: () {Get.to(MoreScreen());}),
               ),
               SizedBox(height: getProportionateScreenWidth(20)),
               SingleChildScrollView(

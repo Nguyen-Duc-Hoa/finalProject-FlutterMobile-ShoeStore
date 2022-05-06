@@ -1,6 +1,8 @@
 import 'package:final_project_mobile/models/Cart.dart';
 import 'package:final_project_mobile/models/address.dart';
+import 'package:final_project_mobile/models/voucher.dart';
 import 'package:final_project_mobile/screens/address/address_screen.dart';
+import 'package:final_project_mobile/screens/voucher/voucher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   Address address=Address(id: 1, name: 'Nguyễn Thị Bích Phương', phone: '09886435482', address: 'Thủ Đức,TPHCM');
+  Voucher voucher= Voucher();
   @override
   Widget build(BuildContext context) {
     List<Cart> items = [
@@ -75,11 +78,11 @@ class _BodyState extends State<Body> {
                 child: Row(
                   children: [
                     Container(
-                        width: (MediaQuery.of(context).size.width-100)/2,
+                        width: (MediaQuery.of(context).size.width-170)/2,
                         height: 100,
                         decoration: BoxDecoration(
                             color: Colors.grey,
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(20),
                             boxShadow: [BoxShadow(
                                 spreadRadius: 1,
                                 blurRadius: 0.5,
@@ -134,6 +137,28 @@ class _BodyState extends State<Body> {
             )
 
         ),
+        Padding(padding: EdgeInsets.only(bottom: 25),
+
+            child: ListTile(
+              onTap: () async {
+                Voucher _voucher=await Get.to(VoucherScreen());
+                if(_voucher!=null){
+                  setState(() {
+                    voucher=_voucher;
+
+                  });
+                }
+
+              },
+                title: Text('Mã giảm giá'),
+
+                trailing:  voucher.voucherName==null ? Text('Chọn mã giảm giá',) :Text('${voucher.voucherName}',style: TextStyle(color: Colors.red,fontSize: 15))
+
+            )
+
+
+
+        ),
         Padding(padding: EdgeInsets.only(top: 20,right: 25,left: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,6 +181,18 @@ class _BodyState extends State<Body> {
 
           ),
         ),
+        if(voucher.voucherId!=null)
+          Padding(padding: EdgeInsets.only(right: 25,left: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Giảm giá', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.black.withOpacity(0.5)),),
+                Text('-${NumberFormat.currency(locale: 'vi').format(voucher.voucherValue)}', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.red),),
+
+              ],
+
+            ),
+          ),
         Padding(padding: EdgeInsets.only(right: 25,left: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,6 +204,7 @@ class _BodyState extends State<Body> {
 
           ),
         ),
+
         Padding(padding: EdgeInsets.only(bottom: 25),
 
             child: ListTile(

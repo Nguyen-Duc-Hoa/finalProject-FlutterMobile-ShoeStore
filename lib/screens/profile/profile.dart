@@ -4,6 +4,7 @@ import '../../constants.dart';
 import '../../models/user.dart';
 
 class Profile extends StatelessWidget {
+  static String routeName = "/profile";
   const Profile({Key? key}) : super(key: key);
 
   @override

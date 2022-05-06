@@ -16,6 +16,7 @@ class Account extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user=Provider.of<Users>(context);
+
     if(user==null)
       {
         return Center(

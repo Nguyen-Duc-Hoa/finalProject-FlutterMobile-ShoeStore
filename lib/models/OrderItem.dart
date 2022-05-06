@@ -7,9 +7,9 @@ class OrderItem {
   final String productName;
   final String image;
   final int quantity;
-  final double price;
+  final num price;
   final int size;
-  final Color color;
+  final String color;
 
   OrderItem(
       {required this.orderId,
@@ -23,10 +23,10 @@ class OrderItem {
 }
 
 
-List<OrderItem> orderitems=[
-OrderItem(orderId: 'awueter162432', productId: 1, productName: 'Nike Sport White - Man Pant', image: 'assets/images/shoe1.png',
-    quantity: 1, price: 50.5, size: 36, color: Color(0xFFF6625E)),
-  OrderItem(orderId: 'awueter162432', productId: 2, productName: 'Gloves XC Omega - Polygon', image: 'assets/images/shoe1.png',
-      quantity: 2, price: 64.99, size: 40, color: Color(0xFF836DB8)),
-];
+// List<OrderItem> orderitems=[
+// OrderItem(orderId: 'awueter162432', productId: 1, productName: 'Nike Sport White - Man Pant', image: 'assets/images/shoe1.png',
+//     quantity: 1, price: 50.5, size: 36, color: Color(0xFFF6625E)),
+//   OrderItem(orderId: 'awueter162432', productId: 2, productName: 'Gloves XC Omega - Polygon', image: 'assets/images/shoe1.png',
+//       quantity: 2, price: 64.99, size: 40, color: Color(0xFF836DB8)),
+// ];
 

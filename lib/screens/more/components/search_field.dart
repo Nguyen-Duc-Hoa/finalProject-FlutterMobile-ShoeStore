@@ -14,7 +14,7 @@ class SearchField extends StatelessWidget {
       width: SizeConfig.screenWidth * 0.75, //80% of our width
       height: 50,
       decoration: BoxDecoration(
-        color: kPrimaryLightColor.withOpacity(0.3),
+        color: kSecondaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
@@ -22,16 +22,14 @@ class SearchField extends StatelessWidget {
           //search value
         },
         decoration: InputDecoration(
-          iconColor: Colors.white,
-          hintStyle: const TextStyle(color: kPrimaryLightColor),
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          hintText: "Tìm kiếm sản phẩm",
-          prefixIcon: const Icon(Icons.search),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(20),
-            vertical: getProportionateScreenHeight(9),
-          )),
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            hintText: "Tìm kiếm sản phẩm",
+            prefixIcon: const Icon(Icons.search),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(20),
+              vertical: getProportionateScreenHeight(9),
+            )),
       ),
     );
   }

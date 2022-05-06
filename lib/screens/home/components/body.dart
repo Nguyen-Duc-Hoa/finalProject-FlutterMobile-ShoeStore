@@ -43,14 +43,15 @@ class Body extends StatelessWidget {
 
             lstCategories.add(cate);
           });
+
           return SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: getProportionateScreenWidth(20),
-                  ),
-                  HomeHeader(),
+                  // SizedBox(
+                  //   height: getProportionateScreenWidth(20),
+                  // ),
+                  // HomeHeader(),
                   SizedBox(
                     height: getProportionateScreenWidth(30),
                   ),
