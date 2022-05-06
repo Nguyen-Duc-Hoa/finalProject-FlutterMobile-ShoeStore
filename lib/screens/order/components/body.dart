@@ -129,8 +129,6 @@ class _BodyState extends State<Body> {
 
             orders = lstOrders
                 .where((element) => element.status == widget.status&&element.userId==user.uid)
-                .take(num)
-                .skip((page - 1) * num)
                 .toList();
 
             if(orders.isEmpty)
