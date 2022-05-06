@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:carousel_pro/carousel_pro.dart';
 import '../../../size_config.dart';
 
 class DiscountBanner extends StatelessWidget{
@@ -10,26 +10,20 @@ class DiscountBanner extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: getProportionateScreenWidth(20)),
-      padding: EdgeInsets.symmetric(
-        horizontal: getProportionateScreenWidth(20),
-        vertical: getProportionateScreenWidth(15),
+      height: 150,
+      margin: const EdgeInsets.only(left: 10, right: 10,bottom: 10),
+      child: Carousel(
+
+        boxFit: BoxFit.fill,
+        images: [
+          AssetImage('assets/images/img0.png'),
+          AssetImage('assets/images/img1.png'),
+          AssetImage('assets/images/img2.png'),
+        ],
+        autoplay: true,
+        indicatorBgPadding:1.0 ,
+
       ),
-      width: double.infinity,
-      // height: 90,
-      decoration: BoxDecoration(
-        color: const Color(0xFF4A3298),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text.rich(TextSpan(
-          text: "A Summer Suprise\n",
-          style: TextStyle(color: Colors.white),
-          children: [
-            TextSpan(text: "Cashback 20%",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
-          ]
-      )),
     );
   }
 }

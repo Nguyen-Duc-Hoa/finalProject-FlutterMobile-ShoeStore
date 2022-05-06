@@ -16,6 +16,7 @@ class Account extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user=Provider.of<Users>(context);
+
     if(user==null)
       {
         return Center(
@@ -85,7 +86,7 @@ class Account extends StatelessWidget {
                   children: [
                     Container(
                       margin: EdgeInsets.all(5),
-                      color: Colors.black12,
+                      color: Color(0x14B6B8B6),
                       child: ListTile(
                         title: Text('Thông tin'),
                         leading: Icon(Icons.account_circle,color: Colors.blue),
@@ -100,7 +101,7 @@ class Account extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(5),
 
-                      color: Colors.black12,
+                      color: Color(0x14B6B8B6),
                       child: ListTile(
                         title: Text('Địa chỉ nhận hàng'),
                         leading: Icon(Icons.location_on_outlined,color: Colors.red,),
@@ -114,7 +115,7 @@ class Account extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.all(5),
-                      color: Colors.black12,
+                      color: Color(0x14B6B8B6),
                       child: ListTile(
                         title: Text('Đăng xuất'),
                         leading: Icon(Icons.logout,color: Colors.black),
