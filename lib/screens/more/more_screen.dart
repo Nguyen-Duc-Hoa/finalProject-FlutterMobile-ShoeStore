@@ -1,9 +1,11 @@
 import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/models/mCategories.dart';
+import 'package:final_project_mobile/screens/filter/filter_screen.dart';
 import 'package:final_project_mobile/screens/home/components/categories.dart';
 import 'package:final_project_mobile/screens/home/components/home_header.dart';
 import 'package:final_project_mobile/screens/more/components/more_header.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../more/components/body.dart';
 
@@ -36,6 +38,11 @@ class _MoreCreenState extends State<MoreScreen> {
         ],
       ),
       body: Body(gender: widget.gender, category: widget.categories,),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kPrimaryColor,
+        child: Icon(Icons.filter),
+        onPressed: () {Get.to(FilterScreen());},
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:final_project_mobile/constants.dart';
+import 'package:final_project_mobile/screens/home/HomeController.dart';
 import 'package:final_project_mobile/screens/home/components/category_product.dart';
 import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       FirebaseFirestore.instance.collection('categories');
 
   List<Gender> lstCate = demoGender;
+  // HomeController _homeController =
 
   int selectedIndex = 0;
 

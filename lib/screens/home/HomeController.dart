@@ -1,7 +1,10 @@
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:final_project_mobile/screens/home/components/categories.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+  RxList<Categories> lstCategory = [].cast<Categories>().obs;
+
   Rx<Product> productDetail = Product(
       id: 0,
       images: [],
@@ -28,6 +31,10 @@ class HomeController extends GetxController {
       lstImage.add(product.images[i]);
     }
     this.lstImage = lstImage.obs;
+  }
+
+  void setListCategory( List<Categories> lstcategory){
+    lstCategory = lstcategory.obs;
   }
 
   RxInt indexSelectedColor = 0.obs;
