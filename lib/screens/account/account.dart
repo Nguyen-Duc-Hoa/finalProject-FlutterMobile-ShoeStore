@@ -122,7 +122,7 @@ class Account extends StatelessWidget {
                         trailing: Icon(Icons.keyboard_arrow_right_sharp),
                         onTap: (){
 
-                          Get.offNamed("/login");
+                          Get.offNamed("/home");
                           _auth.signOut();
                         },
                       ),

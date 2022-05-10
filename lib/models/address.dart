@@ -1,9 +1,11 @@
 
 
 class Address {
-  final int id;
-  final String name;
-  final String phone;
-  final String address;
-  Address({required this.id,required this.name, required this.phone,required this.address});
+  final String? userId;
+  final String? name;
+  final String? phone;
+  final String? address;
+  late final bool? isDefault;
+  Address({ this.userId, this.name,  this.phone, this.address, this.isDefault});
+
 }

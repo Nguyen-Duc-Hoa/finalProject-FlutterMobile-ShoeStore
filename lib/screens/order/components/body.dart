@@ -29,6 +29,7 @@ class _BodyState extends State<Body> {
   CartController _cartController = Get.find();
   final int page = 1;
   final int num = 10;
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference order =
   FirebaseFirestore.instance.collection('order');
@@ -54,8 +55,8 @@ class _BodyState extends State<Body> {
     //       size: 40,
     //       color: Color(0xFF836DB8)),
     // ];
-    final user = Provider.of<Users>(context);
 
+    final user = Provider.of<Users>(context);
     if (user == null) {
       return Center(
 
