@@ -207,8 +207,6 @@ class AddressScreen extends StatelessWidget {
               ),
             );
           });
-
-
     }
 if(user!= null) {
   Query<Map<String, dynamic>> address = FirebaseFirestore.instance.collection(
