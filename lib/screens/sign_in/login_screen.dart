@@ -70,7 +70,7 @@ class _LoginState extends State<Login> {
                             { setState(() {
                               email=_value.toString().trim();
                             });},
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Enter Your Email',
                               prefixIcon: Icon(Icons.account_circle_outlined),
                               hintStyle: TextStyle(color: Colors.grey),
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             autocorrect: true,
                             obscureText: true,
@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                             { setState(() {
                               password=_value;
                             });},
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Enter Your Password',
                               prefixIcon: Icon(Icons.lock_outline),
                               hintStyle: TextStyle(color: Colors.grey),

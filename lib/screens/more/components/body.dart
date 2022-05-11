@@ -50,12 +50,12 @@ class _BodyState extends State<Body> {
           images = doc["images"]?.cast<String>();
 
           List<String> sColors = doc["colors"].cast<String>();
-          List<Color> lstColor = [];
-          for (var element in sColors) {
-            String valueString = element.split('(0x')[1].split(')')[0];
-            int value = int.parse(valueString, radix: 16);
-            lstColor.add(Color(value));
-          }
+          // List<Color> lstColor = [];
+          // for (var element in sColors) {
+          //   String valueString = element.split('(0x')[1].split(')')[0];
+          //   int value = int.parse(valueString, radix: 16);
+          //   lstColor.add(Color(value));
+          // }
 
           List<int> lstSize;
           lstSize = doc["size"]?.cast<int>();
@@ -63,7 +63,7 @@ class _BodyState extends State<Body> {
           Product p = Product(
               id: doc["id"],
               images: images,
-              colors: lstColor,
+              colors: sColors,
               title: doc["title"].toString(),
               price: doc["price"].toDouble(),
               description: doc["description"].toString(),

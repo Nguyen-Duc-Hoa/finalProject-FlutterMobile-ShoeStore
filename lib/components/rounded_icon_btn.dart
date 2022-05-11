@@ -9,11 +9,13 @@ class RoundedIconBtn extends StatelessWidget {
     required this.icon,
     required this.press,
     this.showShadow = false,
+    required this.disable,
   }) : super(key: key);
 
   final IconData icon;
   final GestureTapCancelCallback press;
   final bool showShadow;
+  final bool disable;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class RoundedIconBtn extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         ),
-        onPressed: press,
+        onPressed: disable ? null : press,
         child: Icon(icon),
       ),
     );

@@ -4,7 +4,7 @@ class Product {
   final int id;
   final String title, description;
   final List<String> images;
-  final List<Color> colors;
+  final List<String> colors;
   final List<int> size;
   final int disCount;
   final int gender;
@@ -41,12 +41,11 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
-      title: "Wireless Controller for PS4™ aaaaaaaaaaaaaaaaaaaaaa",
+      title: "Wireless Controller for PS4™",
       price: 64.99,
       description: description,
       rating: 4.8,
@@ -62,10 +61,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,
@@ -82,10 +80,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Gloves XC Omega - Polygon",
       price: 36.55,
@@ -103,10 +100,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Logitech Head",
       price: 20.20,
@@ -123,10 +119,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,
@@ -143,10 +138,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,
@@ -163,10 +157,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,
@@ -183,10 +176,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,
@@ -203,10 +195,9 @@ List<Product> demoProducts = [
         "assets/images/shoe1.png",
       ],
       colors: [
-        Color(0xFFF6625E),
-        Color(0xFF836DB8),
-        Color(0xFFDECB9C),
-        Colors.white,
+        "0xFFF6625E",
+        "0xFF836DB8",
+        "0xFFDECB9C",
       ],
       title: "Nike Sport White - Man Pant",
       price: 50.5,

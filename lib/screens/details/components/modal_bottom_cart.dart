@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:final_project_mobile/common.dart';
 import 'package:final_project_mobile/components/default_button.dart';
 import 'package:final_project_mobile/components/rounded_icon_btn.dart';
@@ -5,9 +7,13 @@ import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/models/Cart.dart';
 import 'package:final_project_mobile/models/Color.dart';
 import 'package:final_project_mobile/models/Product.dart';
+import 'package:final_project_mobile/models/user.dart';
 import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:final_project_mobile/common.dart';
 
 class ModalBottomCart extends StatefulWidget {
@@ -24,18 +30,34 @@ class ModalBottomCart extends StatefulWidget {
 
 class _ModalBottomCartState extends State<ModalBottomCart> {
   int selectedImage = -1;
+  int number = 1;
   List<String> imageByColor = [];
   int? value;
   Common _common = new Common();
   late Cart _cart;
+
   @override
   void initState() {
     super.initState();
-    _cart = Cart(product: widget.product, numOfItem: 1, size: -1, color: Color(0x123456));
+    _cart = Cart(
+        productId: widget.product.id,
+        title: widget.product.title,
+        numOfItem: 1,
+        size: -1,
+        color: "",
+        image: "",
+        userId: "",
+    price: widget.product.price,
+      discount: widget.product.disCount
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final user = Provider.of<Users>(context);
+    CollectionReference cartCol = FirebaseFirestore.instance.collection('cart');
+
     if (imageByColor.isEmpty) {
       for (int i = 0; i < widget.product.colors.length; i++) {
         if (5 * i < widget.product.images.length) {
@@ -43,6 +65,60 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
         }
       }
     }
+
+    Future<String> addToCart(Cart cart, String uid) async {
+      String cartId = "";
+      int oldQuantity = 0;
+      await FirebaseFirestore.instance
+          .collection('cart')
+          .where('userId', isEqualTo: uid)
+          .where('color', isEqualTo: cart.color)
+          .where('size', isEqualTo: cart.size)
+          .where('productId', isEqualTo: cart.productId)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          cartId = doc.id;
+          oldQuantity = doc['numOfItem'];
+        });
+      });
+
+      // Call the user's CollectionReference to add a new user
+      print(cartId);
+      if (cartId == "") {
+        print(2);
+        print(cartId);
+        await cartCol.add({
+          'userId': uid,
+          "productId": cart.productId, // John Doe
+          'image': cart.image, // Stokes and Sons
+          'numOfItem': cart.numOfItem, // 42
+          'size': cart.size,
+          'color': cart.color // 42
+        }).then((value) {
+          print("User Added");
+          return "User Added";
+        }).catchError((error) {
+          print("Failed to add user: $error");
+          return error;
+        });
+      } else {
+        print(3);
+        await cartCol.doc(cartId).update({
+          'userId': uid,
+          "productId": cart.productId, // John Doe
+          'image': cart.image, // Stokes and Sons
+          'numOfItem': cart.numOfItem + oldQuantity, // 42
+          'size': cart.size,
+          'color': cart.color
+        }).then((value) {
+          print('change quantity cart');
+          return 'change quantity cart';
+        }).catchError((error) => print("Failed to add user: $error"));
+      }
+      return "";
+    }
+
     return Container(
       decoration: BoxDecoration(
           // color: Theme.of(context).canvasColor,
@@ -65,7 +141,7 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
                     aspectRatio: 0.88,
                     child: Container(
                       decoration: BoxDecoration(
-                        // color: Color(0xFFF5F6F9),
+                        // color: Color(int.parse(color1)),
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -189,6 +265,7 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
                   items: widget.product.size.map(buildMenuItem).toList(),
                   onChanged: (value) => setState(() {
                     this.value = value;
+                    _cart.size = value!;
                   }),
                 ),
               )
@@ -217,25 +294,41 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
                   RoundedIconBtn(
                     icon: Icons.remove,
                     showShadow: false,
-                    press: () {},
+                    disable:
+                        (_cart.color == "" || _cart.size == -1 || number <= 1),
+                    press: () {
+                      setState(() {
+                        number--;
+                      });
+                    },
                   ),
                   Container(
-                    width: 30,
-                    height: 30,
+                    width: 50,
+                    height: 50,
                     child: TextField(
+                      textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '',
-                      ),
-                      enabled: value != null,
+                      controller:
+                          TextEditingController(text: number.toString()),
+                      onChanged: (text) {
+                        if (int.parse(text) <= 0) {
+                        } else {
+                          number = int.parse(text);
+                        }
+                        print(number);
+                      },
+                      enabled: _cart.size != -1 && _cart.color != "",
                     ),
                   ),
                   RoundedIconBtn(
-                    icon: Icons.add,
-                    showShadow: true,
-                    press: () {},
-                  ),
+                      icon: Icons.add,
+                      showShadow: true,
+                      disable: (_cart.color == "" || _cart.size == -1),
+                      press: () {
+                        setState(() {
+                          number++;
+                        });
+                      }),
                 ],
               ),
             ],
@@ -245,7 +338,16 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
               margin: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(10),
                   vertical: getProportionateScreenWidth(5)),
-              child: DefaultButton(text: "Thêm giỏ hàng", disable: true, press: () {})),
+              child: DefaultButton(
+                  text: "Thêm giỏ hàng",
+                  disable: !(_cart.color != "" && _cart.size != -1),
+                  press: () {
+                    _cart.numOfItem = number;
+                    if (user != null) {
+                      addToCart(_cart, user.uid.toString());
+                      Navigator.pop(context);
+                    }
+                  })),
         ],
       ),
     );
@@ -270,8 +372,12 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
             setState(() {
               if (selectedImage == index) {
                 selectedImage = -1;
+                _cart.color = "";
+                _cart.image = "";
               } else {
                 selectedImage = index;
+                _cart.color = nameColor.id;
+                _cart.image = imageByColor[selectedImage];
               }
             });
           },

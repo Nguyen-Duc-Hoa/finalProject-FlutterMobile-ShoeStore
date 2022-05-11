@@ -1,19 +1,23 @@
+import 'package:final_project_mobile/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class IconBtnWithCounter extends StatelessWidget {
-  const IconBtnWithCounter({
-    Key? key, required this.svgSrc,
-    this.numOfItem = 0,
+  IconBtnWithCounter({
+    Key? key,
+    required this.svgSrc,
+    required this.numOfItem,
     required this.press,
   }) : super(key: key);
 
   final String svgSrc;
-  final int? numOfItem;
+  late int numOfItem;
   final GestureTapCallback press;
 
   @override
@@ -25,16 +29,14 @@ class IconBtnWithCounter extends StatelessWidget {
         overflow: Overflow.visible,
         children: [
           Container(
-              padding:
-              EdgeInsets.all(getProportionateScreenWidth(12)),
+              padding: EdgeInsets.all(getProportionateScreenWidth(12)),
               height: getProportionateScreenHeight(46),
               width: getProportionateScreenWidth(46),
               decoration: BoxDecoration(
                   color: kPrimaryLightColor.withOpacity(0.3),
                   shape: BoxShape.circle),
-              child:
-              SvgPicture.asset(svgSrc)),
-          if(numOfItem != 0)
+              child: SvgPicture.asset(svgSrc)),
+          if (numOfItem != 0)
             Positioned(
               top: -3,
               right: 0,
@@ -44,17 +46,16 @@ class IconBtnWithCounter extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: const Color(0xFFFF4848),
                     shape: BoxShape.circle,
-                    border:
-                    Border.all(width: 1.5, color: Colors.white)),
+                    border: Border.all(width: 1.5, color: Colors.white)),
                 child: Center(
                     child: Text(
-                      "$numOfItem",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(10),
-                          height: 1,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
-                    )),
+                  "$numOfItem",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(10),
+                      height: 1,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                )),
               ),
             )
         ],

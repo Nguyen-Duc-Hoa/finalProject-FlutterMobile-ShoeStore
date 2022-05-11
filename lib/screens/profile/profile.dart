@@ -17,26 +17,26 @@ class Profile extends StatelessWidget {
       builder:(context){
          return AlertDialog(
            contentPadding: const EdgeInsets.all(16.0),
-           content: new Row(
+           content: Row(
              children: <Widget>[
-               new Expanded(
-                 child: new TextFormField(
+               Expanded(
+                 child: TextFormField(
                    autofocus: true,
                    initialValue: value,
-                   decoration: new InputDecoration(
+                   decoration: InputDecoration(
                        labelText: '${title}'),
                  ),
                )
              ],
            ),
            actions: <Widget>[
-             new FlatButton(
+             FlatButton(
                  child: const Text('Cancel',style: TextStyle(color: Colors.red)),
 
                  onPressed: () {
                    Navigator.pop(context);
                  }),
-             new FlatButton(
+             FlatButton(
                  child: const Text('Save',style: TextStyle(color: Colors.blue)),
                  onPressed: () {
 

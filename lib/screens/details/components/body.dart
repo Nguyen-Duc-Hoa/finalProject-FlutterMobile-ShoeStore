@@ -74,6 +74,7 @@ class Body extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     showModalBottomSheet(
+                                        isScrollControlled: true,
                                         context: context,
                                         builder: (context) {
                                           return ModalBottomCart(

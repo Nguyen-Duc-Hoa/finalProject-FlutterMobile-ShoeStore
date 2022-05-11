@@ -36,7 +36,7 @@ class PopularProducts extends StatelessWidget {
             Product p = Product(
                 id: doc["id"],
                 images: images,
-                colors: colors,
+                colors: doc["colors"].cast<String>(),
                 title: doc["title"].toString(),
                 price: doc["price"].toDouble(),
                 description: doc["description"].toString(),

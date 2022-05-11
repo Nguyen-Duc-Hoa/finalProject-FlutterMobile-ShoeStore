@@ -78,7 +78,7 @@ class _ColorDotsState extends State<ColorDots> {
     );
   }
 
-  GestureDetector buildColorDot(int index, Color color, bool isSelected) {
+  GestureDetector buildColorDot(int index, String color, bool isSelected) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -101,7 +101,7 @@ class _ColorDotsState extends State<ColorDots> {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: color,
+            color: Color(int.parse(color)),
             shape: BoxShape.circle,
           ),
         ),
