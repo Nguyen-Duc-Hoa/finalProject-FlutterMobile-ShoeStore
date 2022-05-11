@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:final_project_mobile/models/Cart.dart';
 import 'package:final_project_mobile/models/address.dart';
 import 'package:final_project_mobile/models/voucher.dart';
@@ -9,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../models/Product.dart';
 import "package:intl/intl.dart";
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../models/user.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -17,13 +22,10 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
-  Address address = Address(
-      id: 1,
-      name: 'Nguyễn Thị Bích Phương',
-      phone: '09886435482',
-      address: 'Thủ Đức,TPHCM');
-  Voucher voucher = Voucher();
+class _BodyState extends State<Body> 
+  
+  Address address=Address();
+  Voucher voucher= Voucher();
 
   @override
   Widget build(BuildContext context) {
