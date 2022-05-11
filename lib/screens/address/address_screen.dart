@@ -5,124 +5,206 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../models/user.dart';
 
 class AddressScreen extends StatelessWidget {
   static String routeName = "/address";
-  const AddressScreen({Key? key}) : super(key: key);
+  AddressScreen({Key? key}) : super(key: key);
 
 
 
-
+  final _formKeyAdd=GlobalKey<FormState>();
+  final _formKeyEdit=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
+
+    String address='';
+    String name='';
+    String phone='';
+    String? validateMobile(String value) {
+      String patttern = r'(^(?:[+0]9)?[0-9]{10}$)';
+      RegExp regExp = new RegExp(patttern);
+      if (value.length == 0) {
+        return 'Please enter mobile number';
+      }
+      else if (!regExp.hasMatch(value)) {
+        return 'Please enter valid mobile number';
+      }
+      return null;
+    }
     _showDialogAdd() async {
       await showDialog<String>(
           context: context,
 
           builder:(context){
-            return AlertDialog(
-              contentPadding: const EdgeInsets.all(16.0),
-              title: Text('Thêm địa chỉ mới',style: TextStyle(color: kPrimaryColor,fontSize: 18)),
-              content:
-              SingleChildScrollView(
-                child: Column(
+            return Form(
+              key: _formKeyAdd,
+              child: AlertDialog(
+                contentPadding: const EdgeInsets.all(16.0),
+                title: Text('Thêm địa chỉ mới',style: TextStyle(color: kPrimaryColor,fontSize: 18)),
+                content:
+                SingleChildScrollView(
+                  child: Column(
 
-                  children: [
+                    children: [
 
-                    TextFormField(
-                      autofocus: true,
+                      TextFormField(
+                        autofocus: true,
                       initialValue: null,
-                      decoration: new InputDecoration(
-                          labelText: 'Name'),
-                    ),
-                    TextFormField(
-                      autofocus: true,
-                      initialValue: null,
-                      decoration: new InputDecoration(
-                          labelText: 'Phone'),
-                    ),
-                    TextFormField(
-                      autofocus: true,
-                      initialValue: null,
-                      decoration: new InputDecoration(
-                          labelText: 'Address'),
-                    ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter name";
+                        }
+                      },
+                        onChanged: (_value){
+                          name=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Name'),
+                      ),
+                      TextFormField(
+                        autofocus: true,
+                        initialValue: null,
+                        keyboardType: TextInputType.number,
+                        validator: (value) =>
+                        validateMobile(value!),
+                        onChanged: (_value){
+                          phone=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Phone'),
+                      ),
+                      TextFormField(
+                        autofocus: true,
+                        initialValue: null,
+                        validator: (value) =>
+                        value!.isEmpty ? 'Please enter your address' : null,
+                        onChanged: (_value){
+                          address=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Address'),
+                      ),
 
-                  ],
+                    ],
 
+                  ),
                 ),
+                actions: <Widget>[
+                  new FlatButton(
+                      child: const Text('Cancel',style: TextStyle(color: Colors.red)),
+
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  new FlatButton(
+                      child: const Text('Save',style: TextStyle(color: Colors.blue)),
+                      onPressed: () async{
+                        if(_formKeyAdd.currentState!.validate())
+                          {
+                            final add =FirebaseFirestore.instance.collection('address').doc();
+                            final json={
+                              'address':address,
+                              'isDefault':false,
+                              'name':name,
+                              'phone':phone,
+                              'userId':user.uid
+                            };
+                            await add.set(json);
+                            Navigator.pop(context);
+                          }
+
+
+
+                      })
+                ],
               ),
-              actions: <Widget>[
-                new FlatButton(
-                    child: const Text('Cancel',style: TextStyle(color: Colors.red)),
-
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-                new FlatButton(
-                    child: const Text('Save',style: TextStyle(color: Colors.blue)),
-                    onPressed: () {
-
-                    })
-              ],
             );
           });
 
 
     }
-    _showDialogEdit(value) async {
+    _showDialogEdit(value,index,snapshot) async {
       await showDialog<String>(
           context: context,
 
           builder:(context){
-            return AlertDialog(
-              contentPadding: const EdgeInsets.all(16.0),
-              title: Text('Sửa địa chỉ',style: TextStyle(color: kPrimaryColor,fontSize: 18),),
-              content:
-              SingleChildScrollView(
-                child: Column(
+            return Form(
+              key: _formKeyEdit,
+              child: AlertDialog(
+                contentPadding: const EdgeInsets.all(16.0),
+                title: Text('Sửa địa chỉ',style: TextStyle(color: kPrimaryColor,fontSize: 18),),
+                content:
+                SingleChildScrollView(
+                  child: Column(
 
-                  children: [
+                    children: [
 
-                    TextFormField(
-                      autofocus: true,
-                      initialValue: value.name,
-                      decoration: new InputDecoration(
-                          labelText: 'Name'),
-                    ),
-                    TextFormField(
-                      autofocus: true,
-                      initialValue: value.phone,
-                      decoration: new InputDecoration(
-                          labelText: 'Phone'),
-                    ),
-                    TextFormField(
-                      autofocus: true,
-                      initialValue: value.address,
-                      decoration: new InputDecoration(
-                          labelText: 'Address'),
-                    ),
+                      TextFormField(
+                        autofocus: true,
+                        initialValue: value.name,
+                        validator: (value) =>
+                        value!.isEmpty ? 'Please enter your name' : null,
+                        onChanged: (_value){
+                          name=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Name'),
+                      ),
+                      TextFormField(
+                        autofocus: true,
+                        initialValue: value.phone,
+                        validator: (value) =>
+                        validateMobile(value!),
+                        onChanged: (_value){
+                          phone=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Phone'),
+                      ),
+                      TextFormField(
+                        autofocus: true,
+                        initialValue: value.address,
+                        validator: (value) =>
+                        value!.isEmpty ? 'Please enter your address' : null,
+                        onChanged: (_value){
+                          address=_value.toString().trim();
+                        },
+                        decoration: new InputDecoration(
+                            labelText: 'Address'),
+                      ),
 
-                  ],
+                    ],
 
+                  ),
                 ),
+                actions: <Widget>[
+                  new FlatButton(
+                      child: const Text('Cancel',style: TextStyle(color: Colors.red)),
+
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  new FlatButton(
+                      child: const Text('Save',style: TextStyle(color: Colors.blue)),
+                      onPressed: () {
+                        if(_formKeyEdit.currentState!.validate()){
+                          final DocumentSnapshot data = snapshot.data!.docs[index];
+
+                          FirebaseFirestore.instance
+                              .collection('address')
+                              .doc(data.id).update({
+                            'name':name,
+                            'address':address,
+                            'phone':phone
+                              });
+                          Navigator.pop(context);
+                        }
+                      })
+                ],
               ),
-              actions: <Widget>[
-                new FlatButton(
-                    child: const Text('Cancel',style: TextStyle(color: Colors.red)),
-
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-                new FlatButton(
-                    child: const Text('Save',style: TextStyle(color: Colors.blue)),
-                    onPressed: () {
-
-                    })
-              ],
             );
           });
 
@@ -173,58 +255,79 @@ if(user!= null) {
                 children:
                 List.generate(items.length, (index) {
                   bool? val=items[index].isDefault;
-                  return  Container(
-                    decoration: BoxDecoration(
-
-                        border: Border.all(
-                            color: Colors.black12
-                        ),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child:  Padding(padding: EdgeInsets.only(top: 20,bottom: 25),
-
-                      child: ListTile(
-
-                        leading: Radio(
-                          value: true,
-                          groupValue: val,
-                          onChanged: (bool? value) async{
-                            await FirebaseFirestore.instance.collection('address').get().then((value) {
-                              for(var val in value.docs)
-                              {
-                                val.reference.update({'isDefault':false});
-                              }
-                            });
-
-
+                  return  Slidable(
+                    startActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children:  [
+                        SlidableAction(
+                          onPressed: (c){
                             final DocumentSnapshot data = snapshot.data!.docs[index];
 
                             FirebaseFirestore.instance
                                 .collection('address')
-                                .doc(data.id).update({'isDefault':true});
-
-
-                            val=value;
-
-
+                                .doc(data.id).delete();
                           },
-                          activeColor: kPrimaryColor,
+                          backgroundColor: Color(0xE4FE4A49),
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
                         ),
-                        trailing: IconButton(
-                          onPressed: (){
-                            _showDialogEdit(items[index]);
-                          },
-                          icon: Icon(Icons.edit),
-                          hoverColor: Colors.white,
-                          highlightColor: Colors.white,
-                          splashColor: Colors.white,
-                          color: Colors.black,
-                        ),
-                        title: Text('${items[index].name} \n${items[index].phone} \n${items[index].address}'),
-                        onTap: ()=>Get.back(result: items[index]),
+
+                      ],
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+
+                          border: Border.all(
+                              color: Colors.black12
+                          ),
+                          borderRadius: BorderRadius.circular(10)
                       ),
+                      child:  Padding(padding: EdgeInsets.only(top: 20,bottom: 25),
+
+                        child: ListTile(
+
+                          leading: Radio(
+                            value: true,
+                            groupValue: val,
+                            onChanged: (bool? value) async{
+                              await FirebaseFirestore.instance.collection('address').get().then((value) {
+                                for(var val in value.docs)
+                                {
+                                  val.reference.update({'isDefault':false});
+                                }
+                              });
 
 
+                              final DocumentSnapshot data = snapshot.data!.docs[index];
+
+                              FirebaseFirestore.instance
+                                  .collection('address')
+                                  .doc(data.id).update({'isDefault':true});
+
+
+                              val=value;
+
+
+                            },
+                            activeColor: kPrimaryColor,
+                          ),
+                          trailing: IconButton(
+                            onPressed: (){
+                              _showDialogEdit(items[index],index,snapshot);
+                            },
+                            icon: Icon(Icons.edit),
+                            hoverColor: Colors.white,
+                            highlightColor: Colors.white,
+                            splashColor: Colors.white,
+                            color: Colors.black,
+                          ),
+                          title: Text('${items[index].name} \n${items[index].phone} \n${items[index].address}'),
+                          onTap: ()=>Get.back(result: items[index]),
+                        ),
+
+
+                      ),
                     ),
                   );
 

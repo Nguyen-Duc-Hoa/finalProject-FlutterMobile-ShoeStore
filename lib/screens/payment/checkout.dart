@@ -1,7 +1,12 @@
 import 'package:final_project_mobile/constants.dart';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
+import '../../models/address.dart';
+import '../../models/user.dart';
 import '../payment/components/body.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Checkout extends StatefulWidget {
   static String routeName = "/checkout";
   const Checkout({Key? key}) : super(key: key);
@@ -11,8 +16,12 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
+
     return
       Scaffold(
         backgroundColor: Colors.white,
@@ -22,7 +31,6 @@ class _CheckoutState extends State<Checkout> {
         ),
         body: Body(),
         bottomSheet: Container(
-
             color: Colors.white,
             height: 80,
 

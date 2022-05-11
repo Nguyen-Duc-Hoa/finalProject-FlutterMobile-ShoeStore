@@ -92,7 +92,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     width: getProportionateScreenWidth(190),
                     child: DefaultButton(
                       text: "Mua hàng (${_cartController.listOrder.length})",
-                      press: () {Get.to(Checkout());},
+                      press: () {Get.to( Checkout());},
                     ),
                   ),
                 ],
