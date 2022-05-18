@@ -1,14 +1,35 @@
+
 import 'package:flutter/material.dart';
-class Rating extends StatefulWidget {
-  const Rating({Key? key}) : super(key: key);
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Rating extends StatelessWidget {
+  final int id;
+  const Rating({Key? key,required this.id}) : super(key: key);
+
 
   @override
-  _RatingState createState() => _RatingState();
-}
 
-class _RatingState extends State<Rating> {
-  @override
   Widget build(BuildContext context) {
+    int one=0;
+    int two=0;
+    int three=0;
+    int four=0;
+    int five=0;
+     FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: id).where('rate', isEqualTo: 1)..get().then((value) {
+       one=value.size;
+     });
+     FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: id).where('rate', isEqualTo: 2)..get().then((value) {
+       two=value.size;
+     });
+     FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: id).where('rate', isEqualTo: 3)..get().then((value) {
+       three=value.size;
+     });
+     FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: id).where('rate', isEqualTo: 4)..get().then((value) {
+       four=value.size;
+     });
+     FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: id).where('rate', isEqualTo: 5)..get().then((value) {
+       five=value.size;
+     });
     return Container(
       margin: EdgeInsets.all(15),
       child:
@@ -17,11 +38,11 @@ class _RatingState extends State<Rating> {
         children: [
           Text("ĐÁNH GIÁ SẢN PHẨM",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
           SizedBox(height: 8),
-          chartRow(context, '5', 89),
-          chartRow(context, '4', 8),
-          chartRow(context, '3', 2),
-          chartRow(context, '2', 1),
-          chartRow(context, '1', 0),
+          chartRow(context, '5', five),
+          chartRow(context, '4', four),
+          chartRow(context, '3', three),
+          chartRow(context, '2', two),
+          chartRow(context, '1', one),
           SizedBox(height: 8),
         ],
       ),
@@ -63,3 +84,6 @@ class _RatingState extends State<Rating> {
     );
   }
 }
+
+
+

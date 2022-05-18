@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -16,8 +16,8 @@ void showToastMessage(String message){
   Fluttertoast.showToast(
       msg: message, //message to show toast
       toastLength: Toast.LENGTH_LONG, //duration for message to show
-      gravity: ToastGravity.CENTER, //where you want to show, top, bottom
-      backgroundColor: Colors.pink, //background Color for message
+      gravity: ToastGravity.BOTTOM, //where you want to show, top, bottom
+      backgroundColor: Colors.black87, //background Color for message
       textColor: Colors.white, //message text color
       fontSize: 16.0 //message font size
   );
@@ -30,11 +30,22 @@ class _SignupState extends State<Signup> {
   String email='';
   String name='';
   String password='';
+  String phone='';
   String error='';
 
   @override
   Widget build(BuildContext context) {
-
+    String? validateMobile(String value) {
+      String patttern = r'(^(?:[+0]9)?[0-9]{10}$)';
+      RegExp regExp = new RegExp(patttern);
+      if (value.length == 0) {
+        return 'Please enter mobile number';
+      }
+      else if (!regExp.hasMatch(value)) {
+        return 'Please enter valid mobile number';
+      }
+      return null;
+    }
     return Scaffold(
 
       body: SingleChildScrollView(
@@ -149,7 +160,32 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        autocorrect: true,
 
+                        validator: (value) =>
+                        validateMobile(value!),
+                        onChanged: (_value)
+                        { setState(() {
+                          phone=_value.toString().trim();
+                        });},
+                        decoration: InputDecoration(
+                          hintText: 'Phone',
+                          prefixIcon: Icon(Icons.phone),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          filled: true,
+                          fillColor: Colors.white70,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                            borderSide: BorderSide(color: Colors.black12, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                          ),
+                        ),
+                      ),
 
 
                       Container(
@@ -160,6 +196,7 @@ class _SignupState extends State<Signup> {
                             if(_formKey.currentState!.validate())
                               {
                                 dynamic result=await _auth.registerUsingEmailPassword(name, email, password);
+
                                 print(name);
                                 print(email);
                                 print(password);
@@ -184,7 +221,19 @@ class _SignupState extends State<Signup> {
                                 }
                                 else
                                 {
+                                  print(result.uid);
+                                  final user =FirebaseFirestore.instance.collection('user').doc();
+                                  final json={
+                                    'userId':result.uid,
+                                    'name':result.displayName,
+                                    'phone':phone,
+                                    'avatar':result.photoURL,
+                                    'email':result.email
+                                  };
+                                  await user.set(json);
                                   showToastMessage("Verify email to login");
+
+
                                   Get.to(Login());
                                 }
                               }

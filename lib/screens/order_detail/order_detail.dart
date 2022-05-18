@@ -5,6 +5,7 @@ import '../../models/Order.dart';
 import '../../models/OrderItem.dart';
 import "package:intl/intl.dart";
 import 'package:rating_dialog/rating_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderDetail extends StatelessWidget {
   static String routeName = "/orderdetail";
@@ -28,29 +29,81 @@ class OrderDetail extends StatelessWidget {
       status='Đã giao';
     else
       status='Đã hủy';
-    void _showRatingAppDialog(index) {
+
+   void showToastMessage(String message){
+     Fluttertoast.showToast(
+         msg: message, //message to show toast
+         toastLength: Toast.LENGTH_LONG, //duration for message to show
+         gravity: ToastGravity.BOTTOM, //where you want to show, top, bottom
+         backgroundColor: Colors.black87, //background Color for message
+         textColor: Colors.white, //message text color
+         fontSize: 16.0 //message font size
+     );
+   }
+    void _showRatingAppDialog(productId) {
       final _ratingDialog = RatingDialog(
           initialRating: 5.0,
           title: Text(
-            'Đánh giá sản phẩm ${index}',
+            'Đánh giá sản phẩm',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
             ),
           ),
-
+          enableComment: false,
           message: Text(
             'Hãy cho chúng tôi biết sự hài lòng của bạn về sản phẩm này nhé ',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 15),
           ),
-
           submitButtonText: 'Submit',
           onCancelled: () => print('cancelled'),
-          onSubmitted: (response) {
-            print('rating: ${response.rating}, '
-                'comment: ${response.comment}');
+          onSubmitted: (response) async{
+
+            int one=0;
+            int two=0;
+            int three=0;
+            int four=0;
+            int five=0;
+            num oldrating=0;
+            num newrating=0;
+        FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 1).get().then((value) {
+          one=value.size;
+        });
+            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 2).get().then((value) {
+              two=value.size;
+            });
+            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 3).get().then((value) {
+              three=value.size;
+            });
+            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 4).get().then((value) {
+              four=value.size;
+            });
+           FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 5).get().then((value) {
+              five=value.size;
+            });
+            FirebaseFirestore.instance.collection('products').where('id', isEqualTo: productId).get().then((value) {
+              oldrating=value.docs[0].get('rate');
+              int total=one+two+three+four+five;
+
+              newrating=(oldrating*total+response.rating)/(total+1);
+
+            });
+            final rate =FirebaseFirestore.instance.collection('rate').doc();
+            final json={
+              'userId':order.userId,
+              'productId':productId,
+              'rate':response.rating
+            };
+            await rate.set(json);
+
+           FirebaseFirestore.instance.collection('products').where('id', isEqualTo: productId).get().then((value) {
+
+             value.docs[0].reference.update({'rate':num.parse(newrating.toStringAsFixed(1)) });
+           });
+
+           showToastMessage('Thank you');
 
           }
       );
@@ -222,6 +275,7 @@ class OrderDetail extends StatelessWidget {
                             ),
                           ),
                           if(order.status==3)
+
                             Padding(padding: EdgeInsets.only(top:10,right: 20,left: 20),
                                 child: FlatButton(onPressed: (){_showRatingAppDialog(items[index].productId);},
                                   child: Container(

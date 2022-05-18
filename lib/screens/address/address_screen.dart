@@ -1,6 +1,7 @@
-import 'package:finalprojectmobile/constants.dart';
-import 'package:finalprojectmobile/models/address.dart';
-import 'package:finalprojectmobile/size_config.dart';
+import 'package:final_project_mobile/common.dart';
+import 'package:final_project_mobile/constants.dart';
+import 'package:final_project_mobile/models/address.dart';
+import 'package:final_project_mobile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -69,7 +70,7 @@ class AddressScreen extends StatelessWidget {
                         initialValue: null,
                         keyboardType: TextInputType.number,
                         validator: (value) =>
-                        validateMobile(value!),
+                        Common().validateMobile(value!),
                         onChanged: (_value){
                           phone=_value.toString().trim();
                         },
@@ -199,7 +200,7 @@ class AddressScreen extends StatelessWidget {
                             'name':name,
                             'address':address,
                             'phone':phone
-                              });
+                          });
                           Navigator.pop(context);
                         }
                       })
