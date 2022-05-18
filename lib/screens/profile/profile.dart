@@ -135,10 +135,7 @@ class Profile extends StatelessWidget {
                             //     password: 'password',
                             //   ),
                             // );
-
-
-
-
+                            
 
                             await user.verifyBeforeUpdateEmail(change).then((value) {
                               showToastMessage("Verify email");
