@@ -9,7 +9,6 @@ class OrderItem {
   final num price;
   final int size;
   final String color;
-
   OrderItem(
       {required this.orderId,
       required this.productId,

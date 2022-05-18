@@ -35,12 +35,9 @@ class AuthService{
       );
 
       User ? user = userCredential.user;
-      await user!.updateDisplayName(name);
-      await user.updatePhotoURL('assets/images/user.png');
-      await user.reload();
+
       user = _auth.currentUser!;
       await user.sendEmailVerification();
-
       return user;
     } on FirebaseAuthException catch (e) {
       print(e);
@@ -91,6 +88,7 @@ class AuthService{
 
       }
       else{
+        print(e.code);
         return 2;
       }
     }
@@ -106,6 +104,29 @@ class AuthService{
 print(e);
 return null;
     }
+  }
+  updateUserProfile(String value,String type){
+    User? user  = _auth.currentUser;
+
+    if (user != null) {
+      try{
+        if(type=='email')
+        {
+          user.updateEmail(value);
+        }
+        else if(type=='name')
+        {
+          user.updateDisplayName(value);
+        }
+        else
+        {
+          user.updatePhotoURL(value);
+        }
+      }
+      catch(e){
+        print(e);
+      }
+  }
   }
   Future storeTokenandData(UserCredential userCredential) async{
    

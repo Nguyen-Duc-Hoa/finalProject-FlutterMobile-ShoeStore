@@ -1,3 +1,4 @@
+import 'package:final_project_mobile/common.dart';
 import 'package:final_project_mobile/constants.dart';
 import 'package:final_project_mobile/models/address.dart';
 import 'package:final_project_mobile/size_config.dart';
@@ -69,7 +70,7 @@ class AddressScreen extends StatelessWidget {
                         initialValue: null,
                         keyboardType: TextInputType.number,
                         validator: (value) =>
-                        validateMobile(value!),
+                        Common().validateMobile(value!),
                         onChanged: (_value){
                           phone=_value.toString().trim();
                         },
@@ -199,7 +200,7 @@ class AddressScreen extends StatelessWidget {
                             'name':name,
                             'address':address,
                             'phone':phone
-                              });
+                          });
                           Navigator.pop(context);
                         }
                       })

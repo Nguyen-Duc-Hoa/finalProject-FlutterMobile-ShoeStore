@@ -123,7 +123,7 @@ class Body extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: getProportionateScreenWidth(10)),
-                            child: Rating(),
+                            child: Rating(id: product.id),
                           )),
                     ),
                   ],
