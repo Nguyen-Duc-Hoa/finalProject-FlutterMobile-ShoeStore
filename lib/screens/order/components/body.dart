@@ -402,7 +402,32 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                   ),
+                                  if(orders[index].status==0)
+                                  Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
+                                      child: FlatButton(onPressed: (){
+                                        final DocumentSnapshot data = snapshot.data!.docs[index];
 
+                                        FirebaseFirestore.instance
+                                            .collection('order')
+                                            .doc(data.id).update({'status':-1});
+                                      },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.deepOrangeAccent,
+                                              borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          height: 40,
+
+                                          child: Center(
+                                            child: Text('Huỷ đơn hàng',style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600
+                                            ),),
+                                          ),
+                                        ),
+                                      )
+                                  )
                                 ],
                               ),
                             ),

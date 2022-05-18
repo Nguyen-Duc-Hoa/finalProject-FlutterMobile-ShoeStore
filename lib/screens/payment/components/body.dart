@@ -71,21 +71,21 @@ class _BodyState extends State<Body> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading");
             }
-            var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
+            dynamic dataList = snapshot.data?.docs.map((e) => e.data()).toList().first;
             Address a=Address();
-            dataList?.forEach((element) {
-              final Map<String, dynamic> doc = element as Map<String, dynamic>;
+
+             // final Map<String, dynamic> doc = element as Map<String, dynamic>;
               a =  Address(
-                userId: doc["userId"],
-                name: doc["name"],
-                phone: doc["phone"],
-                address: doc["address"],
-                isDefault: doc["isDefault"],
+                userId: dataList["userId"],
+                name: dataList["name"],
+                phone: dataList["phone"],
+                address: dataList["address"],
+                isDefault: dataList["isDefault"],
               );
 
 
 
-            });
+
             print(a.name);
             address=a;
 
