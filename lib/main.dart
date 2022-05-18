@@ -1,25 +1,27 @@
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
 
-import 'package:final_project_mobile/screens/cart/cart_screen.dart';
-import 'package:final_project_mobile/screens/more/more_screen.dart';
+import 'package:finalprojectmobile/screens/cart/cart_screen.dart';
+import 'package:finalprojectmobile/screens/more/more_screen.dart';
 
-import 'package:final_project_mobile/screens/address/address_screen.dart';
-import 'package:final_project_mobile/screens/home/home_screen.dart';
-import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
+import 'package:finalprojectmobile/screens/address/address_screen.dart';
+import 'package:finalprojectmobile/screens/home/home_screen.dart';
+import 'package:finalprojectmobile/screens/order_detail/order_detail.dart';
 
-import 'package:final_project_mobile/screens/page/page.dart';
-import 'package:final_project_mobile/screens/payment/checkout.dart';
-import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
-import 'package:final_project_mobile/screens/voucher/voucher.dart';
-import 'package:final_project_mobile/services/auth.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/screens/page/page.dart';
+import 'package:finalprojectmobile/screens/payment/checkout.dart';
+import 'package:finalprojectmobile/screens/sign_in/login_screen.dart';
+import 'package:finalprojectmobile/screens/voucher/voucher.dart';
+import 'package:finalprojectmobile/services/auth.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'AppLocalizations.dart';
 import 'models/user.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(
@@ -35,43 +37,63 @@ void main() async{
     name: "final project shoeStore",
     options: const FirebaseOptions(
       apiKey: "AIzaSyCozD7KnAwi1sq-UizuJjxUx0DO5vXxsVc",
-      appId: "1:851369785064:android:f7ed3b48ce4f4a919bbb5d",
+      appId: "1:851369785064:android:0e32d387e41b200f9bbb5d",
       messagingSenderId: "XXX",
       projectId: "final-project-shoestore-334b6",
     ),
   );
   print('-- WidgetsFlutterBinding.ensureInitialized');
   String uid = await AuthService().getUid();
-  runApp( MyApp(uid));
+  runApp(MyApp(uid));
 }
 
 class MyApp extends StatelessWidget {
   final String uid;
+
   const MyApp(this.uid);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     print(uid);
-    return StreamProvider<Users?>.value
-    (value: AuthService().user,
-    initialData: null,
-
-    child:GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: "Muli",
-          textTheme: const TextTheme(
-              bodyText1: TextStyle(color: kTextColor),
-              bodyText2: TextStyle(color: kTextColor))),
-      // home: uid==null?Login():Pages(),
-        home: Pages(),
-        routes:{
-          '/home': (context) =>Pages(),
-          '/login': (context) =>Login(),
-        }
-    ));
+    return StreamProvider<Users?>.value(
+        value: AuthService().user,
+        initialData: null,
+        child: GetMaterialApp(
+            supportedLocales: [
+              Locale('vi', 'VN'),
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: [
+              //AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode &&
+                    supportedLocale.countryCode == locale.countryCode) {
+                  return supportedLocale;
+                }
+              }
+              return supportedLocales.first;
+            },
+            title: 'Flutter Demo',
+            theme: ThemeData(
+                scaffoldBackgroundColor: Colors.white,
+                fontFamily: "Muli",
+                textTheme: const TextTheme(
+                    bodyText1: TextStyle(color: kTextColor),
+                    bodyText2: TextStyle(color: kTextColor))),
+            // home: uid==null?Login():Pages(),
+            home: Pages(
+              selectedIndex: 0,
+            ),
+            routes: {
+              '/home': (context) => Pages(
+                    selectedIndex: 0,
+                  ),
+              '/login': (context) => Login(),
+            }));
   }
 }
-

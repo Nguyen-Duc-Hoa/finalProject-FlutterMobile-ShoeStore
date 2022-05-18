@@ -1,11 +1,16 @@
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:get/get.dart';
 
 import '../../../size_config.dart';
+import '../../cart/cart_screen.dart';
+import '../../home/components/icon_btn_with_counter.dart';
 
 class CustomAppBar extends StatelessWidget {
   final double rating;
+  final CartController _cartController = Get.find();
 
   CustomAppBar({required this.rating});
 
@@ -41,26 +46,39 @@ class CustomAppBar extends StatelessWidget {
               ),
             ),
             Spacer(),
-            // Container(
-            //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(14),
-            //   ),
-            //   child: Row(
-            //     children: [
-            //       Text(
-            //         "$rating",
-            //         style: const TextStyle(
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w600,
-            //         ),
-            //       ),
-            //       const SizedBox(width: 5),
-            //       SvgPicture.asset("assets/icons/Star Icon.svg"),
-            //     ],
-            //   ),
-            // )
+            GetBuilder<CartController>(builder: (s) {
+              return Container(
+                child: IconBtnWithCounter(
+                  svgSrc: "assets/icons/Cart Icon.svg",
+                  numOfItem: _cartController.numberCart.value,
+                  press: () => {
+                    Get.to(CartScreen()),
+                    _cartController.resetListOrder(),
+                  },
+                ),
+
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(14),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         "$rating",
+                //         style: const TextStyle(
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w600,
+                //         ),
+                //       ),
+                //       const SizedBox(width: 5),
+                //       SvgPicture.asset("assets/icons/Star Icon.svg"),
+                //     ],
+                //   ),
+                // )
+              );
+            })
           ],
         ),
       ),

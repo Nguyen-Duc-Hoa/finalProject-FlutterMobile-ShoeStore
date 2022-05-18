@@ -1,9 +1,9 @@
-import 'package:final_project_mobile/screens/sign_up/signup.dart';
+import 'package:finalprojectmobile/screens/sign_up/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:final_project_mobile/screens/home/home_screen.dart';
+import 'package:finalprojectmobile/screens/home/home_screen.dart';
 import '../../services/auth.dart';
 
 class Login extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
 
 import '../size_config.dart';
 

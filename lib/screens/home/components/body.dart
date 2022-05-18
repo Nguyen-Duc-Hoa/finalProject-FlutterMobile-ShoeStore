@@ -1,20 +1,20 @@
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/home/HomeController.dart';
-import 'package:final_project_mobile/screens/home/components/category_product.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/home/HomeController.dart';
+import 'package:finalprojectmobile/screens/home/components/category_product.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:final_project_mobile/screens/home/components/categories.dart';
+import 'package:finalprojectmobile/screens/home/components/categories.dart';
 import 'discount_banner.dart';
 import 'home_header.dart';
 import 'popular_product.dart';
 import 'special_offers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:final_project_mobile/models/mCategories.dart';
-import 'package:final_project_mobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/models/mCategories.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:get/get.dart';
 
 class Body extends StatefulWidget {
@@ -49,10 +49,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           if (snapshot.hasError) {
             return Text('Something went wrong');
           }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Text("Loading");
+          // }
 
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
           List<mCategories> lstCategories = [];

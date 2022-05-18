@@ -1,7 +1,7 @@
-import 'package:final_project_mobile/components/product_card.dart';
-import 'package:final_project_mobile/models/Product.dart';
-import 'package:final_project_mobile/models/mCategories.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/components/product_card.dart';
+import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/models/mCategories.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

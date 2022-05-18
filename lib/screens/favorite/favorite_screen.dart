@@ -1,4 +1,4 @@
-import 'package:final_project_mobile/screens/home/components/home_header.dart';
+import 'package:finalprojectmobile/screens/home/components/home_header.dart';
 import 'package:flutter/material.dart';
 
 import '../favorite/components/body.dart';

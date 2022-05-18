@@ -1,14 +1,15 @@
-import 'package:final_project_mobile/models/Cart.dart';
-import 'package:final_project_mobile/models/user.dart';
-import 'package:final_project_mobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/models/voucher.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_project_mobile/components/default_button.dart';
+import 'package:finalprojectmobile/components/default_button.dart';
 import 'package:get/get.dart';
-import 'package:final_project_mobile/screens/payment/checkout.dart';
+import 'package:finalprojectmobile/screens/payment/checkout.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import 'package:final_project_mobile/common.dart';
+import 'package:finalprojectmobile/common.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutCard extends StatefulWidget {
@@ -132,6 +133,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                         disable: _cartController.listOrder.isNotEmpty? false : true,
                         press: () {
                           if (_cartController.listOrder.isNotEmpty) {
+                            _cartController.setVoucher(Voucher());
                             Get.to(const Checkout());
                           }
                         },

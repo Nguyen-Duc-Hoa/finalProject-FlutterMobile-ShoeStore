@@ -1,8 +1,8 @@
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart';
-import 'package:final_project_mobile/screens/order/components/body.dart';
+import 'package:finalprojectmobile/screens/order/components/body.dart';
 
 class Order extends StatefulWidget  {
   Order({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _OrderState extends State<Order> with SingleTickerProviderStateMixin{
   @override
   void initState(){
     super.initState();
-    _tabController = TabController(length: 5, vsync: this, initialIndex: 3);
+    _tabController = TabController(length: 5, vsync: this, initialIndex: 0);
   }
   @override
   Widget build(BuildContext context) {

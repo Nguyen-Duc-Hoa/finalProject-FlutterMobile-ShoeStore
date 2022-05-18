@@ -1,8 +1,8 @@
-import 'package:final_project_mobile/components/default_button.dart';
+import 'package:finalprojectmobile/components/default_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';

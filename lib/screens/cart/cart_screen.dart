@@ -1,9 +1,9 @@
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/models/user.dart';
-import 'package:final_project_mobile/screens/cart/CartController.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:get/get.dart';
 
 import 'components/body.dart';
@@ -27,18 +27,22 @@ class CartScreen extends StatelessWidget {
     CartController _cartController = Get.put(CartController());
     return AppBar(
       backgroundColor: kPrimaryColor,
-      title: Column(
-        children: [
-          Text(
-            "Giỏ hàng",
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            "${_cartController.lstC.length} sản phẩm",
-            style: TextStyle(color: Colors.white, fontSize: 15),
+      title: GetBuilder<CartController>(
+        builder: (s) {
+          return Column(
+            children: [
+              Text(
+                "Giỏ hàng",
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                "${_cartController.numberCart} sản phẩm",
+                style: TextStyle(color: Colors.white, fontSize: 15),
 
-          ),
-        ],
+              ),
+            ],
+          );
+        }
       ),
     );
   }

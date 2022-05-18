@@ -1,5 +1,5 @@
-import 'package:final_project_mobile/screens/cart/CartController.dart';
-import 'package:final_project_mobile/screens/cart/cart_screen.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

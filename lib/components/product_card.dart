@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 
 import '../constants.dart';
 import '../screens/details/details_screen.dart';
 import '../screens/home/HomeController.dart';
 import '../size_config.dart';
 import 'package:get/get.dart';
-import 'package:final_project_mobile/common.dart';
+import 'package:finalprojectmobile/common.dart';
 
 class ProductCard extends StatelessWidget {
   ProductCard({

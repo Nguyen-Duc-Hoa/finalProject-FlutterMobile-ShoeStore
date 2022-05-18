@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/details/details_screen.dart';
-import 'package:final_project_mobile/screens/home/HomeController.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/details/details_screen.dart';
+import 'package:finalprojectmobile/screens/home/HomeController.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:get/get.dart';
 
 class FavoriteCard extends StatelessWidget {

@@ -1,4 +1,4 @@
-package mobile.com.final_project_mobile;
+package mobile.com.finalprojectmobile;
 
 import io.flutter.embedding.android.FlutterActivity;
 

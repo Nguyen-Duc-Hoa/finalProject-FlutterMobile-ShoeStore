@@ -1,7 +1,7 @@
-import 'package:final_project_mobile/screens/details/details_screen.dart';
+import 'package:finalprojectmobile/screens/details/details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/components/product_card.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/components/product_card.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 
 import '../../../size_config.dart';
 import 'section_title.dart';
@@ -23,9 +23,9 @@ class PopularProducts extends StatelessWidget {
             return Text('Something went wrong');
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Text("Loading");
+          // }
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
           List<Product> lstProduct = [];
           dataList?.forEach((element) {

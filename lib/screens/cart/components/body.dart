@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:final_project_mobile/models/Product.dart';
-import 'package:final_project_mobile/models/user.dart';
-import 'package:final_project_mobile/screens/cart/CartController.dart';
-import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
+import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/sign_in/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:final_project_mobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,83 +30,6 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   CartController _cartController = Get.find();
   CollectionReference cartCol = FirebaseFirestore.instance.collection('cart');
-
-  // late Stream<List<Cart>> cartsStream;
-  //
-  // Future<Cart> generateCart(dynamic item) async {
-  //   // await PlatformStringCryptor().decrypt(memo.data['title'], _key);
-  //   var a;
-  //   await FirebaseFirestore.instance
-  //       .collection('products')
-  //       .where('id', isEqualTo: item.id)
-  //       .get()
-  //       .then((QuerySnapshot querySnapshot) {
-  //     if (querySnapshot.docs.length > 0) {
-  //       a = querySnapshot.docs[0].data();
-  //       print(1);
-  //       // rest of your code
-  //     }
-  //   });
-  //
-  //   Cart cart = Cart(
-  //       productId: item.id,
-  //       title: item.title,
-  //       numOfItem: item.numOfItem,
-  //       size: item.size,
-  //       color: item.color,
-  //       image: item.image,
-  //       userId: item.userId,
-  //       price: item.price,
-  //       discount: item.discount);
-  //   Product product = Product(
-  //       id: a.id,
-  //       images: [],
-  //       colors: [],
-  //       size: a.size,
-  //       gender: a.gender,
-  //       disCount: a.disCount,
-  //       title: a.title,
-  //       price: a.price,
-  //       description: a.description);
-  //   cart.product = product;
-  //   return cart;
-  // }
-  // @override
-  // void initState() {
-  //   cartsStream = cart
-  //       .where('userId', isEqualTo: widget.user.uid)
-  //       .snapshots()
-  //       .asyncMap((carts) =>
-  //           Future.wait([for (var item in carts.docs) generateCart(item)]));
-  //   super.initState();
-  // }
-
-  Future<Product> getProduct(int pid) async {
-    var a;
-    await FirebaseFirestore.instance
-        .collection('products')
-        .where('id', isEqualTo: pid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      if (querySnapshot.docs.length > 0) {
-        a = querySnapshot.docs[0].data();
-        print(1);
-        // rest of your code
-      }
-    });
-
-    print(2);
-    return Product(
-        id: 4,
-        images: ['images'],
-        colors: ['colors'],
-        size: [1],
-        gender: 1,
-        disCount: 0,
-        title: 'snar pham 1',
-        price: 0.0,
-        description: 'description');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,16 +101,17 @@ class _BodyState extends State<Body> {
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
-                  key: Key(
-                      // _cartController.lstC[index].productId.toString()),
-                      lstCart[index].productId.toString()),
+                  key: UniqueKey(),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    setState(() {
-                      // lstCart.removeAt(index);
-                      _deleteItemCart(lstCart[index]);
-                      // _cartController.removeAt(index);
-                    });
+                  // onDismissed: (direction) {
+                  //   setState(() async {
+                  //     // lstCart.removeAt(index);
+                  //     await _deleteItemCart(lstCart[index]);
+                  //     // _cartController.removeAt(index);
+                  //   });
+                  // },
+                  onDismissed: (direction) async {
+                      await _deleteItemCart(lstCart[index]);
                   },
                   background: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -230,7 +154,7 @@ class _BodyState extends State<Body> {
     if (cartId != "") {
       await cartCol.doc(cartId).delete().then((value) {
         print('delete successful');
-        // _cartController.removeListOrder(cart);
+        _cartController.removeListOrder(cart);
         return 'delete successful';
       }).catchError((error) => print("Failed to add user: $error"));
     }

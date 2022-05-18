@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project_mobile/screens/favorite/favorite_screen.dart';
-import 'package:final_project_mobile/screens/home/home_screen.dart';
+import 'package:finalprojectmobile/screens/favorite/favorite_screen.dart';
+import 'package:finalprojectmobile/screens/home/home_screen.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +12,16 @@ import '../account/account.dart';
 import '../order/order.dart';
 
 class Pages extends StatefulWidget {
-  const Pages({Key? key}) : super(key: key);
+  const Pages({Key? key, required this.selectedIndex}) : super(key: key);
+  final int selectedIndex;
 
   @override
   _PagesState createState() => _PagesState();
 }
 
 class _PagesState extends State<Pages> {
-  int _selectedIndex = 0;
 
+  late int _selectedIndex;
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     FavoriteScreen(),
@@ -28,6 +29,10 @@ class _PagesState extends State<Pages> {
     Account(),
   ];
 
+  @override
+  void initState(){
+    _selectedIndex = widget.selectedIndex;
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

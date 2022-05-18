@@ -1,20 +1,22 @@
 import 'dart:collection';
 
-import 'package:final_project_mobile/common.dart';
-import 'package:final_project_mobile/components/default_button.dart';
-import 'package:final_project_mobile/components/rounded_icon_btn.dart';
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/models/Cart.dart';
-import 'package:final_project_mobile/models/Color.dart';
-import 'package:final_project_mobile/models/Product.dart';
-import 'package:final_project_mobile/models/user.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/common.dart';
+import 'package:finalprojectmobile/components/default_button.dart';
+import 'package:finalprojectmobile/components/rounded_icon_btn.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/Color.dart';
+import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:final_project_mobile/common.dart';
+import 'package:finalprojectmobile/common.dart';
 
 class ModalBottomCart extends StatefulWidget {
   const ModalBottomCart({
@@ -33,7 +35,8 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
   int number = 1;
   List<String> imageByColor = [];
   int? value;
-  Common _common = new Common();
+  final Common _common = Common();
+  final CartController _cartController = Get.find();
   late Cart _cart;
 
   @override

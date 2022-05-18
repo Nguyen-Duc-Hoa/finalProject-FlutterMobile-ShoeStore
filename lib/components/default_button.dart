@@ -1,4 +1,4 @@
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';

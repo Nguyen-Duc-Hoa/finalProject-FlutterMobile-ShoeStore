@@ -1,14 +1,14 @@
-import 'package:final_project_mobile/models/Product.dart';
-import 'package:final_project_mobile/screens/cart/CartController.dart';
-import 'package:final_project_mobile/screens/home/components/icon_btn_with_counter.dart';
+import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/home/components/icon_btn_with_counter.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import 'package:final_project_mobile/common.dart';
-import 'package:final_project_mobile/models/Cart.dart';
+import 'package:finalprojectmobile/common.dart';
+import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -35,6 +35,7 @@ class _CartCardState extends State<CartCard> {
 
   @override
   Widget build(BuildContext context) {
+    value1 = _cartController.isExist(widget.cart);
     return StreamBuilder<QuerySnapshot>(
         stream:
             fproduct.where('id', isEqualTo: widget.cart.productId).snapshots(),
@@ -85,8 +86,10 @@ class _CartCardState extends State<CartCard> {
                         value1 = !value1;
                         if (value1) {
                           _cartController.addListOrder(widget.cart, product);
+                          value1 = _cartController.isExist(widget.cart);
                         } else {
                           _cartController.removeListOrder(widget.cart);
+                          value1 = _cartController.isExist(widget.cart);
                         }
                       });
                     }),
@@ -217,7 +220,6 @@ class _CartCardState extends State<CartCard> {
 
     // Call the user's CollectionReference to add a new user
     if (cartId != "") {
-      print(3);
       await cartCol.doc(cartId).update({
         'userId': cart.userId,
         "productId": cart.productId, // John Doe

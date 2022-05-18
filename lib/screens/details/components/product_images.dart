@@ -1,6 +1,6 @@
-import 'package:final_project_mobile/screens/home/HomeController.dart';
+import 'package:finalprojectmobile/screens/home/HomeController.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';

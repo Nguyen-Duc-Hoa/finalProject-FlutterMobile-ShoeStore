@@ -242,11 +242,8 @@ class OrderDetail extends StatelessWidget {
                                 )
                             )
                         ],
-
                       );
-
                   }
-
                   )
 
               ),
@@ -254,8 +251,8 @@ class OrderDetail extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Tổng thanh toán', style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600,color: Colors.black.withOpacity(0.5)),),
-                    Text('${NumberFormat.currency(locale: 'vi').format(order.total-order.voucherValue)}', style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600,color: Colors.red),),
+                    Text('Tổng thanh toán', style: TextStyle(fontSize: 17,fontWeight: FontWeight.w300,color: Colors.black.withOpacity(0.5)),),
+                    Text('${NumberFormat.currency(locale: 'vi').format(order.total-order.voucherValue)}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: Colors.red),),
 
                   ],
 

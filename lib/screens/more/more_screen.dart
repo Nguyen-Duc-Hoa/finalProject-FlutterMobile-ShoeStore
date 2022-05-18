@@ -1,9 +1,9 @@
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/models/mCategories.dart';
-import 'package:final_project_mobile/screens/filter/filter_screen.dart';
-import 'package:final_project_mobile/screens/home/components/categories.dart';
-import 'package:final_project_mobile/screens/home/components/home_header.dart';
-import 'package:final_project_mobile/screens/more/components/more_header.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/models/mCategories.dart';
+import 'package:finalprojectmobile/screens/filter/filter_screen.dart';
+import 'package:finalprojectmobile/screens/home/components/categories.dart';
+import 'package:finalprojectmobile/screens/home/components/home_header.dart';
+import 'package:finalprojectmobile/screens/more/components/more_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,4 +1,4 @@
-import 'package:final_project_mobile/models/user.dart';
+import 'package:finalprojectmobile/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

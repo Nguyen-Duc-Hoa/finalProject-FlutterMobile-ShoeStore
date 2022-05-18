@@ -1,6 +1,6 @@
 
-import 'package:final_project_mobile/screens/address/address_screen.dart';
-import 'package:final_project_mobile/screens/profile/profile.dart';
+import 'package:finalprojectmobile/screens/address/address_screen.dart';
+import 'package:finalprojectmobile/screens/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -126,7 +126,21 @@ class Account extends StatelessWidget {
                           _auth.signOut();
                         },
                       ),
-                    )
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      color: Color(0x14B6B8B6),
+                      child: ListTile(
+                        title: Text('Thông tin'),
+                        leading: Icon(Icons.language,color: Colors.grey),
+                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                        onTap: (){
+
+                          Get.to(Profile());
+
+                        },
+                      ),
+                    ),
                   ],
                 ),
               )

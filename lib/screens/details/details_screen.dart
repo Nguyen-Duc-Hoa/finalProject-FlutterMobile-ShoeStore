@@ -1,9 +1,9 @@
-import 'package:final_project_mobile/components/default_button.dart';
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/cart/components/check_out_card.dart';
-import 'package:final_project_mobile/screens/details/components/modal_bottom_cart.dart';
-import 'package:final_project_mobile/screens/home/HomeController.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/components/default_button.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/cart/components/check_out_card.dart';
+import 'package:finalprojectmobile/screens/details/components/modal_bottom_cart.dart';
+import 'package:finalprojectmobile/screens/home/HomeController.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/Product.dart';

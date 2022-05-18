@@ -1,7 +1,7 @@
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
 
-import 'package:final_project_mobile/screens/splash/components/splash_content.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/screens/splash/components/splash_content.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

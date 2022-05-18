@@ -1,16 +1,16 @@
-import 'package:final_project_mobile/models/mCategories.dart';
-import 'package:final_project_mobile/screens/details/details_screen.dart';
-import 'package:final_project_mobile/screens/home/components/categories.dart';
-import 'package:final_project_mobile/screens/more/more_screen.dart';
+import 'package:finalprojectmobile/models/mCategories.dart';
+import 'package:finalprojectmobile/screens/details/details_screen.dart';
+import 'package:finalprojectmobile/screens/home/components/categories.dart';
+import 'package:finalprojectmobile/screens/more/more_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/components/product_card.dart';
-import 'package:final_project_mobile/models/Product.dart';
+import 'package:finalprojectmobile/components/product_card.dart';
+import 'package:finalprojectmobile/models/Product.dart';
 
 import '../../../size_config.dart';
 import 'section_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:final_project_mobile/screens/home/HomeController.dart';
+import 'package:finalprojectmobile/screens/home/HomeController.dart';
 
 class CategoryProducts extends StatefulWidget {
   CategoryProducts({Key? key, required this.category, required this.gender})
@@ -49,9 +49,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
             return Text('Something went wrong');
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Text("Loading");
+          // }
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
           List<Product> lstProduct = [];
           dataList?.forEach((element) {

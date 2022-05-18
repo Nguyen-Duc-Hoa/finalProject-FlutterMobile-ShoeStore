@@ -1,4 +1,4 @@
-import 'package:final_project_mobile/constants.dart';
+import 'package:finalprojectmobile/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../filter/components/body.dart';

@@ -1,16 +1,16 @@
 
-import 'package:final_project_mobile/screens/address/address_screen.dart';
-import 'package:final_project_mobile/screens/order_detail/order_detail.dart';
-import 'package:final_project_mobile/screens/payment/checkout.dart';
-import 'package:final_project_mobile/screens/profile/profile.dart';
-import 'package:final_project_mobile/screens/sign_in/login_screen.dart';
-import 'package:final_project_mobile/screens/sign_up/signup.dart';
-import 'package:final_project_mobile/screens/voucher/voucher.dart';
+import 'package:finalprojectmobile/screens/address/address_screen.dart';
+import 'package:finalprojectmobile/screens/order_detail/order_detail.dart';
+import 'package:finalprojectmobile/screens/payment/checkout.dart';
+import 'package:finalprojectmobile/screens/profile/profile.dart';
+import 'package:finalprojectmobile/screens/sign_in/login_screen.dart';
+import 'package:finalprojectmobile/screens/sign_up/signup.dart';
+import 'package:finalprojectmobile/screens/voucher/voucher.dart';
 import 'package:flutter/widgets.dart';
-import 'package:final_project_mobile/screens/cart/cart_screen.dart';
-import 'package:final_project_mobile/screens/details/details_screen.dart';
-import 'package:final_project_mobile/screens/home/home_screen.dart';
-import 'package:final_project_mobile/screens/splash/splash_screen.dart';
+import 'package:finalprojectmobile/screens/cart/cart_screen.dart';
+import 'package:finalprojectmobile/screens/details/details_screen.dart';
+import 'package:finalprojectmobile/screens/home/home_screen.dart';
+import 'package:finalprojectmobile/screens/splash/splash_screen.dart';
 
 
 // We use name route

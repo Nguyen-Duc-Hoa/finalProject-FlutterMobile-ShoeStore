@@ -1,10 +1,10 @@
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/home/components/home_header.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/home/components/home_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/body.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/size_config.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";

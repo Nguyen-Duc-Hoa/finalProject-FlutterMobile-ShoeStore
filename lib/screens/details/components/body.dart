@@ -1,9 +1,9 @@
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/screens/details/components/rating.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/details/components/rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project_mobile/models/Product.dart';
-import 'package:final_project_mobile/size_config.dart';
+import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/size_config.dart';
 
 import 'color_dots.dart';
 import 'modal_bottom_cart.dart';

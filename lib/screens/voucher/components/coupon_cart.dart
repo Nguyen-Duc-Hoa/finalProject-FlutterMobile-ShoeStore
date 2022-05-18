@@ -1,6 +1,6 @@
 import 'package:coupon_uikit/coupon_uikit.dart';
-import 'package:final_project_mobile/constants.dart';
-import 'package:final_project_mobile/models/voucher.dart';
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:get/get.dart';
