@@ -176,264 +176,27 @@ class _BodyState extends State<Body> {
                                       ),
                                     ],
                                   ),
-                                  StreamBuilder(
-                                    stream: orderItem.snapshots(),
-                                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-                                        if (snapshot.hasError) {
-                                          return Text('Something went wrong');
-                                        }
 
-                                        if (snapshot.connectionState == ConnectionState.waiting) {
-                                          return Text("Loading");
-                                        }
-
-                                        var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
-
-                                        List<OrderItem> lstOrderItems = [];
-                                        List<OrderItem> items = [];
-                                        dataList?.forEach((element) {
-                                          final Map<String, dynamic> doc = element as Map<String, dynamic>;
-                                          OrderItem item = OrderItem(orderId: doc["orderId"],
-                                              productId: doc["productId"],
-                                              productName: doc["productName"],
-                                              price: doc["price"],
-                                              image: doc["image"],
-                                              color: doc["color"],
-                                              size: doc["size"],
-                                              quantity: doc["quantity"],
-                                            );
-
-                                          lstOrderItems.add(item);
-                                        });
-
-                                        items = lstOrderItems
-                                            .where((element) => element.orderId == orders[index].id)
-
-                                            .toList();
-                                        return Column(
-                                          children: [
-                                            Container(
-                                              color: Colors.white,
-                                              child: Padding(padding: EdgeInsets.only(
-                                                  top: 10, bottom: 10, left: 3, right: 3),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                        width: (MediaQuery
-                                                            .of(context)
-                                                            .size
-                                                            .width - 220) / 2,
-                                                        height: 60,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.grey,
-                                                            borderRadius: BorderRadius
-                                                                .circular(10),
-                                                            boxShadow: [BoxShadow(
-                                                                spreadRadius: 1,
-                                                                blurRadius: 0.5,
-                                                                color: Colors.orange
-                                                            )
-                                                            ],
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    '${items[0].image}'),
-                                                                fit: BoxFit.cover))
-                                                    ),
-                                                    SizedBox(width: 25,),
-                                                    Expanded(child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        Text('${items[0].productName}',
-                                                          style: TextStyle(fontSize: 16,
-                                                              fontWeight: FontWeight.w600),
-                                                        ),
-                                                        SizedBox(width: 15),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            Text("${NumberFormat.currency(
-                                                                locale: 'vi').format(
-                                                                items[0].price)}",
-                                                              style: TextStyle(fontSize: 15,
-                                                                  fontWeight: FontWeight
-                                                                      .w500,
-                                                                  color: Colors.red),
-                                                            ),
-                                                            Container(
-
-                                                              child: DecoratedBox(
-                                                                decoration: BoxDecoration(
-                                                                  color:Color(int.parse(items[0].color)) ,
-                                                                  shape: BoxShape.circle,
-                                                                ),
-                                                              ),
-
-                                                              width: 20,
-                                                              height: 20,
-
-                                                            ),
-                                                            Text('${items[0].size}'),
-                                                            Text("x${items[0].quantity}",
-                                                              style: TextStyle(fontSize: 15,
-                                                                  fontWeight: FontWeight
-                                                                      .w500),
-                                                            ),
-                                                          ],
-                                                        )
-
-                                                      ],
-                                                    )),
-
-                                                  ],
-                                                ),
-
-                                              ),
-
-                                            ),
-                                            if(items.length>1)
-                                              Container(
-                                                color: Colors.white,
-                                                alignment: Alignment.center,
-                                                child: Text('Xem thêm ${items.length-1} sản phẩm',textAlign: TextAlign.center,),
-                                              ),
-                                          ],
-
-                                        );
-                                      }
-                                  ),
-
-
-
-                                  Divider(
-                                    thickness: 2,
-                                  ),
-
-                                  IntrinsicHeight(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceEvenly,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
-                                          children: [
-                                            const Text(
-                                              "Mã đơn",
-                                              style: TextStyle(
-                                                  color: Colors.grey),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              orders[index].id.toString()
-                                                  .padLeft(6, '0'),
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        ),
-                                        const VerticalDivider(
-                                          thickness: 1,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
-                                          children: [
-                                            const Text(
-                                              "Tổng tiền",
-                                              style: TextStyle(
-                                                  color: Colors.grey),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              "\$${orders[index].total}",
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        ),
-                                        VerticalDivider(
-                                          thickness: 1,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
-                                          children: [
-                                            const Text(
-                                              "Thanh toán",
-                                              style: TextStyle(
-                                                  color: Colors.grey),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              orders[index].payment,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  if(orders[index].status==0)
-                                  Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
-                                      child: FlatButton(onPressed: (){
-                                        final DocumentSnapshot data = snapshot.data!.docs[index];
-
-                                        FirebaseFirestore.instance
-                                            .collection('order')
-                                            .doc(data.id).update({'status':-1});
-                                      },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.deepOrangeAccent,
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
-                                          height: 40,
-
-                                          child: Center(
-                                            child: Text('Huỷ đơn hàng',style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600
-                                            ),),
-                                          ),
-                                        ),
-                                      )
-                                  )
                                 ],
                               ),
                               StreamBuilder(
                                   stream: orderItem.snapshots(),
-                                  builder: (context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
                                     if (snapshot.hasError) {
                                       return Text('Something went wrong');
                                     }
 
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
                                       return Text("Loading");
                                     }
 
-                                    var dataList = snapshot.data?.docs
-                                        .map((e) => e.data())
-                                        .toList();
+                                    var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
 
                                     List<OrderItem> lstOrderItems = [];
                                     List<OrderItem> items = [];
                                     dataList?.forEach((element) {
-                                      final Map<String, dynamic> doc =
-                                          element as Map<String, dynamic>;
-                                      OrderItem item = OrderItem(
-                                        orderId: doc["orderId"],
+                                      final Map<String, dynamic> doc = element as Map<String, dynamic>;
+                                      OrderItem item = OrderItem(orderId: doc["orderId"],
                                         productId: doc["productId"],
                                         productName: doc["productName"],
                                         price: doc["price"],
@@ -441,151 +204,135 @@ class _BodyState extends State<Body> {
                                         color: doc["color"],
                                         size: doc["size"],
                                         quantity: doc["quantity"],
+                                        comment: doc['comment']
                                       );
 
                                       lstOrderItems.add(item);
                                     });
 
                                     items = lstOrderItems
-                                        .where((element) =>
-                                            element.orderId == orders[index].id)
+                                        .where((element) => element.orderId == orders[index].id)
+
                                         .toList();
                                     return Column(
                                       children: [
                                         Container(
                                           color: Colors.white,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 10,
-                                                bottom: 10,
-                                                left: 3,
-                                                right: 3),
+                                          child: Padding(padding: EdgeInsets.only(
+                                              top: 10, bottom: 10, left: 3, right: 3),
                                             child: Row(
                                               children: [
                                                 Container(
-                                                    width:
-                                                        (MediaQuery.of(context)
-                                                                    .size
-                                                                    .width -
-                                                                220) /
-                                                            2,
+                                                    width: (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width - 220) / 2,
                                                     height: 60,
                                                     decoration: BoxDecoration(
                                                         color: Colors.grey,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                              spreadRadius: 1,
-                                                              blurRadius: 0.5,
-                                                              color:
-                                                                  Colors.orange)
+                                                        borderRadius: BorderRadius
+                                                            .circular(10),
+                                                        boxShadow: [BoxShadow(
+                                                            spreadRadius: 1,
+                                                            blurRadius: 0.5,
+                                                            color: Colors.orange
+                                                        )
                                                         ],
                                                         image: DecorationImage(
                                                             image: AssetImage(
                                                                 '${items[0].image}'),
-                                                            fit:
-                                                                BoxFit.cover))),
-                                                SizedBox(
-                                                  width: 25,
+                                                            fit: BoxFit.cover))
                                                 ),
-                                                Expanded(
-                                                    child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                SizedBox(width: 25,),
+                                                Expanded(child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
                                                   children: [
-                                                    Text(
-                                                      '${items[0].productName}',
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
+                                                    Text('${items[0].productName}',
+                                                      style: TextStyle(fontSize: 16,
+                                                          fontWeight: FontWeight.w600),
                                                     ),
                                                     SizedBox(width: 15),
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment
+                                                          .spaceBetween,
                                                       children: [
-                                                        Text(
-                                                          "${NumberFormat.currency(locale: 'vi').format(items[0].price)}",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.red),
+                                                        Text("${NumberFormat.currency(
+                                                            locale: 'vi').format(
+                                                            items[0].price)}",
+                                                          style: TextStyle(fontSize: 15,
+                                                              fontWeight: FontWeight
+                                                                  .w500,
+                                                              color: Colors.red),
                                                         ),
                                                         Container(
+
                                                           child: DecoratedBox(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Color(int
-                                                                  .parse(items[
-                                                                          0]
-                                                                      .color)),
-                                                              shape: BoxShape
-                                                                  .circle,
+                                                            decoration: BoxDecoration(
+                                                              color:Color(int.parse(items[0].color)) ,
+                                                              shape: BoxShape.circle,
                                                             ),
                                                           ),
+
                                                           width: 20,
                                                           height: 20,
+
                                                         ),
-                                                        Text(
-                                                            '${items[0].size}'),
-                                                        Text(
-                                                          "x${items[0].quantity}",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                        Text('${items[0].size}'),
+                                                        Text("x${items[0].quantity}",
+                                                          style: TextStyle(fontSize: 15,
+                                                              fontWeight: FontWeight
+                                                                  .w500),
                                                         ),
                                                       ],
                                                     )
+
                                                   ],
                                                 )),
+
                                               ],
                                             ),
+
                                           ),
+
                                         ),
-                                        if (items.length > 1)
+                                        if(items.length>1)
                                           Container(
                                             color: Colors.white,
                                             alignment: Alignment.center,
-                                            child: Text(
-                                              'Xem thêm ${items.length - 1} sản phẩm',
-                                              textAlign: TextAlign.center,
-                                            ),
+                                            child: Text('Xem thêm ${items.length-1} sản phẩm',textAlign: TextAlign.center,),
                                           ),
                                       ],
+
                                     );
-                                  }),
+                                  }
+                              ),
+
+
+
                               Divider(
                                 thickness: 2,
                               ),
+
                               IntrinsicHeight(
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceEvenly,
                                   children: [
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
                                       children: [
                                         const Text(
                                           "Mã đơn",
-                                          style: TextStyle(color: Colors.grey),
+                                          style: TextStyle(
+                                              color: Colors.grey),
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
                                         Text(
-                                          orders[index]
-                                              .id
-                                              .toString()
+                                          orders[index].id.toString()
                                               .padLeft(6, '0'),
                                           style: const TextStyle(
                                               color: Colors.black),
@@ -596,19 +343,19 @@ class _BodyState extends State<Body> {
                                       thickness: 1,
                                     ),
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
                                       children: [
                                         const Text(
                                           "Tổng tiền",
-                                          style: TextStyle(color: Colors.grey),
+                                          style: TextStyle(
+                                              color: Colors.grey),
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
                                         Text(
-                                          _common.formatCurrency(double.parse(
-                                              orders[index].total.toString())),
+                                          "\$${orders[index].total}",
                                           style: const TextStyle(
                                               color: Colors.black),
                                         )
@@ -618,12 +365,13 @@ class _BodyState extends State<Body> {
                                       thickness: 1,
                                     ),
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
                                       children: [
                                         const Text(
                                           "Thanh toán",
-                                          style: TextStyle(color: Colors.grey),
+                                          style: TextStyle(
+                                              color: Colors.grey),
                                         ),
                                         const SizedBox(
                                           height: 8,
@@ -638,6 +386,32 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                               ),
+                              if(orders[index].status==0)
+                                Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
+                                    child: FlatButton(onPressed: (){
+                                      final DocumentSnapshot data = snapshot.data!.docs[index];
+
+                                      FirebaseFirestore.instance
+                                          .collection('order')
+                                          .doc(data.id).update({'status':-1});
+                                    },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.deepOrangeAccent,
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        height: 40,
+
+                                        child: Center(
+                                          child: Text('Huỷ đơn hàng',style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600
+                                          ),),
+                                        ),
+                                      ),
+                                    )
+                                )
                             ],
                           ),
                         ),

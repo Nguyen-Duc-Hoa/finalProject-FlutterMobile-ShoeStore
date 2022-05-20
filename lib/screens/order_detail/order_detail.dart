@@ -13,7 +13,7 @@ class OrderDetail extends StatelessWidget {
   Order order;
   OrderDetail({Key? key,required this.order}) : super(key: key);
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference orderItem = FirebaseFirestore.instance.collection('orderItem');
+
 
 
   @override
@@ -29,7 +29,7 @@ class OrderDetail extends StatelessWidget {
       status='Đã giao';
     else
       status='Đã hủy';
-
+   Query<Map<String, dynamic>> orderItem = FirebaseFirestore.instance.collection('orderItem').where('orderId', isEqualTo: order.id);
    void showToastMessage(String message){
      Fluttertoast.showToast(
          msg: message, //message to show toast
@@ -40,7 +40,7 @@ class OrderDetail extends StatelessWidget {
          fontSize: 16.0 //message font size
      );
    }
-    void _showRatingAppDialog(productId) {
+    void _showRatingAppDialog(productId,snapshot,index) {
       final _ratingDialog = RatingDialog(
           initialRating: 5.0,
           title: Text(
@@ -51,7 +51,7 @@ class OrderDetail extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          enableComment: false,
+          enableComment: true,
           message: Text(
             'Hãy cho chúng tôi biết sự hài lòng của bạn về sản phẩm này nhé ',
             textAlign: TextAlign.center,
@@ -94,7 +94,8 @@ class OrderDetail extends StatelessWidget {
             final json={
               'userId':order.userId,
               'productId':productId,
-              'rate':response.rating
+              'rate':response.rating,
+              'comment':response.comment
             };
             await rate.set(json);
 
@@ -102,7 +103,11 @@ class OrderDetail extends StatelessWidget {
 
              value.docs[0].reference.update({'rate':num.parse(newrating.toStringAsFixed(1)) });
            });
+            final DocumentSnapshot data = snapshot.data!.docs[index];
 
+            FirebaseFirestore.instance
+                .collection('orderItem')
+                .doc(data.id).update({'comment':true});
            showToastMessage('Thank you');
 
           }
@@ -155,7 +160,7 @@ class OrderDetail extends StatelessWidget {
 
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
 
-          List<OrderItem> lstOrderItems = [];
+
           List<OrderItem> items = [];
           dataList?.forEach((element) {
             final Map<String, dynamic> doc = element as Map<String, dynamic>;
@@ -167,14 +172,12 @@ class OrderDetail extends StatelessWidget {
               color: doc["color"],
               size: doc["size"],
               quantity: doc["quantity"],
+              comment: doc['comment']
             );
 
-            lstOrderItems.add(item);
+            items.add(item);
           });
 
-          items = lstOrderItems
-              .where((element) => element.orderId == order.id)
-              .toList();
           return  ListView(
             children: [
               Container(
@@ -274,10 +277,10 @@ class OrderDetail extends StatelessWidget {
 
                             ),
                           ),
-                          if(order.status==3)
+                          if(order.status==3 && items[index].comment==false)
 
                             Padding(padding: EdgeInsets.only(top:10,right: 20,left: 20),
-                                child: FlatButton(onPressed: (){_showRatingAppDialog(items[index].productId);},
+                                child: FlatButton(onPressed: (){_showRatingAppDialog(items[index].productId,snapshot,index);},
                                   child: Container(
                                     decoration: BoxDecoration(
                                         color: Colors.deepOrangeAccent,
@@ -287,6 +290,27 @@ class OrderDetail extends StatelessWidget {
 
                                     child: Center(
                                       child: Text('Đánh giá',style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600
+                                      ),),
+                                    ),
+                                  ),
+                                )
+                            ),
+                          if(order.status==3 && items[index].comment==true)
+
+                            Padding(padding: EdgeInsets.only(top:10,right: 20,left: 20),
+                                child: FlatButton(onPressed: (){},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    height: 40,
+
+                                    child: Center(
+                                      child: Text('Đã đánh giá',style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600
