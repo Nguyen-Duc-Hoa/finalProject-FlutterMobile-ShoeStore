@@ -37,6 +37,7 @@ class AuthService{
       User ? user = userCredential.user;
 
       user = _auth.currentUser!;
+
       await user.sendEmailVerification();
       return user;
     } on FirebaseAuthException catch (e) {
@@ -68,16 +69,11 @@ class AuthService{
       );
       User ? user = userCredential.user;
       user = _auth.currentUser!;
-      if(user.emailVerified==false)
-        {
-          return 3;
-        }
-      else
-        {
+      print(user.uid);
           storeTokenandData(userCredential);
 
           return user;
-        }
+
 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -106,27 +102,46 @@ return null;
     }
   }
   updateUserProfile(String value,String type){
-    User? user  = _auth.currentUser;
+    try{
+      User? user  = _auth.currentUser;
 
-    if (user != null) {
-      try{
-        if(type=='email')
-        {
-          user.updateEmail(value);
+      if (user != null) {
+        try{
+          if(type=='email')
+          {
+            user.updateEmail(value);
+            user.reload();
+            print(user);
+            return user;
+          }
+          else if(type=='name')
+          {
+            user.updateDisplayName(value);
+            user.reload();
+            return user;
+          }
+          else
+          {
+            user.updatePhotoURL(value);
+            user.reload();
+            return user;
+          }
         }
-        else if(type=='name')
-        {
-          user.updateDisplayName(value);
-        }
-        else
-        {
-          user.updatePhotoURL(value);
+        on FirebaseAuthException catch (e){
+          print(e.code);
+          if (e.code == 'email-already-in-use')
+            return 0;
+          else if(e.code=='requires-recent-login')
+            return 1;
         }
       }
-      catch(e){
-        print(e);
-      }
-  }
+    }
+    on FirebaseAuthException catch (e){
+      if (e.code == 'email-already-in-use')
+          return 0;
+        else if(e.code=='requires-recent-login')
+          return 1;
+    }
   }
   Future storeTokenandData(UserCredential userCredential) async{
    

@@ -10,12 +10,12 @@ class Coupon extends StatelessWidget {
   Coupon({Key? key}) : super(key: key);
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference voucher =
-  FirebaseFirestore.instance.collection('voucher');
+  Query<Map<String, dynamic>> voucher =
+  FirebaseFirestore.instance.collection('voucher').where('endDate',isGreaterThanOrEqualTo: DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0x5BF3E0CB);
-
 
     return StreamBuilder(
         stream: voucher.snapshots(),

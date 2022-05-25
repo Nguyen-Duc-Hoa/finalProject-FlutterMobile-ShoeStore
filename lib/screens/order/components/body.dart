@@ -31,7 +31,7 @@ class _BodyState extends State<Body> {
   final int num = 10;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference order = FirebaseFirestore.instance.collection('order');
+
   CollectionReference orderItem =
       FirebaseFirestore.instance.collection('orderItem');
   Common _common = Common();
@@ -58,6 +58,7 @@ class _BodyState extends State<Body> {
     // ];
 
     final user = Provider.of<Users>(context);
+
     if (user == null) {
       return Center(
         child: Container(
@@ -91,6 +92,12 @@ class _BodyState extends State<Body> {
             )),
       );
     } else {
+      Query<Map<String, dynamic>> order;
+      if(widget.status==3)
+        order = FirebaseFirestore.instance.collection('order').where('status',whereIn: [3, 4]).where('userId', isEqualTo: user.uid);
+
+      else
+        order = FirebaseFirestore.instance.collection('order').where('status', isEqualTo: widget.status).where('userId', isEqualTo: user.uid);
       return StreamBuilder<QuerySnapshot>(
           stream: order.snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -104,7 +111,7 @@ class _BodyState extends State<Body> {
 
             var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
 
-            List<Order> lstOrders = [];
+
             List<Order> orders = [];
             dataList?.forEach((element) {
               final Map<String, dynamic> doc = element as Map<String, dynamic>;
@@ -121,14 +128,8 @@ class _BodyState extends State<Body> {
                   voucherId: doc["voucherId"],
                   voucherValue: doc["voucherValue"]);
 
-              lstOrders.add(o);
+              orders.add(o);
             });
-
-            orders = lstOrders
-                .where((element) =>
-                    element.status == widget.status &&
-                    element.userId == user.uid)
-                .toList();
 
             if (orders.isEmpty) {
               return Container();
@@ -389,11 +390,38 @@ class _BodyState extends State<Body> {
                               if(orders[index].status==0)
                                 Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
                                     child: FlatButton(onPressed: (){
-                                      final DocumentSnapshot data = snapshot.data!.docs[index];
+                                      showDialog(context: context, builder: (BuildContext context)=>
+                                          AlertDialog(
 
-                                      FirebaseFirestore.instance
-                                          .collection('order')
-                                          .doc(data.id).update({'status':-1});
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: const <Widget>[
+
+                                                  Text('Xác nhận hủy đơn hàng?'),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async{
+                                                  final DocumentSnapshot data = snapshot.data!.docs[index];
+
+                                                  FirebaseFirestore.instance
+                                                      .collection('order')
+                                                      .doc(data.id).update({'status':-1});
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          )
+                                      );
+
+
                                     },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -404,6 +432,32 @@ class _BodyState extends State<Body> {
 
                                         child: Center(
                                           child: Text('Huỷ đơn hàng',style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600
+                                          ),),
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              if(orders[index].status==3)
+                                Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
+                                    child: FlatButton(onPressed: (){
+                                      final DocumentSnapshot data = snapshot.data!.docs[index];
+
+                                      FirebaseFirestore.instance
+                                          .collection('order')
+                                          .doc(data.id).update({'status':4});
+                                    },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.deepOrangeAccent,
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        height: 40,
+
+                                        child: Center(
+                                          child: Text('Đã nhận được hàng',style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600
