@@ -1,10 +1,11 @@
 
+import 'package:finalprojectmobile/models/Ranking.dart';
 import 'package:finalprojectmobile/screens/address/address_screen.dart';
 import 'package:finalprojectmobile/screens/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
@@ -15,9 +16,9 @@ class Account extends StatelessWidget {
   final AuthService _auth=AuthService();
   @override
   Widget build(BuildContext context) {
-    final user=Provider.of<Users>(context);
+    final users=Provider.of<Users>(context);
 
-    if(user==null)
+    if(users==null)
       {
         return Center(
 
@@ -58,96 +59,173 @@ class Account extends StatelessWidget {
       }
     else
     {
-      return
-        Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(height: 30),
+      Query<Map<String, dynamic>> u = FirebaseFirestore.instance.collection(
+          'user').where('uid', isEqualTo: users.uid);
+      Query<Map<String, dynamic>> rank = FirebaseFirestore.instance.collection(
+          'ranking').where('userId', isEqualTo: users.uid);
+      return StreamBuilder(
+          stream: u.snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+            dynamic data = snapshot.data?.docs.map((e) => e.data()).toList().first;
+            Users user = Users();
+            user = Users(
+              uid: data["uid"],
+              name: data["name"],
+              phone:data["phone"],
+              email: data["email"],
+              avatar: data["avatar"],
+
+            );
+            return
               Container(
-                height: 115,
-                width: 115,
-                child: Stack(
-                  fit: StackFit.expand,
+                color: Colors.white,
+                child: Column(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage("${user.avatar}"),
-                    ),
-
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Text("${user.name}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-
-              Expanded(
-                child: ListView(
-
-                  children: [
+                    SizedBox(height: 30),
                     Container(
-                      margin: EdgeInsets.all(5),
-                      color: Color(0x14B6B8B6),
-                      child: ListTile(
-                        title: Text('Thông tin'),
-                        leading: Icon(Icons.account_circle,color: Colors.blue),
-                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                        onTap: (){
+                      height: 115,
+                      width: 115,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage('${user.avatar.toString()}'),
+                          ),
 
-                          Get.to(Profile());
-
-                        },
+                        ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.all(5),
+                    SizedBox(height: 10),
+                    Text("${user.name}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
 
-                      color: Color(0x14B6B8B6),
-                      child: ListTile(
-                        title: Text('Địa chỉ nhận hàng'),
-                        leading: Icon(Icons.location_on_outlined,color: Colors.red,),
-                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                        onTap: (){
+                    Expanded(
+                      child: ListView(
 
-                          Get.to(AddressScreen());
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            color: Color(0x14B6B8B6),
+                            child: ListTile(
+                              title: Text('Thông tin'),
+                              leading: Icon(Icons.account_circle,color: Colors.blue),
+                              trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                              onTap: (){
 
-                        },
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      color: Color(0x14B6B8B6),
-                      child: ListTile(
-                        title: Text('Đăng xuất'),
-                        leading: Icon(Icons.logout,color: Colors.black),
-                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                        onTap: (){
+                                Get.to(Profile());
 
-                          Get.offNamed("/home");
-                          _auth.signOut();
-                        },
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      color: Color(0x14B6B8B6),
-                      child: ListTile(
-                        title: Text('Thông tin'),
-                        leading: Icon(Icons.language,color: Colors.grey),
-                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                        onTap: (){
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(5),
 
-                          Get.to(Profile());
+                            color: Color(0x14B6B8B6),
+                            child: ListTile(
+                              title: Text('Địa chỉ nhận hàng'),
+                              leading: Icon(Icons.location_on_outlined,color: Colors.red,),
+                              trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                              onTap: (){
 
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              )
+                                Get.to(AddressScreen());
+
+                              },
+                            ),
+                          ),
+                          StreamBuilder(
+                            stream: rank.snapshots(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Something went wrong');
+                              }
+
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Text("Loading");
+                              }
+                              dynamic data = snapshot.data?.docs.map((e) => e.data()).toList().first;
+                              Ranking ranking = Ranking();
+                              ranking = Ranking(
+                                userId: data["userId"],
+                                score: data["score"],
+                              );
+                              return Container(
+                                margin: EdgeInsets.all(5),
+
+                                color: Color(0x14B6B8B6),
+                                child: ListTile(
+                                  title: Text('Hạng'),
+                                  leading: Icon(Icons.military_tech_outlined,color: Colors.orangeAccent,),
+                                  trailing:Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+            if(ranking.score!<50)
+            Text('Vô hạng')
+            else if(ranking.score!>=50 && ranking.score!<80)
+            Text('Đồng')
+            else if(ranking.score!>=80 && ranking.score!<150)
+            Text('Vàng')
+            else
+            Text('Kim cương'),
 
             ],
-          ),
-        );
+            ),
+
+                              onTap: (){
+
+                              },
+                              ),
+                              );
+
+                            },
+                          ),
+
+
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            color: Color(0x14B6B8B6),
+                            child: ListTile(
+                              title: Text('Ngôn ngữ'),
+                              leading: Icon(Icons.language,color: Colors.grey),
+                              trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                              onTap: (){
+
+                                Get.to(Profile());
+
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            color: Color(0x14B6B8B6),
+                            child: ListTile(
+                              title: Text('Đăng xuất'),
+                              leading: Icon(Icons.logout,color: Colors.black),
+                              trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                              onTap: (){
+
+                                Get.offNamed("/home");
+                                _auth.signOut();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+
+                  ],
+                ),
+              );
+          }
+
+      );
+
     }
 
 

@@ -1,3 +1,7 @@
+import 'package:finalprojectmobile/common.dart';
+import 'package:finalprojectmobile/models/OrderTracking.dart';
+import 'package:finalprojectmobile/screens/order_tracking/order_tracking.dart';
+import 'package:finalprojectmobile/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants.dart';
@@ -6,6 +10,7 @@ import '../../models/OrderItem.dart';
 import "package:intl/intl.dart";
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 class OrderDetail extends StatelessWidget {
   static String routeName = "/orderdetail";
@@ -13,7 +18,7 @@ class OrderDetail extends StatelessWidget {
   Order order;
   OrderDetail({Key? key,required this.order}) : super(key: key);
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference orderItem = FirebaseFirestore.instance.collection('orderItem');
+
 
 
   @override
@@ -29,7 +34,8 @@ class OrderDetail extends StatelessWidget {
       status='Đã giao';
     else
       status='Đã hủy';
-
+   Query<Map<String, dynamic>> orderItem = FirebaseFirestore.instance.collection('orderItem').where('orderId', isEqualTo: order.id);
+   Query<Map<String, dynamic>> orderTracking = FirebaseFirestore.instance.collection('orderTracking').where('orderId', isEqualTo: order.id).orderBy('time',descending: true);
    void showToastMessage(String message){
      Fluttertoast.showToast(
          msg: message, //message to show toast
@@ -40,7 +46,7 @@ class OrderDetail extends StatelessWidget {
          fontSize: 16.0 //message font size
      );
    }
-    void _showRatingAppDialog(productId) {
+    void _showRatingAppDialog(productId,snapshot,index) {
       final _ratingDialog = RatingDialog(
           initialRating: 5.0,
           title: Text(
@@ -51,7 +57,7 @@ class OrderDetail extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          enableComment: false,
+          enableComment: true,
           message: Text(
             'Hãy cho chúng tôi biết sự hài lòng của bạn về sản phẩm này nhé ',
             textAlign: TextAlign.center,
@@ -68,41 +74,49 @@ class OrderDetail extends StatelessWidget {
             int five=0;
             num oldrating=0;
             num newrating=0;
-        FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 1).get().then((value) {
+       await FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 1).get().then((value) {
           one=value.size;
         });
-            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 2).get().then((value) {
+         await   FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 2).get().then((value) {
               two=value.size;
             });
-            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 3).get().then((value) {
+           await FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 3).get().then((value) {
               three=value.size;
             });
-            FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 4).get().then((value) {
+         await   FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 4).get().then((value) {
               four=value.size;
+
             });
-           FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 5).get().then((value) {
+          await FirebaseFirestore.instance.collection('rate').where('productId', isEqualTo: productId).where('rate', isEqualTo: 5).get().then((value) {
               five=value.size;
+
             });
-            FirebaseFirestore.instance.collection('products').where('id', isEqualTo: productId).get().then((value) {
+          await  FirebaseFirestore.instance.collection('products').where('id', isEqualTo: productId).get().then((value) {
               oldrating=value.docs[0].get('rate');
               int total=one+two+three+four+five;
 
-              newrating=(oldrating*total+response.rating)/(total+1);
+                newrating=(oldrating*(total)+response.rating)/(total+1);
 
             });
+
             final rate =FirebaseFirestore.instance.collection('rate').doc();
             final json={
               'userId':order.userId,
               'productId':productId,
-              'rate':response.rating
+              'rate':response.rating,
+              'comment':response.comment
             };
-            await rate.set(json);
+           await rate.set(json);
 
            FirebaseFirestore.instance.collection('products').where('id', isEqualTo: productId).get().then((value) {
 
              value.docs[0].reference.update({'rate':num.parse(newrating.toStringAsFixed(1)) });
            });
+            final DocumentSnapshot data = snapshot.data!.docs[index];
 
+            FirebaseFirestore.instance
+                .collection('orderItem')
+                .doc(data.id).update({'comment':true});
            showToastMessage('Thank you');
 
           }
@@ -155,7 +169,7 @@ class OrderDetail extends StatelessWidget {
 
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
 
-          List<OrderItem> lstOrderItems = [];
+
           List<OrderItem> items = [];
           dataList?.forEach((element) {
             final Map<String, dynamic> doc = element as Map<String, dynamic>;
@@ -167,14 +181,12 @@ class OrderDetail extends StatelessWidget {
               color: doc["color"],
               size: doc["size"],
               quantity: doc["quantity"],
+              comment: doc['comment']
             );
 
-            lstOrderItems.add(item);
+            items.add(item);
           });
 
-          items = lstOrderItems
-              .where((element) => element.orderId == order.id)
-              .toList();
           return  ListView(
             children: [
               Container(
@@ -190,11 +202,75 @@ class OrderDetail extends StatelessWidget {
 
                 ),
               ),
+              StreamBuilder(
+                stream: orderTracking.snapshots(),
+                  builder:(context, AsyncSnapshot<QuerySnapshot> snapshot){
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading");
+                    }
+                    OrderTracking tracking = OrderTracking();
+
+                    if(snapshot.data?.docs.length!=0)
+                      {
+
+                        dynamic data = snapshot.data?.docs.map((e) => e.data()).toList().first;
+                        tracking = OrderTracking(orderId: data["orderId"],
+                          time: data["time"].toDate(),
+                          note: data["note"],
+
+                        );
+                      }
+
+
+                      if(tracking.orderId==null)
+                        {
+
+                          return Container();
+                        }
+else
+
+                return  Container(
+                  decoration: BoxDecoration(
+
+                    border: Border(
+                        bottom: BorderSide(color: Colors.grey)
+                    ),
+
+                  ),
+                  child:  Padding(padding: EdgeInsets.only(top: 10,bottom: 10),
+
+                    child: ListTile(
+                      onTap: (){Get.to(Order_tracking(orderId: order.id));},
+                      title: Text('Thông tin vận chuyển'),
+                      leading: Icon(Icons.delivery_dining,color: Colors.black),
+                        trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 8,),
+                          Text('${tracking.note}',style: TextStyle(color: Color(0xFF27AA69),fontSize: 15),),
+                          SizedBox(height: 5,),
+                          Text('${tracking.time.toString().substring(0, tracking.time.toString().lastIndexOf(":"))}')
+                        ],
+                      )
+
+
+                    ),
+
+
+                  ),
+                );
+                  }
+              ),
               Container(
                 decoration: BoxDecoration(
 
                   border: Border(
-                      bottom: BorderSide(color: Colors.black)
+                      bottom: BorderSide(color: Colors.grey)
                   ),
 
                 ),
@@ -274,10 +350,10 @@ class OrderDetail extends StatelessWidget {
 
                             ),
                           ),
-                          if(order.status==3)
+                          if(order.status==4 && items[index].comment==false)
 
                             Padding(padding: EdgeInsets.only(top:10,right: 20,left: 20),
-                                child: FlatButton(onPressed: (){_showRatingAppDialog(items[index].productId);},
+                                child: FlatButton(onPressed: (){_showRatingAppDialog(items[index].productId,snapshot,index);},
                                   child: Container(
                                     decoration: BoxDecoration(
                                         color: Colors.deepOrangeAccent,
@@ -287,6 +363,27 @@ class OrderDetail extends StatelessWidget {
 
                                     child: Center(
                                       child: Text('Đánh giá',style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600
+                                      ),),
+                                    ),
+                                  ),
+                                )
+                            ),
+                          if(order.status==4 && items[index].comment==true)
+
+                            Padding(padding: EdgeInsets.only(top:10,right: 20,left: 20),
+                                child: FlatButton(onPressed: (){},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    height: 40,
+
+                                    child: Center(
+                                      child: Text('Đã đánh giá',style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600

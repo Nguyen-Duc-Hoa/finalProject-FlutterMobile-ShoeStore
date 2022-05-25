@@ -108,9 +108,10 @@ class _CategoryProductsState extends State<CategoryProducts> {
                         if (lstProduct[index].category == widget.category.id) {
                           return ProductCard(
                               product: lstProduct[index],
-                              press: () {
+                              press: () async{
                                 c.productDetail(lstProduct[index]);
                                 c.SetListImage(lstProduct[index], 0);
+
                                 Get.to(DetailsScreen());
                               });
                         }

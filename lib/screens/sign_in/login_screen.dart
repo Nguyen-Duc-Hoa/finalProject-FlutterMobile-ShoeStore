@@ -155,13 +155,7 @@ class _LoginState extends State<Login> {
                                       error='Invalid email';
                                     });
                                   }
-                                  else if(result==3)
-                                {
 
-                                setState(() {
-                                error='Please verify email';
-                                });
-                                }
                                     else
                                       {
 

@@ -197,10 +197,6 @@ class _SignupState extends State<Signup> {
                               {
                                 dynamic result=await _auth.registerUsingEmailPassword(name, email, password);
 
-                                print(name);
-                                print(email);
-                                print(password);
-                                print(result);
                                 if(result==0)
                                 {
                                   setState(() {
@@ -221,18 +217,23 @@ class _SignupState extends State<Signup> {
                                 }
                                 else
                                 {
-                                  print(result.uid);
+
                                   final user =FirebaseFirestore.instance.collection('user').doc();
                                   final json={
-                                    'userId':result.uid,
-                                    'name':result.displayName,
+                                    'uid':result.uid,
+                                    'name':name,
                                     'phone':phone,
-                                    'avatar':result.photoURL,
+                                    'avatar':'https://firebasestorage.googleapis.com/v0/b/final-project-shoestore-334b6.appspot.com/o/user.png?alt=media&token=f15903da-4214-4641-9dbb-8483c36db61e',
                                     'email':result.email
                                   };
                                   await user.set(json);
-                                  showToastMessage("Verify email to login");
+                                  final ranking =FirebaseFirestore.instance.collection('ranking').doc();
+                                  final rank={
+                                    'userId':result.uid,
+                                    'score':0,
 
+                                  };
+                                  await ranking.set(rank);
 
                                   Get.to(Login());
                                 }

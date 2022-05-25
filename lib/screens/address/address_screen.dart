@@ -2,11 +2,15 @@ import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/models/address.dart';
 import 'package:finalprojectmobile/size_config.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import '../../common.dart';
+import '../../constants.dart';
+import '../../models/address.dart';
 import '../../models/user.dart';
 
 class AddressScreen extends StatelessWidget {
