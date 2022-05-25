@@ -179,8 +179,6 @@ class Account extends StatelessWidget {
 
                               onTap: (){
 
-
-
                               },
                               ),
                               );
