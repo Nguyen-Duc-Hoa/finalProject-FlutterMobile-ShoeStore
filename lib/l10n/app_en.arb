@@ -1,0 +1,59 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting"
+    },
+    "seeMore": "See more",
+    "@seeMore": {
+      "description": ""
+    },
+    "cart": "Cart",
+    "@cart": {
+      "description": ""
+    },
+    "inCart": "{count} product",
+    "@inCart": {
+      "description": "",
+      "placeholders":{
+        "count":{
+            "type":  "int"
+        }
+      }
+    },
+    "voucherCode": "Voucher code",
+    "@voucherCode": {
+      "description": ""
+    },
+    "totalPayment": "Total payment",
+    "@totalPayment": {
+      "description": ""
+    },
+    "totalPayment": "Total payment",
+    "@totalPayment": {
+      "description": ""
+    },
+    "purchase": "Purchase ({count})",
+    "@purchase": {
+      "description": "",
+        "placeholders":{
+          "count":{
+              "type":  "int"
+          }
+        }
+    },
+    "filter": "Filter",
+    "@filter": {
+      "description": ""
+    },
+    "search": "Search",
+    "@search": {
+      "description": ""
+    },
+
+
+    "popularProducts": "Popular Products",
+    "male": "Male",
+    "female": "Female",
+    "kid": "Kid",
+    "special": "Special"
+}

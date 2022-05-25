@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../account/account.dart';
 import '../order/order.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Pages extends StatefulWidget {
   const Pages({Key? key, required this.selectedIndex}) : super(key: key);

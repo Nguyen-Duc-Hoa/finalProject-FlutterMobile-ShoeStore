@@ -37,6 +37,11 @@ dependencies:
   sticky_headers: ^0.2.0
 
 
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,8 +71,7 @@ dev_dependencies:
   flutter_braintree: ^2.3.1
   http: ^0.13.4
 
-  flutter_localizations:
-    sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +83,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -122,5 +127,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
 
 

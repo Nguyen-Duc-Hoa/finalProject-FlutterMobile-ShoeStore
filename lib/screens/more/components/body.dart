@@ -87,7 +87,7 @@ class _BodyState extends State<Body> {
                 crossAxisCount: 2,
                 crossAxisSpacing: getProportionateScreenWidth(8),
                 mainAxisSpacing: getProportionateScreenHeight(2),
-                childAspectRatio: (1 / 1.3),
+                childAspectRatio: (1 / 1.4),
                 children: [
                   ...List.generate(lstProduct.length, (index) {
                     return Container(

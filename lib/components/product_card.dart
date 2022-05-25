@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:finalprojectmobile/models/Product.dart';
@@ -31,6 +32,7 @@ class ProductCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
       child: SizedBox(
+
         width: getProportionateScreenWidth(width),
         child: GestureDetector(
           onTap: (){
@@ -39,12 +41,13 @@ class ProductCard extends StatelessWidget {
             Get.to(DetailsScreen());
           },// Detailcreen
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AspectRatio(
                 aspectRatio: 1.02,
                 child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(20)),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(10)),
                   decoration: BoxDecoration(
                     color: kSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
@@ -62,6 +65,22 @@ class ProductCard extends StatelessWidget {
                 maxLines: 2,
 
               ),
+              if(product.disCount != 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _common.formatCurrency(product.price),
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(13),
+                        fontWeight: FontWeight.w600,
+                        color: kSecondaryColor,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+
+                    ),
+              ]),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

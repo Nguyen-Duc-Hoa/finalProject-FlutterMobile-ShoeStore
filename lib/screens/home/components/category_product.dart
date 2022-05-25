@@ -2,6 +2,7 @@ import 'package:finalprojectmobile/models/mCategories.dart';
 import 'package:finalprojectmobile/screens/details/details_screen.dart';
 import 'package:finalprojectmobile/screens/home/components/categories.dart';
 import 'package:finalprojectmobile/screens/more/more_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:finalprojectmobile/components/product_card.dart';
 import 'package:finalprojectmobile/models/Product.dart';
@@ -71,6 +72,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                 category: doc["category"],
                 disCount: doc["discount"],
                 gender: doc["gender"],
+                rating: doc['rate'],
                 size: lstSize);
             lstProduct.add(p);
           });
@@ -97,6 +99,8 @@ class _CategoryProductsState extends State<CategoryProducts> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...List.generate(
                       lstProduct.length,

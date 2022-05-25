@@ -34,7 +34,7 @@ class _CheckoutState extends State<Checkout> {
   CollectionReference orderItemCol =
       FirebaseFirestore.instance.collection('orderItem');
   var url =
-      'http://localhost:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
+      'http://192.168.1.2:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
   Common _common = new Common();
 
   @override
@@ -101,17 +101,28 @@ class _CheckoutState extends State<Checkout> {
                         print(result.paymentMethodNonce.description);
                         print(result.paymentMethodNonce.nonce);
                         print(result.deviceData);
-                        Get.to(const Pages(selectedIndex : 2));
-                        final http.Response response = await http.post(Uri.parse(
-                            '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
-                        final payResult = jsonDecode(response.body);
-                        if (payResult['result'] == 'success')
-                          print('Pay done!');
                         String addDB = await _paymentOrder(
                             _cartController.listOrder,
                             user,
                             _cartController.address.value,
                             _cartController.voucher.value);
+                        if(addDB=='true'){
+                          Get.to(const Pages(selectedIndex : 2));
+                        }
+
+                        final http.Response response = await http.post(Uri.parse(
+                            '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
+                        final payResult = jsonDecode(response.body);
+                        if (payResult['result'] == 'success')
+                          print('Pay done!');
+                        // String addDB = await _paymentOrder(
+                        //     _cartController.listOrder,
+                        //     user,
+                        //     _cartController.address.value,
+                        //     _cartController.voucher.value);
+                        // if(addDB=='true'){
+                        //   Get.to(const Pages(selectedIndex : 2));
+                        // }
                       }
                     },
                     child: Container(

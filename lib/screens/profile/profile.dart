@@ -1,4 +1,4 @@
-import 'package:final_project_mobile/common.dart';
+import 'package:finalprojectmobile/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';

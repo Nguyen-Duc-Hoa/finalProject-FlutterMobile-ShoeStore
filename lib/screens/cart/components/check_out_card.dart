@@ -11,6 +11,7 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:finalprojectmobile/common.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckoutCard extends StatefulWidget {
   const CheckoutCard({
@@ -100,7 +101,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     style: TextStyle(color: Colors.black),
                   ),
                   Spacer(),
-                  Text("Chọn hoặc nhập mã"),
+                  Text(AppLocalizations.of(context)!.voucherCode),
                   const SizedBox(width: 10),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -116,7 +117,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   children: [
                     Text.rich(
                       TextSpan(
-                        text: "Tổng thanh toán:\n",
+                        text: AppLocalizations.of(context)!.totalPayment + '\n',
                         children: [
                           TextSpan(
                             text: _common.formatCurrency(_cartController
@@ -129,7 +130,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     SizedBox(
                       width: getProportionateScreenWidth(190),
                       child: DefaultButton(
-                        text: "Mua hàng (${_cartController.listOrder.length})",
+                        text: AppLocalizations.of(context)!.purchase(_cartController.listOrder.length),
                         disable: _cartController.listOrder.isNotEmpty? false : true,
                         press: () {
                           if (_cartController.listOrder.isNotEmpty) {

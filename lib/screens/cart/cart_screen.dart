@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'components/body.dart';
 import 'components/check_out_card.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = "/cart";
@@ -32,11 +33,11 @@ class CartScreen extends StatelessWidget {
           return Column(
             children: [
               Text(
-                "Giỏ hàng",
+                AppLocalizations.of(context)!.cart,
                 style: TextStyle(color: Colors.white),
               ),
               Text(
-                "${_cartController.numberCart} sản phẩm",
+                AppLocalizations.of(context)!.inCart(_cartController.numberCart.value),
                 style: TextStyle(color: Colors.white, fontSize: 15),
 
               ),

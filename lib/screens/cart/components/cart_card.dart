@@ -63,11 +63,13 @@ class _CartCardState extends State<CartCard> {
                 colors: [],
                 size: [],
                 gender: doc['gender'],
-                disCount: doc['disCount'],
+                disCount: doc['discount'],
                 title: doc['title'],
                 price: double.parse(doc['price'].toString()),
                 description: doc['description']);
             lstProduct.add(product);
+            print('discount');
+            print(product.disCount);
           });
 
           if (lstProduct.isEmpty) {
@@ -119,11 +121,20 @@ class _CartCardState extends State<CartCard> {
                         maxLines: 2,
                       ),
                       SizedBox(height: 10),
+                      Text(
+                        _common.formatCurrency(product.price),
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.lineThrough),
+                        maxLines: 2,
+                      ),
                       Row(
                         children: [
                           Text.rich(
                             TextSpan(
-                              text: _common.formatCurrency(product.price),
+                              text: _common.formatCurrency(
+                                  product.price * (1 - product.disCount / 100)),
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: kPrimaryColor),

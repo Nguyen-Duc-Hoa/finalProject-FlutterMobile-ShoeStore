@@ -4,22 +4,23 @@ import 'package:finalprojectmobile/screens/filter/filter_screen.dart';
 import 'package:finalprojectmobile/screens/home/components/categories.dart';
 import 'package:finalprojectmobile/screens/home/components/home_header.dart';
 import 'package:finalprojectmobile/screens/more/components/more_header.dart';
+import 'package:finalprojectmobile/screens/search/components/body.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../more/components/body.dart';
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key, required this.name}) : super(key: key);
 
-class MoreScreen extends StatefulWidget {
-  const MoreScreen({Key? key, required this.categories, required this.gender})
-      : super(key: key);
-  final Gender gender;
-  final mCategories categories;
+  final String name;
+  // final Gender gender;
+  // final mCategories categories;
 
   @override
-  _MoreCreenState createState() => _MoreCreenState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _MoreCreenState extends State<MoreScreen> {
+class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +33,16 @@ class _MoreCreenState extends State<MoreScreen> {
       // ),
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text(widget.categories.name),
+        title: Text(AppLocalizations.of(context)!.search),
         actions: [
           IconButton(
-            onPressed: (){showSearch(context: context, delegate: CustomSearch());},
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearch());
+            },
             icon: Icon(Icons.search),
             color: Colors.white,
           )
         ],
-      ),
-      body: Body(
-        gender: widget.gender,
-        category: widget.categories,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
@@ -52,42 +51,45 @@ class _MoreCreenState extends State<MoreScreen> {
           Get.to(FilterScreen());
         },
       ),
+      body: Body(name: widget.name),
     );
   }
 }
 
-class CustomSearch extends SearchDelegate{
+class CustomSearch extends SearchDelegate {
   List<String> allData = ['a', 'b', 'c', 'd'];
 
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      IconButton(onPressed: (){
-        query = '';
-      }, icon: const Icon(Icons.clear))
+      IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: const Icon(Icons.clear))
     ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return
-      IconButton(onPressed: (){
-        close(context, null);
-      }, icon: const Icon(Icons.arrow_back));
-
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     List<String> matchQuery = [];
-    for(var item in allData)
-      if(item.toLowerCase().contains(query.toLowerCase())){
+    for (var item in allData)
+      if (item.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(item);
       }
-    
+
     return ListView.builder(
         itemCount: matchQuery.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           var result = matchQuery[index];
           return ListTile(
             title: Text(result),

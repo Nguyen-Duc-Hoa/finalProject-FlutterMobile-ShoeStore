@@ -6,16 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:finalprojectmobile/screens/home/components/categories.dart';
+import '../../../AppLocalizations.dart';
 import 'discount_banner.dart';
-import 'home_header.dart';
 import 'popular_product.dart';
 import 'special_offers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:finalprojectmobile/models/mCategories.dart';
-import 'package:finalprojectmobile/screens/cart/CartController.dart';
-import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -41,6 +39,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
+    print('language');
+    print(AppLocalizations.of(context)!.helloWorld);
     TabController _tabController =
         TabController(length: demoGender.length, vsync: this);
     return StreamBuilder<QuerySnapshot>(
@@ -52,6 +53,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           // if (snapshot.connectionState == ConnectionState.waiting) {
           //   return Text("Loading");
           // }
+
+
 
           var dataList = snapshot.data?.docs.map((e) => e.data()).toList();
           List<mCategories> lstCategories = [];
@@ -168,6 +171,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         // ),
 
                         SliverPersistentHeader(
+
                           pinned: true,
                           delegate: _SliverAppBarDelegate(
                             minHeight: 60,
@@ -188,6 +192,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                       width: getProportionateScreenWidth(80),
                                       child: Text(
                                         demoGender[index].name,
+                                        //AppLocalizations.of(context)!.translate(demoGender[index].name).toString(),
                                         style: TextStyle(fontSize: 18),
                                       ),
                                     ));

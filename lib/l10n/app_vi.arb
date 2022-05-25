@@ -1,0 +1,16 @@
+{
+    "helloWorld": "Xin chào",
+    "popularProducts": "Sản phẩm phổ biến",
+    "seeMore": "Xem thêm",
+    "cart": "Giỏ hàng",
+    "inCart": "{count} sản phẩm",
+    "voucherCode": "Chọn hoặc nhập mã",
+    "purchase": "Mua hàng ({count})",
+    "male": "Nam",
+    "female": "Nữ",
+    "kid": "Trẻ em",
+    "special": "Đặc biệt",
+    "totalPayment": "Tổng thanh toán",
+    "filter": "Bộ lọc",
+    "search": "Tìm kiếm"
+}

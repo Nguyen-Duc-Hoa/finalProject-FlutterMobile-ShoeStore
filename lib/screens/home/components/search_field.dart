@@ -1,4 +1,7 @@
+import 'package:finalprojectmobile/screens/search/search.dart';
+import 'package:finalprojectmobile/screens/search/search.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -18,8 +21,10 @@ class SearchField extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
-        onChanged: (value) {
-          //search value
+        onSubmitted: (value) {
+          if(value != ''){
+            Get.to(SearchScreen(name: value,));
+          }
         },
         decoration: InputDecoration(
           iconColor: Colors.white,

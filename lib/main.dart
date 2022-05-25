@@ -1,18 +1,7 @@
 import 'package:finalprojectmobile/constants.dart';
-
-import 'package:finalprojectmobile/screens/cart/cart_screen.dart';
-import 'package:finalprojectmobile/screens/more/more_screen.dart';
-
-import 'package:finalprojectmobile/screens/address/address_screen.dart';
-import 'package:finalprojectmobile/screens/home/home_screen.dart';
-import 'package:finalprojectmobile/screens/order_detail/order_detail.dart';
-
 import 'package:finalprojectmobile/screens/page/page.dart';
-import 'package:finalprojectmobile/screens/payment/checkout.dart';
 import 'package:finalprojectmobile/screens/sign_in/login_screen.dart';
-import 'package:finalprojectmobile/screens/voucher/voucher.dart';
 import 'package:finalprojectmobile/services/auth.dart';
-import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -20,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'AppLocalizations.dart';
 import 'models/user.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,24 +50,6 @@ class MyApp extends StatelessWidget {
         value: AuthService().user,
         initialData: null,
         child: GetMaterialApp(
-            supportedLocales: [
-              Locale('vi', 'VN'),
-              Locale('en', 'US'),
-            ],
-            localizationsDelegates: [
-              //AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            localeResolutionCallback: (locale, supportedLocales) {
-              for (var supportedLocale in supportedLocales) {
-                if (supportedLocale.languageCode == locale.languageCode &&
-                    supportedLocale.countryCode == locale.countryCode) {
-                  return supportedLocale;
-                }
-              }
-              return supportedLocales.first;
-            },
             title: 'Flutter Demo',
             theme: ThemeData(
                 scaffoldBackgroundColor: Colors.white,
@@ -86,11 +58,30 @@ class MyApp extends StatelessWidget {
                     bodyText1: TextStyle(color: kTextColor),
                     bodyText2: TextStyle(color: kTextColor))),
             // home: uid==null?Login():Pages(),
-            home: Pages(
+            supportedLocales: const [
+              Locale('vi', ''),
+              Locale('en', ''),
+            ],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            // localeResolutionCallback: (locale, supportedLocales) {
+            //   for (var supportedLocale in supportedLocales) {
+            //     if (supportedLocale.languageCode == locale.languageCode &&
+            //         supportedLocale.countryCode == locale.countryCode) {
+            //       return supportedLocale;
+            //     }
+            //   }
+            //   return supportedLocales.first;
+            // },
+            home: const Pages(
               selectedIndex: 0,
             ),
             routes: {
-              '/home': (context) => Pages(
+              '/home': (context) => const Pages (
                     selectedIndex: 0,
                   ),
               '/login': (context) => Login(),

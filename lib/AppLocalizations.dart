@@ -5,25 +5,25 @@
 // import 'package:flutter/services.dart';
 //
 // class AppLocalizations {
-//   final Locale locale = Locale('VN');
+//   late Locale? locale = const Locale('VN');
 //
 //   AppLocalizations(this.locale);
 //
 //
-//   static AppLocalizations of(BuildContext context) {
+//   static AppLocalizations? of(BuildContext context) {
 //     return Localizations.of<AppLocalizations>(context, AppLocalizations);
 //   }
 //
 //   static const LocalizationsDelegate<AppLocalizations> delegate =
 //   _AppLocalizationsDelegate();
 //
-//   Map<String, String> _localizedStrings;
+//   late Map<String, String> _localizedStrings;
 //
 //   // Load file json vào bộ nhớ
 //   Future<bool> load() async {
 //     // Đọc file json dưới dạng chuỗi
 //     String jsonString =
-//     await rootBundle.loadString('/assets/lang/${locale.languageCode}.json');
+//     await rootBundle.loadString('/assets/lang/${locale!.languageCode}.json');
 //     // Giải mã file json sang Map
 //     Map<String, dynamic> jsonMap = json.decode(jsonString);
 //     // Sau đó dùng hàm map() để đưa Map<String, dynamic> về Map<String, String>
@@ -38,7 +38,7 @@
 //
 //   // Đoạn này đơn giản chỉ là lấy giá trị đang
 //   // được lưu tại cái key được truyền vào
-//   String translate(String key) {
+//   String? translate(String? key) {
 //     return _localizedStrings[key];
 //   }
 // }

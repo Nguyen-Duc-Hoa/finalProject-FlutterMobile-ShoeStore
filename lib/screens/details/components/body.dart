@@ -56,7 +56,7 @@ class Body extends StatelessWidget {
                                     text: "Chọn loại hàng",
                                     style: const TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w400,
                                         color: Colors.black87),
                                     children: [
                                       TextSpan(
@@ -64,7 +64,7 @@ class Body extends StatelessWidget {
                                             " (${(product.colors.length)} Màu, kích thước)",
                                         style: const TextStyle(
                                             fontSize: 18,
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w400,
                                             color: kSecondaryColor),
                                       )
                                     ],

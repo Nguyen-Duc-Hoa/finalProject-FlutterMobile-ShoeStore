@@ -105,7 +105,7 @@ class CartController extends GetxController {
   double totalCart(List<Cart> lstCart) {
     double total = 0;
     lstCart.forEach((cart) {
-      total += cart.numOfItem * cart.product.price;
+      total += cart.numOfItem * (cart.product.price*(1-cart.product.disCount/100));
     });
     return double.parse(total.toStringAsFixed(2));
   }
