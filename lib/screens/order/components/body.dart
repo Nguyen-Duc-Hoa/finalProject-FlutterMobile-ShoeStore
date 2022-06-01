@@ -1,3 +1,4 @@
+import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/models/Order.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:finalprojectmobile/screens/order_detail/order_detail.dart';
@@ -15,7 +16,6 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../sign_in/login_screen.dart';
 
-
 class Body extends StatefulWidget {
   const Body({Key? key, required this.status}) : super(key: key);
 
@@ -26,16 +26,16 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  CartController _cartController = Get.find();
+  final CartController _cartController = Get.find();
   final int page = 1;
   final int num = 10;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference order =
-  FirebaseFirestore.instance.collection('order');
 
   CollectionReference orderItem =
   FirebaseFirestore.instance.collection('orderItem');
+  final Common _common = Common();
+
   @override
   Widget build(BuildContext context) {
     // List<OrderItem> items = [
@@ -61,7 +61,6 @@ class _BodyState extends State<Body> {
 
     if (user == null) {
       return Center(
-
         child: Container(
             width: 250,
             height: 50,
@@ -81,8 +80,7 @@ class _BodyState extends State<Body> {
                     ),
                     borderRadius: BorderRadius.circular(30.0)),
                 child: Container(
-                  constraints:
-                  BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                  constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
                   alignment: Alignment.center,
                   child: Text(
                     "Login",
@@ -91,10 +89,7 @@ class _BodyState extends State<Body> {
                   ),
                 ),
               ),
-            )
-
-
-        ),
+            )),
       );
     } else {
       Query<Map<String, dynamic>> order;
@@ -120,7 +115,8 @@ class _BodyState extends State<Body> {
             List<Order> orders = [];
             dataList?.forEach((element) {
               final Map<String, dynamic> doc = element as Map<String, dynamic>;
-              Order o = Order(id: doc["id"],
+              Order o = Order(
+                  id: doc["id"],
                   userId: doc["userId"],
                   name: doc["name"],
                   orderDate: doc["orderDate"].toDate(),
@@ -137,65 +133,48 @@ class _BodyState extends State<Body> {
 
             if (orders.isEmpty) {
               return Container();
-            }
-            else{
+            } else {
               return Padding(
-                padding:
-                EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(10)),
                 child: ListView.builder(
                   itemCount: orders.length,
-                  itemBuilder: (context, index) =>
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Card(
-
-                          color: Color(0xEDF3F3F3),
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(OrderDetail(order: orders[index],));
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                getProportionateScreenWidth(8),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Card(
+                      color: Color(0xEDF3F3F3),
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(OrderDetail(
+                            order: orders[index],
+                          ));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                            getProportionateScreenWidth(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .start,
-                                        children: [
-                                          Text(
-                                            orders[index].name,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black87),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            "Ngày đặt: ${orders[index]
-                                                .orderDate.toString()
-                                                .substring(0,
-                                                orders[index].orderDate
-                                                    .toString().lastIndexOf(
-                                                    ":"))}",
-                                            style: TextStyle(
-                                                color: Colors.black87),
-                                          ),
-                                        ],
+                                      Text(
+                                        orders[index].name,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black87),
                                       ),
-                                      // Container(
-                                      //
-                                      //    child: const Padding(
-                                      //
-                                      //       padding: EdgeInsets.only(right: 1, bottom: 1),
-                                      //       child: Text("ABCD"),
-                                      //     ),
-                                      // ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        "Ngày đặt: ${orders[index].orderDate.toString().substring(0, orders[index].orderDate.toString().lastIndexOf(":"))}",
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
                                     ],
                                   ),
 
@@ -219,14 +198,14 @@ class _BodyState extends State<Body> {
                                     dataList?.forEach((element) {
                                       final Map<String, dynamic> doc = element as Map<String, dynamic>;
                                       OrderItem item = OrderItem(orderId: doc["orderId"],
-                                        productId: doc["productId"],
-                                        productName: doc["productName"],
-                                        price: doc["price"],
-                                        image: doc["image"],
-                                        color: doc["color"],
-                                        size: doc["size"],
-                                        quantity: doc["quantity"],
-                                        comment: doc['comment']
+                                          productId: doc["productId"],
+                                          productName: doc["productName"],
+                                          price: doc["price"],
+                                          image: doc["image"],
+                                          color: doc["color"],
+                                          size: doc["size"],
+                                          quantity: doc["quantity"],
+                                          comment: doc['comment']
                                       );
 
                                       lstOrderItems.add(item);
@@ -377,13 +356,13 @@ class _BodyState extends State<Body> {
                                           height: 8,
                                         ),
                                         Text(
-                                          "\$${orders[index].total}",
+                                          _common.formatCurrency(orders[index].total.toDouble()),
                                           style: const TextStyle(
                                               color: Colors.black),
                                         )
                                       ],
                                     ),
-                                    VerticalDivider(
+                                    const VerticalDivider(
                                       thickness: 1,
                                     ),
                                     Column(
@@ -489,16 +468,14 @@ class _BodyState extends State<Body> {
                                 )
                             ],
                           ),
-
                         ),
                       ),
+                    ),
+                  ),
                 ),
               );
             }
-
           });
     }
   }
-
-
 }

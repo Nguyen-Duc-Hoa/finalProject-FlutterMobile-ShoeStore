@@ -41,7 +41,7 @@ class _ProductImagesState extends State<ProductImages> {
               child: AspectRatio(
                 aspectRatio: 1,
                 child: Hero(
-                  tag: widget.product.id.toString(),
+                  tag: widget.product.id.toString()+'image',
                   child: Obx(() => Image.asset(_homeController.lstImage[selectedImage])),
                 ),
               ),

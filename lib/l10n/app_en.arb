@@ -49,7 +49,20 @@
     "@search": {
       "description": ""
     },
+    "payment": "Payment",
+    "@payment": {
+      "description": ""
+    },
 
+    "total": "Total",
+    "@total": {
+      "description": ""
+    },
+
+    "orderId": "Order ID",
+    "@total": {
+      "description": ""
+    },
 
     "popularProducts": "Popular Products",
     "male": "Male",

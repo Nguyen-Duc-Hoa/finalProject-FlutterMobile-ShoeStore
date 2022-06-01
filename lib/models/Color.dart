@@ -19,5 +19,6 @@ List<mColor> demoColor = [
   mColor(id: "0xFF66FF33", name: "Green"),
   mColor(id: "0xFFFFFFFF", name: "White"),
   mColor(id: "0xFFC68C53", name: "Coffee Matte"),
-  mColor(id: "0xFFCCCCB3", name: "Grey")
+  mColor(id: "0xFFCCCCB3", name: "Grey"),
+  mColor(id: "0xFF996633", name: "Brown")
 ];

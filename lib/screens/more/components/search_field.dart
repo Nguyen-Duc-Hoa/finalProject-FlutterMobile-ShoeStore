@@ -25,7 +25,10 @@ class SearchField extends StatelessWidget {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             hintText: "Tìm kiếm sản phẩm",
+            focusColor: Colors.white,
             prefixIcon: const Icon(Icons.search),
+            iconColor: Colors.white,
+            suffixIconColor: Colors.white,
             contentPadding: EdgeInsets.symmetric(
               horizontal: getProportionateScreenWidth(20),
               vertical: getProportionateScreenHeight(9),

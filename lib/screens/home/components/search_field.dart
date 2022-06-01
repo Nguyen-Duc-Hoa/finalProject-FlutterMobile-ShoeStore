@@ -21,18 +21,20 @@ class SearchField extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
+        cursorColor: Colors.grey,
         onSubmitted: (value) {
           if(value != ''){
             Get.to(SearchScreen(name: value,));
           }
         },
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          iconColor: Colors.white,
           hintStyle: const TextStyle(color: kPrimaryLightColor),
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           hintText: "Tìm kiếm sản phẩm",
           prefixIcon: const Icon(Icons.search),
+          prefixIconColor: Colors.white,
           contentPadding: EdgeInsets.symmetric(
             horizontal: getProportionateScreenWidth(20),
             vertical: getProportionateScreenHeight(9),

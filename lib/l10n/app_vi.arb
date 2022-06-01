@@ -12,5 +12,8 @@
     "special": "Đặc biệt",
     "totalPayment": "Tổng thanh toán",
     "filter": "Bộ lọc",
-    "search": "Tìm kiếm"
+    "search": "Tìm kiếm",
+    "payment": "Thanh toán",
+    "total": "Tổng tiền",
+    "orderId": "Mã đơn"
 }

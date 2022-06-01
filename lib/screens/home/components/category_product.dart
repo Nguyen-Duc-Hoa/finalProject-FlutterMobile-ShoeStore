@@ -72,7 +72,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                 category: doc["category"],
                 disCount: doc["discount"],
                 gender: doc["gender"],
-                rating: doc['rate'],
+                rating: doc['rate'].toDouble(),
                 size: lstSize);
             lstProduct.add(p);
           });
@@ -112,7 +112,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                 c.productDetail(lstProduct[index]);
                                 c.SetListImage(lstProduct[index], 0);
 
-                                Get.to(DetailsScreen());
+                                Get.to(await DetailsScreen());
                               });
                         }
 

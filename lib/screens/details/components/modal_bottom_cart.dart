@@ -87,10 +87,7 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
       });
 
       // Call the user's CollectionReference to add a new user
-      print(cartId);
       if (cartId == "") {
-        print(2);
-        print(cartId);
         await cartCol.add({
           'userId': uid,
           "productId": cart.productId, // John Doe
@@ -106,7 +103,6 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
           return error;
         });
       } else {
-        print(3);
         await cartCol.doc(cartId).update({
           'userId': uid,
           "productId": cart.productId, // John Doe

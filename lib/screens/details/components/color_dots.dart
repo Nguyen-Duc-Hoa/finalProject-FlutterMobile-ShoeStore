@@ -90,7 +90,7 @@ class _ColorDotsState extends State<ColorDots> {
       child: AnimatedContainer(
         duration: defaultDuration,
         margin: EdgeInsets.only(right: 2),
-        padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+        padding: EdgeInsets.all(getProportionateScreenWidth(7)),
         height: getProportionateScreenWidth(40),
         width: getProportionateScreenWidth(40),
         decoration: BoxDecoration(
@@ -99,10 +99,17 @@ class _ColorDotsState extends State<ColorDots> {
               color: index == selectedColor ? kPrimaryColor : Colors.transparent),
           shape: BoxShape.circle,
         ),
-        child: DecoratedBox(
+        child: Container(
+          padding: EdgeInsets.all(getProportionateScreenWidth(1.5)),
           decoration: BoxDecoration(
-            color: Color(int.parse(color)),
+            color: color=="0xFFFFFFFF"?Colors.black:Color(int.parse(color)),
             shape: BoxShape.circle,
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(int.parse(color)),
+              shape: BoxShape.circle,
+            ),
           ),
         ),
       ),

@@ -11,29 +11,34 @@ import 'product_description.dart';
 import 'top_rounded_container.dart';
 import 'product_images.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   final Product product;
 
   const Body({Key? key, required this.product}) : super(key: key);
 
   @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  @override
   Widget build(BuildContext context) {
-    final List<String> lstImage = product.images.getRange(0, 4).toList();
+    final List<String> lstImage = widget.product.images.getRange(0, 4).toList();
     // ignore: avoid_print
-    print((product.images.length / 5).round());
+    print((widget.product.images.length / 5).round());
     return ListView(
       children: [
         ProductImages(
-          product: product,
+          product: widget.product,
           lstImage: lstImage,
         ),
         TopRoundedContainer(
           color: Colors.white,
           child: Column(
             children: [
-              ColorDots(product: product),
+              ColorDots(product: widget.product),
               ProductDescription(
-                product: product,
+                product: widget.product,
                 pressOnSeeMore: () {},
               ),
               TopRoundedContainer(
@@ -61,7 +66,7 @@ class Body extends StatelessWidget {
                                     children: [
                                       TextSpan(
                                         text:
-                                            " (${(product.colors.length)} Màu, kích thước)",
+                                            " (${(widget.product.colors.length)} Màu, kích thước)",
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w400,
@@ -78,7 +83,7 @@ class Body extends StatelessWidget {
                                         context: context,
                                         builder: (context) {
                                           return ModalBottomCart(
-                                              product: product);
+                                              product: widget.product);
                                         });
                                   },
                                   child: const Icon(
@@ -93,8 +98,8 @@ class Body extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 ...List.generate(
-                                    product.colors.length,
-                                    (index) => index * 5 < product.images.length
+                                    widget.product.colors.length,
+                                    (index) => index * 5 < widget.product.images.length
                                         ? Container(
                                             margin: EdgeInsets.only(right: 15),
                                             padding: EdgeInsets.all(8),
@@ -108,7 +113,7 @@ class Body extends StatelessWidget {
                                                   BorderRadius.circular(10),
                                             ),
                                             child: Image.asset(
-                                                product.images[index * 5]),
+                                                widget.product.images[index * 5]),
                                           )
                                         : Container()),
                               ],
@@ -124,7 +129,7 @@ class Body extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: getProportionateScreenWidth(10)),
-                            child: Rating(id: product.id),
+                            child: Rating(id: widget.product.id),
                           )),
                     ),
                   ],

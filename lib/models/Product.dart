@@ -33,7 +33,7 @@ class Product {
 
 List<Product> demoProducts = [
   Product(
-      id: 1,
+      id: -2,
       images: [
         "assets/images/shoe1.png",
         "assets/images/shoe1.png",
@@ -56,7 +56,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -1,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -75,7 +75,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 3,
+      id: -3,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -95,7 +95,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 4,
+      id: -4,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -114,7 +114,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -5,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -133,7 +133,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -6,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -152,7 +152,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -7,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -171,7 +171,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -8,
       images: [
         "assets/images/shoe1.png",
       ],
@@ -190,7 +190,7 @@ List<Product> demoProducts = [
       disCount: 0,
       size: [37, 38, 39]),
   Product(
-      id: 2,
+      id: -9,
       images: [
         "assets/images/shoe1.png",
       ],
