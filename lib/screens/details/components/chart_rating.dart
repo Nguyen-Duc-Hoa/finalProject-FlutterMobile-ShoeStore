@@ -45,7 +45,25 @@ class Chart_Rating extends StatelessWidget {
           });
 
           if(items.isEmpty){
-            return Container();
+            return Container(
+              margin: EdgeInsets.all(15),
+              child:
+              Column(
+
+                children: [
+
+                  SizedBox(height: 8),
+                  chartRow(context, '5', pct[4]),
+                  chartRow(context, '4', pct[3]),
+                  chartRow(context, '3', pct[2]),
+                  chartRow(context, '2', pct[1]),
+                  chartRow(context, '1',pct[0]),
+                  SizedBox(height: 8),
+
+
+                ],
+              ),
+            );
           }
           else
           {

@@ -30,7 +30,7 @@ class OrderDetail extends StatelessWidget {
       status='Chờ lấy hàng';
     else if(order.status==2)
       status='Đang giao';
-    else if(order.status==3)
+    else if(order.status==3||order.status==4)
       status='Đã giao';
     else
       status='Đã hủy';
@@ -112,11 +112,18 @@ class OrderDetail extends StatelessWidget {
 
              value.docs[0].reference.update({'rate':num.parse(newrating.toStringAsFixed(1)) });
            });
+            FirebaseFirestore.instance.collection('ranking').where('userId', isEqualTo: order.userId).get().then((value) {
+              if(response.comment=='')
+              value.docs[0].reference.update({'score':value.docs[0].get('score')+3 });
+              else
+                value.docs[0].reference.update({'score':value.docs[0].get('score')+5 });
+            });
             final DocumentSnapshot data = snapshot.data!.docs[index];
 
             FirebaseFirestore.instance
                 .collection('orderItem')
                 .doc(data.id).update({'comment':true});
+
            showToastMessage('Thank you');
 
           }

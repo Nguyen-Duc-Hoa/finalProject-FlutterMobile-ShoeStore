@@ -1,4 +1,5 @@
 
+import 'package:finalprojectmobile/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -100,7 +101,7 @@ class _SignupState extends State<Signup> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                            borderSide: BorderSide(color: kPrimaryColor, width: 2),
                           ),
                         ),
                       ),
@@ -127,7 +128,7 @@ class _SignupState extends State<Signup> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                            borderSide: BorderSide(color: kPrimaryColor, width: 2),
                           ),
                         ),
                       ),
@@ -156,7 +157,7 @@ class _SignupState extends State<Signup> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                            borderSide: BorderSide(color: kPrimaryColor, width: 2),
                           ),
                         ),
                       ),
@@ -182,7 +183,7 @@ class _SignupState extends State<Signup> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                            borderSide: BorderSide(color: kPrimaryColor, width: 2),
                           ),
                         ),
                       ),
@@ -235,6 +236,13 @@ class _SignupState extends State<Signup> {
                                   };
                                   await ranking.set(rank);
 
+                                  final rankingdetail =FirebaseFirestore.instance.collection('rankingDetail').doc();
+                                  final detail={
+                                    'userId':result.uid,
+                                    'numOfOrder':0,
+                                    'totalPrice':0,
+                                  };
+                                  await rankingdetail.set(detail);
                                   Get.to(Login());
                                 }
                               }
@@ -246,7 +254,7 @@ class _SignupState extends State<Signup> {
                           child: Ink(
                             decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: [Color(0xfff307c1), Color(0xffff64c6)],
+                                  colors: [Color(0xFFFC560A), Color(0xFFFCA931)],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                 ),

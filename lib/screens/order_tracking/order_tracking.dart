@@ -45,6 +45,9 @@ class Order_tracking extends StatelessWidget {
             items.add(item);
 
           });
+          if(items.isEmpty)
+            return Container();
+          else
           return Container(
             margin: EdgeInsets.only(top: 15,bottom: 15,left: 5,right: 5),
             child: ListView(

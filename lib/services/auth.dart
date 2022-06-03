@@ -13,16 +13,27 @@ class AuthService{
 
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
-  Future signInAnon() async
+  Future forgotPassword(String email) async
   {
     try{
-      UserCredential result =await _auth.signInAnonymously();
-      User ? user = result.user;
-      return user;
+     await _auth.sendPasswordResetEmail(email: email);
+
+      return 2;
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'user-not-found')
+        {
+          return 0;
+        }
+      if (e.code == 'invalid-email')
+      {
+        return 1;
+      }
+
     }
     catch(e){
       print(e);
-      return null;
+
     }
   }
   Future registerUsingEmailPassword(String name, String email, String password) async {

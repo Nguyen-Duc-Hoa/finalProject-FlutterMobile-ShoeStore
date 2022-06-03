@@ -24,6 +24,5 @@ final Map<String, WidgetBuilder> routes = {
   Signup.routeName: (context) => Signup(),
   Checkout.routeName: (context) => Checkout(),
   AddressScreen.routeName: (context) => AddressScreen(),
-  VoucherScreen.routeName:(context) => VoucherScreen(),
   Profile.routeName:(context) => Profile(),
 };
