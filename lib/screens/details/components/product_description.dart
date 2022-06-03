@@ -35,7 +35,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   final Common _common = Common();
 
-  bool isFavorite = false;
+  bool isLike = false;
   Users user = Users();
   String documentID = '';
 
@@ -139,20 +139,33 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       isFavorite: doc['isFavorite']);
 
                   if (favorite1 != null) {
-                    isFavorite = true;
+                    isLike = true;
                   }
                 });
 
                 return Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap:  () {
-                      setState(() async {
-                        if (isFavorite) {
-                          String result = await deleteLike(favorite1);
-                          if (result == 'true') {
-                            isFavorite = false;
+                    onTap: (){
+                      setState((){
+                        if (isLike) {
+                          favorite1 = Favorite(
+                              userId: user.uid,
+                              productId: widget.product.id,
+                              isFavorite: false);
+                          deleteLike(favorite1);
+                          if(true){
+                            isLike = !isLike;
                           }
+                        } else {
+                          Favorite favorite2 = Favorite(
+                              userId: user.uid,
+                              productId: widget.product.id,
+                              isFavorite: true);
+
+                          addLike(favorite2);
+
+                          isLike = !isLike;
                         }
                       });
                     },
@@ -160,8 +173,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       padding: EdgeInsets.all(getProportionateScreenWidth(15)),
                       width: getProportionateScreenWidth(64),
                       decoration: BoxDecoration(
-                        color:
-                            isFavorite ? Color(0xFFFFE6E6) : Color(0xFFF5F6F9),
+                        color: isLike ? Color(0xFFFFE6E6) : Color(0xFFF5F6F9),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
@@ -169,8 +181,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       ),
                       child: SvgPicture.asset(
                         "assets/icons/Heart Icon_2.svg",
-                        color:
-                            isFavorite ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
+                        color: isLike ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
                         height: getProportionateScreenWidth(16),
                       ),
                     ),
@@ -181,15 +192,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
           Align(
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: () {
-              },
+              onTap: () {},
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(15)),
                 width: getProportionateScreenWidth(64),
                 decoration: BoxDecoration(
-                  color: widget.product.isFavourite
-                      ? Color(0xFFFFE6E6)
-                      : Color(0xFFF5F6F9),
+                  color: isLike ? Color(0xFFFFE6E6) : Color(0xFFF5F6F9),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     bottomLeft: Radius.circular(20),
@@ -197,7 +205,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 ),
                 child: SvgPicture.asset(
                   "assets/icons/Heart Icon_2.svg",
-                  color: isFavorite ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
+                  color: isLike ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
                   height: getProportionateScreenWidth(16),
                 ),
               ),
@@ -218,7 +226,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
     );
   }
 
-  Future<String> deleteLike(Favorite favorite) async {
+  Future<bool> deleteLike(Favorite favorite) async {
+    bool result = false;
     String favoriteId = "";
     await FirebaseFirestore.instance
         .collection('favorite')
@@ -226,42 +235,39 @@ class _ProductDescriptionState extends State<ProductDescription> {
         .where('productId', isEqualTo: favorite.productId)
         .get()
         .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
+      querySnapshot.docs.forEach((doc) async {
         favoriteId = doc.id;
-      }
-    });
 
+      });
+    });
     // Call the user's CollectionReference to add a new user
     if (favoriteId != "") {
       await favoriteCol.doc(favoriteId).delete().then((value) {
         print('delete ok');
-        return 'true';
-      }).catchError((error) => print("Failed to add user: $error"));
+        result = true;
+        isLike = false;
+        return;
+      }).catchError((error) => () {
+        print("Failed to add user: $error");
+        return;
+      });
     }
-    return "";
+    return result;
   }
 
-  Future<String> addLike(Favorite favorite) async {
-    String favoriteId = "";
-    await FirebaseFirestore.instance
-        .collection('favorite')
-        .where('userId', isEqualTo: favorite.userId)
-        .where('productId', isEqualTo: favorite.productId)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        favoriteId = doc.id;
-      }
+  Future<bool> addLike(Favorite favorite) async {
+    bool result = false;
+    await favoriteCol.add({
+      'userId': favorite.userId,
+      "productId": favorite.productId,
+      'isFavorite': favorite.isFavorite
+    }).then((value) {
+      result = true;
+    }).catchError((error) {
+      print("Failed to add user: $error");
+      result = false;
     });
-
-    // Call the user's CollectionReference to add a new user
-    if (favoriteId != "") {
-      await favoriteCol.doc(favoriteId).delete().then((value) {
-        print('delete ok');
-        return 'true';
-      }).catchError((error) => print("Failed to add user: $error"));
-    }
-    return "";
+    return result;
   }
 }
 

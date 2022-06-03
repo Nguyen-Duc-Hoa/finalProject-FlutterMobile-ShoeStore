@@ -121,6 +121,7 @@ class _CartCardState extends State<CartCard> {
                         maxLines: 2,
                       ),
                       SizedBox(height: 10),
+                      if(product.disCount!=0)
                       Text(
                         _common.formatCurrency(product.price),
                         style: const TextStyle(

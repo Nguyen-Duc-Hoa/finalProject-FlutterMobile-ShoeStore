@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:finalprojectmobile/models/address.dart';
+import 'package:finalprojectmobile/models/methodPayment.dart';
 import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:finalprojectmobile/screens/address/address_screen.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/payment/components/method.dart';
 import 'package:finalprojectmobile/screens/voucher/voucher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +26,20 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-
   CartController _cartController = Get.find();
 
   Address address = Address();
   Voucher voucher = Voucher();
+  Method method = Method();
+  final Common _common = Common();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    voucher = _cartController.voucher.value;
+    method = demoMethod[2];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +63,12 @@ class _BodyState extends State<Body> {
     //
     // }
 
-
     List<Cart> items = _cartController.listOrder;
     if (user != null) {
-      Query<Map<String, dynamic>> add = FirebaseFirestore.instance.collection(
-          'address').where('userId', isEqualTo: user.uid).where(
-          'isDefault', isEqualTo: true);
+      Query<Map<String, dynamic>> add = FirebaseFirestore.instance
+          .collection('address')
+          .where('userId', isEqualTo: user.uid)
+          .where('isDefault', isEqualTo: true);
 
       return StreamBuilder(
           stream: add.snapshots(),
@@ -93,19 +105,14 @@ class _BodyState extends State<Body> {
 
                 Container(
                   decoration: BoxDecoration(
-
-                    border: Border(
-                        bottom: BorderSide(color: Colors.black)
-                    ),
-
+                    border: Border(bottom: BorderSide(color: Colors.black)),
                   ),
-                  child: Padding(padding: EdgeInsets.only(top: 10, bottom: 10),
-
-                      child:
-                      ListTile(
+                  child: Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      child: ListTile(
                         title: Text('Địa chỉ nhận hàng'),
-                        leading: Icon(
-                            Icons.location_on_outlined, color: Colors.red),
+                        leading:
+                            Icon(Icons.location_on_outlined, color: Colors.red),
                         trailing: IconButton(
                           onPressed: () async {
                             Get.to(AddressScreen());
@@ -126,91 +133,86 @@ class _BodyState extends State<Body> {
                         ),
                         subtitle:address.userId!=null? Text('${address.name} \n${address.phone} \n${address.address}'):Text('Chọn địa chỉ nhận hàng'),
                         //
-                      )
-
-                  ),
+                      )),
                 ),
-
                 Column(
-                    children:
-                    List.generate(items.length, (index) {
-                      return Padding(padding: EdgeInsets.only(
-                          top: 10, right: 25, left: 25, bottom: 10),
-                        child: Row(
-                          children: [
-                            Container(
-                                width: (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width - 170) / 2,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [BoxShadow(
-                                        spreadRadius: 1,
-                                        blurRadius: 0.5,
-                                        color: Colors.orange
-                                    )
-                                    ],
-                                    image: DecorationImage(image: AssetImage(
-                                        items[index].image),
-                                        fit: BoxFit.cover))
-                            ),
-                            SizedBox(width: 25,),
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('${items[index].product.title}',
-                                  style: TextStyle(fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(width: 15),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
-                                  children: [
-                                    Text("${NumberFormat.currency(locale: 'vi')
-                                        .format(items[index].product.price)}",
-                                      style: TextStyle(fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.red),
-                                    ),
-                                    Container(
-
-                                      child: DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          color: Color(
-                                              int.parse(items[index].color)),
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-
-                                      width: 20,
-                                      height: 20,
-
-                                    ),
-                                    Text('${items[index].size}'),
-                                    Text("x${items[index].numOfItem}",
-                                      style: TextStyle(fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                )
-
-                              ],
-                            ))
-                          ],
-
+                    children: List.generate(items.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, right: 25, left: 25, bottom: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                            width:
+                                (MediaQuery.of(context).size.width - 170) / 2,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      spreadRadius: 1,
+                                      blurRadius: 0.5,
+                                      color: Colors.orange)
+                                ],
+                                image: DecorationImage(
+                                    image: AssetImage(items[index].image),
+                                    fit: BoxFit.cover))),
+                        const SizedBox(
+                          width: 25,
                         ),
-                      );
-                    }
-
-                    )
-
-                ),
-                Padding(padding: EdgeInsets.only(bottom: 25),
-
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${items[index].product.title}',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(width: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _common.formatCurrency(items[index]
+                                          .product
+                                          .price *
+                                      (1 -
+                                          items[index].product.disCount / 100)),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.red),
+                                ),
+                                Container(
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Color(int.parse(items[index].color)),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Text('${items[index].size}'),
+                                Text(
+                                  "x${items[index].numOfItem}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            )
+                          ],
+                        ))
+                      ],
+                    ),
+                  );
+                })),
+                Padding(
+                    padding: EdgeInsets.only(bottom: 25),
                     child: ListTile(
                         onTap: () async {
                           await FirebaseFirestore.instance.collection('ranking').where('userId', isEqualTo: user.uid).get().then((value) {
@@ -228,84 +230,116 @@ class _BodyState extends State<Body> {
                           }
                         },
                         title: Text('Mã giảm giá'),
-
-                        trailing: voucher.voucherName == null ? Text(
-                          'Chọn mã giảm giá',) : Text('${voucher.voucherName}',
-                            style: TextStyle(color: Colors.red, fontSize: 15))
-
-                    )
-
-
-                ),
-                Padding(padding: EdgeInsets.only(top: 20, right: 25, left: 25),
+                        trailing: voucher.isBlank
+                            ? Text(
+                                'Chọn mã giảm giá',
+                              )
+                            : Text('${voucher.voucherName}',
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 15)))),
+                Padding(
+                  padding: EdgeInsets.only(top: 20, right: 25, left: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Tổng', style: TextStyle(fontSize: 17,
-                          color: Colors.black.withOpacity(0.5)),),
                       Text(
-                        '${NumberFormat.currency(locale: 'vi').format(
-                            _cartController.totalCart(items))}',
-                        style: TextStyle(fontSize: 20,
+                        'Tổng',
+                        style: TextStyle(
+                            fontSize: 17, color: Colors.black.withOpacity(0.5)),
+                      ),
+                      Text(
+                        _common
+                            .formatCurrency(_cartController.totalCart(items)),
+                        style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.w400,
-                            color: Colors.black),),
-
+                            color: Colors.black),
+                      ),
                     ],
-
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 25, left: 25),
+                Padding(
+                  padding: EdgeInsets.only(right: 25, left: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Vận chuyển', style: TextStyle(fontSize: 17,
-                          color: Colors.black.withOpacity(0.5)),),
                       Text(
-                        '${NumberFormat.currency(locale: 'vi').format(30000)}',
-                        style: TextStyle(fontSize: 17,
+                        'Vận chuyển',
+                        style: TextStyle(
+                            fontSize: 17, color: Colors.black.withOpacity(0.5)),
+                      ),
+                      Text(
+                        _common.formatCurrency(30000),
+                        style: const TextStyle(
+                            fontSize: 17,
                             fontWeight: FontWeight.w400,
-                            color: Colors.black),),
+                            color: Colors.black),
+                      ),
                     ],
                   ),
                 ),
-                if(voucher.voucherId != null)
-                  Padding(padding: EdgeInsets.only(right: 25, left: 25),
+                if (voucher.voucherId != null)
+                  Padding(
+                    padding: EdgeInsets.only(right: 25, left: 25),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Giảm giá', style: TextStyle(fontSize: 17,
-                            color: Colors.black.withOpacity(0.5)),),
-                        Text('-${NumberFormat.currency(locale: 'vi').format(
-                            voucher.voucherValue)}', style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.red),)
+                        Text(
+                          'Giảm giá',
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black.withOpacity(0.5)),
+                        ),
+                        Text(
+                          '-'+_common.formatCurrency(voucher.voucherValue!.toDouble()),
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.red),
+                        )
                       ],
                     ),
                   ),
-                Padding(padding: EdgeInsets.only(right: 25, left: 25),
+                Padding(
+                  padding: EdgeInsets.only(right: 25, left: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Thanh toán', style: TextStyle(fontSize: 20,
-                          color: Colors.black.withOpacity(0.5)),),
                       Text(
-                        '${NumberFormat.currency(locale: 'vi').format(
-                            _cartController.totalCart(items) + 30000 -
-                                (voucher.voucherValue ?? 0))}',
-                        style: TextStyle(fontSize: 20,
+                        'Thanh toán',
+                        style: TextStyle(
+                            fontSize: 20, color: Colors.black.withOpacity(0.5)),
+                      ),
+                      Text(
+                        _common.formatCurrency(_cartController.totalFinalOrder(items, voucher.obs, 30000)),
+                        style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: Colors.red),),
+                            color: Colors.red),
+                      ),
                     ],
                   ),
                 ),
-
+                Padding(
+                    padding: EdgeInsets.only(bottom: 25),
+                    child: ListTile(
+                        title: Text('Payment'),
+                        trailing: GestureDetector(
+                            onTap: () async {
+                              Method _method = await Get.to(MethodScreen());
+                              if (_method != null) {
+                                setState(() {
+                                  method = _method;
+                                  _cartController.setMethod(method);
+                                });
+                              }
+                            },
+                            child: Text(method.name.toString())))),
                 SizedBox(height: 50),
               ],
             );
           });
-    }
-    else
+    } else
       return Container();
   }
 }

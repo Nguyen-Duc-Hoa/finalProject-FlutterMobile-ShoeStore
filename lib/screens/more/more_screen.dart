@@ -75,6 +75,7 @@ class _MoreScreenState extends State<MoreScreen> {
               category: doc["category"],
               disCount: doc["discount"],
               gender: doc["gender"],
+              rating: doc["rate"].toDouble(),
               size: lstSize);
           lstProduct.add(p);
           lstName.add(p.title);
