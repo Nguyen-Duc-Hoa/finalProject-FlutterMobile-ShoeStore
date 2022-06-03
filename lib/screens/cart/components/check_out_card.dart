@@ -2,6 +2,7 @@ import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:finalprojectmobile/models/user.dart';
 import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/voucher/voucher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:finalprojectmobile/components/default_button.dart';
@@ -23,7 +24,8 @@ class CheckoutCard extends StatefulWidget {
 }
 
 class _CheckoutCardState extends State<CheckoutCard> {
-  Common _common = new Common();
+  final Common _common = Common();
+  Voucher voucher = Voucher();
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +69,15 @@ class _CheckoutCardState extends State<CheckoutCard> {
         // height: 174,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, -15),
+              offset: const Offset(0, -15),
               blurRadius: 20,
-              color: Color(0xFFDADADA).withOpacity(0.15),
+              color: const Color(0xFFDADADA).withOpacity(0.15),
             )
           ],
         ),
@@ -87,23 +89,35 @@ class _CheckoutCardState extends State<CheckoutCard> {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     height: getProportionateScreenWidth(40),
                     width: getProportionateScreenWidth(40),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F9),
+                      color: const Color(0xFFF5F6F9),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: SvgPicture.asset("assets/icons/receipt.svg"),
                   ),
                   Text(
-                    "Voucher",
-                    style: TextStyle(color: Colors.black),
+                    voucher.voucherId!= null?'Mã giảm giá: '+voucher.voucherId.toString():"Voucher",
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  Spacer(),
-                  Text(AppLocalizations.of(context)!.voucherCode),
+                  const Spacer(),
+                  GestureDetector(
+                      onTap: () async {
+                        if(_cartController.listOrder.isNotEmpty){
+                          Voucher _voucher = await Get.to(VoucherScreen());
+                          if (_voucher != null) {
+                            setState(() {
+                              voucher = _voucher;
+                              _cartController.setVoucher(_voucher);
+                            });
+                          }
+                        }
+                      },
+                      child: Text(AppLocalizations.of(context)!.voucherCode)),
                   const SizedBox(width: 10),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 12,
                     color: kTextColor,
@@ -121,8 +135,8 @@ class _CheckoutCardState extends State<CheckoutCard> {
                         children: [
                           TextSpan(
                             text: _common.formatCurrency(_cartController
-                                .totalCart(_cartController.listOrder)),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                .totalFinalOrder(_cartController.listOrder, voucher.obs, 0)),
+                            style: const TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         ],
                       ),
@@ -130,11 +144,12 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     SizedBox(
                       width: getProportionateScreenWidth(190),
                       child: DefaultButton(
-                        text: AppLocalizations.of(context)!.purchase(_cartController.listOrder.length),
-                        disable: _cartController.listOrder.isNotEmpty? false : true,
+                        text: AppLocalizations.of(context)!
+                            .purchase(_cartController.listOrder.length),
+                        disable:
+                            _cartController.listOrder.isNotEmpty ? false : true,
                         press: () {
                           if (_cartController.listOrder.isNotEmpty) {
-                            _cartController.setVoucher(Voucher());
                             Get.to(const Checkout());
                           }
                         },

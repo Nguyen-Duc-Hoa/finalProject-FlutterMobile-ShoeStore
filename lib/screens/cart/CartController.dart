@@ -1,5 +1,6 @@
 import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:finalprojectmobile/models/Product.dart';
+import 'package:finalprojectmobile/models/methodPayment.dart';
 import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +14,13 @@ class CartController extends GetxController {
   Rx<Voucher> voucher = Voucher().obs;
   Rx<Address> address = Address().obs;
   RxInt numberCart = 0.obs;
+  Rx<Method> method = demoMethod[2].obs;
+
+  void setMethod(Method value){
+    method = value.obs;
+    update();
+  }
+
   void setListCart(List<Cart> lstCart) {
     lstC = lstCart.obs;
     update();
@@ -55,9 +63,17 @@ class CartController extends GetxController {
 
   void updateQuantity(Cart cart, Product product, int quantity) {
     cart.product = product;
-    var index = listOrder.indexOf(cart);
-    listOrder[index].numOfItem += quantity;
-    update();
+    List<Cart> tempCart = listOrder.where((p) =>
+    p.productId == cart.productId &&
+        p.userId == cart.userId &&
+        p.color == cart.color &&
+        p.size == cart.size)
+        .toList();
+    if(tempCart.isNotEmpty){
+      var index = listOrder.indexOf(tempCart[0]);
+      listOrder[index].numOfItem += quantity;
+      update();
+    }
   }
 
   void addListOrder(Cart cart, Product product) {
@@ -82,7 +98,7 @@ class CartController extends GetxController {
 
   void removeListOrder(Cart cart) {
     if (listOrder.isNotEmpty) {
-      var tmpCart = listOrder
+      List<Cart> tmpCart = listOrder
           .where((p) =>
               p.productId == cart.productId &&
               p.userId == cart.userId &&
@@ -90,7 +106,7 @@ class CartController extends GetxController {
               p.size == cart.size)
           .toList();
       if (tmpCart.length == 1) {
-        listOrder.remove(cart);
+        bool result = listOrder.remove(tmpCart[0]);
       }
     }
     update();
@@ -104,21 +120,25 @@ class CartController extends GetxController {
 
   double totalCart(List<Cart> lstCart) {
     double total = 0;
-    lstCart.forEach((cart) {
+    for (var cart in lstCart) {
       total += cart.numOfItem * (cart.product.price*(1-cart.product.disCount/100));
-    });
+    }
     return double.parse(total.toStringAsFixed(2));
   }
 
   double totalFinalOrder(List<Cart> lstCart, Rx<Voucher> voucher, double ship){
     double total = 0;
-    lstCart.forEach((cart) {
-      total += cart.numOfItem * cart.product.price + 30000;
-    });
+    for (var cart in lstCart) {
+      total += cart.numOfItem * cart.product.price*(1-cart.product.disCount/100) + ship;
+    }
     if(voucher.value.voucherValue != null){
       total = total - int.parse(voucher.value.voucherValue.toString());
     };
-    return double.parse(total.toStringAsFixed(2));
+    double result = double.parse(total.toStringAsFixed(2));
+    if(result < 0){
+      result = 0;
+    }
+    return result;
   }
 
   int totalItem(List<Cart> lstCart) {

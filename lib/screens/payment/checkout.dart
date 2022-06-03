@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/methodPayment.dart';
 import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:finalprojectmobile/screens/page/page.dart';
@@ -35,7 +36,7 @@ class _CheckoutState extends State<Checkout> {
       FirebaseFirestore.instance.collection('orderItem');
   var url =
       'http://192.168.1.2:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
-  Common _common = new Common();
+  final Common _common = Common();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _CheckoutState extends State<Checkout> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text('Thanh toán'),
+        title: Text('Thanh toán'), //Thanh toán
       ),
       body: Body(),
       bottomSheet: Container(
@@ -59,7 +60,7 @@ class _CheckoutState extends State<Checkout> {
                 child: GetBuilder<CartController>(builder: (s) {
                   return Column(
                     children: [
-                      const Text("Tổng tiền"),
+                      const Text("Tổng tiền"), //Tổng tiền
                       Text(
                           //_cartController.voucher.value.voucherId.toString(),
                           _common.formatCurrency(
@@ -79,51 +80,60 @@ class _CheckoutState extends State<Checkout> {
                   padding: EdgeInsets.only(right: 10, left: 10),
                   child: FlatButton(
                     onPressed: () async {
-                      // String addDB = await _paymentOrder(
-                      //     _cartController.listOrder,
-                      //     user,
-                      //     _cartController.address.value,
-                      //     _cartController.voucher.value);
-                      // if(addDB == 'true'){
-                      //
-                      // }
-                      var request = BraintreeDropInRequest(
-                          tokenizationKey: 'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
-                          collectDeviceData: true,
-                          paypalRequest: BraintreePayPalRequest(
-                            amount: '10.00',
-                            displayName: 'Raja Yogan',
-                          ),
-                          cardEnabled: true);
-                      BraintreeDropInResult? result =
-                          await BraintreeDropIn.start(request);
-                      if (result != null) {
-                        print(result.paymentMethodNonce.description);
-                        print(result.paymentMethodNonce.nonce);
-                        print(result.deviceData);
-                        String addDB = await _paymentOrder(
-                            _cartController.listOrder,
-                            user,
-                            _cartController.address.value,
-                            _cartController.voucher.value);
-                        if(addDB=='true'){
-                          Get.to(const Pages(selectedIndex : 2));
-                        }
+                      if (_cartController.method.value.name ==
+                          'Thanh toán bằng Paypal') {
+                        var request = BraintreeDropInRequest(
+                            tokenizationKey:
+                                'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
+                            collectDeviceData: true,
+                            paypalRequest: BraintreePayPalRequest(
+                              amount: '10.00',
+                              displayName: 'Raja Yogan',
+                            ),
+                            cardEnabled: true);
+                        BraintreeDropInResult? result =
+                            await BraintreeDropIn.start(request);
+                        if (result != null) {
+                          print(result.paymentMethodNonce.description);
+                          print(result.paymentMethodNonce.nonce);
+                          print(result.deviceData);
+                          String addDB = await _paymentOrder(
+                              _cartController.listOrder,
+                              user,
+                              _cartController.address.value,
+                              _cartController.voucher.value,
+                              _cartController.method.value);
+                          if (addDB == 'true') {
+                            Get.to(const Pages(selectedIndex: 2));
+                          }
 
-                        final http.Response response = await http.post(Uri.parse(
-                            '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
-                        final payResult = jsonDecode(response.body);
-                        if (payResult['result'] == 'success')
-                          print('Pay done!');
+                          final http.Response response = await http.post(Uri.parse(
+                              '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
+                          final payResult = jsonDecode(response.body);
+                          if (payResult['result'] == 'success')
+                            print('Pay done!');
+                          // String addDB = await _paymentOrder(
+                          //     _cartController.listOrder,
+                          //     user,
+                          //     _cartController.address.value,
+                          //     _cartController.voucher.value);
+                          // if(addDB=='true'){
+                          //   Get.to(const Pages(selectedIndex : 2));
+                          // }
+                        }
                         // String addDB = await _paymentOrder(
                         //     _cartController.listOrder,
                         //     user,
                         //     _cartController.address.value,
                         //     _cartController.voucher.value);
-                        // if(addDB=='true'){
-                        //   Get.to(const Pages(selectedIndex : 2));
+                        // if(addDB == 'true'){
+                        //
                         // }
-                      }
+
+                      } else if (_cartController.method.value.name ==
+                          'Ví ShopshoePay') {
+                      } else if (_cartController.method.value.name ==
+                          'Thanh toán khi nhận hàng') {}
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -133,7 +143,7 @@ class _CheckoutState extends State<Checkout> {
                       width: 100,
                       child: const Center(
                         child: Text(
-                          'Thanh toán',
+                          'Thanh toán', //Thanh toán
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -147,10 +157,17 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
-  Future<String> _paymentOrder(
-      List<Cart> lstOrder, Users user, Address address, Voucher voucher) async {
+  Future<String> _paymentOrder(List<Cart> lstOrder, Users user, Address address,
+      Voucher voucher, Method method) async {
     if (lstOrder.isEmpty) {
       return "false";
+    }
+    String payment = 'Thanh toán khi nhận';
+    if(method.id == 1){
+      payment = 'ShopshoePay';
+    }
+    else if(method.id==2){
+      payment = 'Paypal';
     }
     String cartId = "";
     String orderId = "";
