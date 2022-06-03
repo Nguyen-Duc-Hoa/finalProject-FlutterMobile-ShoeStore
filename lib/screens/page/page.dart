@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/screens/favorite/favorite_screen.dart';
 import 'package:finalprojectmobile/screens/home/home_screen.dart';
 
@@ -57,7 +58,7 @@ class _PagesState extends State<Pages> {
               icon: Icon(Icons.account_circle), label: 'Tài khoản'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.pinkAccent,
+        selectedItemColor: kPrimaryColor,
         onTap: _onItemTapped,
       ),
     );

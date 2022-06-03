@@ -38,6 +38,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+
     // List<OrderItem> items = [
     //   OrderItem(orderId: '#DEFGH',
     //       productId: 1,
@@ -74,7 +75,7 @@ class _BodyState extends State<Body> {
               child: Ink(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xfff307c1), Color(0xffff64c6)],
+                      colors: [Color(0xFFFC560A), Color(0xFFFCA931)],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
@@ -356,7 +357,7 @@ class _BodyState extends State<Body> {
                                           height: 8,
                                         ),
                                         Text(
-                                          "\$${orders[index].total}",
+                                         '${NumberFormat.currency(locale: 'vi').format(orders[index].total-orders[index].voucherValue)}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         )
@@ -442,12 +443,24 @@ class _BodyState extends State<Body> {
                                 ),
                               if(orders[index].status==3)
                                 Padding(padding: EdgeInsets.only(top:10,right: 10,left: 10),
-                                    child: FlatButton(onPressed: (){
+                                    child: FlatButton(onPressed: () {
+
                                       final DocumentSnapshot data = snapshot.data!.docs[index];
 
                                       FirebaseFirestore.instance
                                           .collection('order')
                                           .doc(data.id).update({'status':4});
+
+                                      FirebaseFirestore.instance.collection('ranking').where('userId', isEqualTo: user.uid).get().then((value) {
+                                        if(orders[index].total>=500000&&orders[index].total<1000000)
+                                          value.docs[0].reference.update({'score':value.docs[0].get('score')+10 });
+                                        else if(orders[index].total>=1000000&&orders[index].total<2000000)
+                                          value.docs[0].reference.update({'score':value.docs[0].get('score')+20 });
+                                        else if(orders[index].total>=2000000)
+                                          value.docs[0].reference.update({'score':value.docs[0].get('score')+30 });
+
+                                      });
+
                                     },
                                       child: Container(
                                         decoration: BoxDecoration(

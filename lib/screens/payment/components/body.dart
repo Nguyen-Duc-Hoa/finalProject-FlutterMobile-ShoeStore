@@ -32,6 +32,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
+    num score=0;
     //   FirebaseFirestore.instance.collection(
     //       'address').where('userId', isEqualTo: user.uid).where('isDefault', isEqualTo: true).get()
     //       .then((value)  {
@@ -67,23 +68,29 @@ class _BodyState extends State<Body> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading");
             }
-            dynamic dataList = snapshot.data?.docs.map((e) => e.data()).toList().first;
             Address a=Address();
+            if(snapshot.data?.docs.length!=0)
+              {
+                dynamic dataList = snapshot.data?.docs.map((e) => e.data()).toList().first;
 
-             // final Map<String, dynamic> doc = element as Map<String, dynamic>;
-              a =  Address(
-                userId: dataList["userId"],
-                name: dataList["name"],
-                phone: dataList["phone"],
-                address: dataList["address"],
-                isDefault: dataList["isDefault"],
-              );
+
+                // final Map<String, dynamic> doc = element as Map<String, dynamic>;
+                a =  Address(
+                  userId: dataList["userId"],
+                  name: dataList["name"],
+                  phone: dataList["phone"],
+                  address: dataList["address"],
+                  isDefault: dataList["isDefault"],
+                );
+              }
+
 
             address = a;
             _cartController.setAddress(address);
 
             return ListView(
               children: [
+
                 Container(
                   decoration: BoxDecoration(
 
@@ -101,16 +108,15 @@ class _BodyState extends State<Body> {
                             Icons.location_on_outlined, color: Colors.red),
                         trailing: IconButton(
                           onPressed: () async {
-                            Address _address = await Get.to(AddressScreen());
-                            if (_address != null) {
-                              setState(() {
-                                address = _address;
-                                _cartController.setAddress(address);
-                              });
-
-
-                              print(address.name);
-                            }
+                            Get.to(AddressScreen());
+                            // if (_address != null) {
+                            //   setState(() {
+                            //     address = _address;
+                            //
+                            //   });
+                            //
+                            // }
+                            _cartController.setAddress(address);
                           },
                           icon: Icon(Icons.edit),
                           hoverColor: Colors.white,
@@ -118,9 +124,7 @@ class _BodyState extends State<Body> {
                           splashColor: Colors.white,
                           color: Colors.black,
                         ),
-                        subtitle: Text(
-                            '${address.name} \n${address.phone} \n${address
-                                .address}'),
+                        subtitle:address.userId!=null? Text('${address.name} \n${address.phone} \n${address.address}'):Text('Chọn địa chỉ nhận hàng'),
                         //
                       )
 
@@ -209,7 +213,13 @@ class _BodyState extends State<Body> {
 
                     child: ListTile(
                         onTap: () async {
-                          Voucher _voucher = await Get.to(VoucherScreen());
+                          await FirebaseFirestore.instance.collection('ranking').where('userId', isEqualTo: user.uid).get().then((value) {
+
+                              score=value.docs[0].get('score');
+
+                          });
+
+                          Voucher _voucher = await Get.to(VoucherScreen(score: score));
                           if (_voucher != null) {
                             setState(() {
                               voucher = _voucher;
@@ -289,14 +299,7 @@ class _BodyState extends State<Body> {
                     ],
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 25),
 
-                    child: ListTile(
-                        title: Text('Payment'),
-
-                        trailing: Text('Thanh toán khi nhận hàng')
-                    )
-                ),
                 SizedBox(height: 50),
               ],
             );

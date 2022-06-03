@@ -1,5 +1,8 @@
+import 'package:finalprojectmobile/constants.dart';
+import 'package:finalprojectmobile/screens/sign_in/forgot_password.dart';
 import 'package:finalprojectmobile/screens/sign_up/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,7 +86,7 @@ class _LoginState extends State<Login> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                                borderSide: BorderSide(color: kPrimaryColor, width: 2),
                               ),
                             ),
                           ),
@@ -112,18 +115,19 @@ class _LoginState extends State<Login> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(color: Colors.pinkAccent, width: 2),
+                                borderSide: BorderSide(color: kPrimaryColor, width: 2),
                               ),
                             ),
                           ),
                           SizedBox(height: 10),
                           RichText(
+
                               text:
                               TextSpan(
                                 text: "Forgot Password?",
                                 style: TextStyle(color: Colors.black),
+                                  recognizer: new TapGestureRecognizer()..onTap= () =>Get.to(ForgotPassword())
                               ),
-
 
                           ),
 
@@ -171,7 +175,7 @@ class _LoginState extends State<Login> {
                               child: Ink(
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(
-                                      colors: [Color(0xfff307c1), Color(0xffff64c6)],
+                                      colors: [Color(0xFFFC560A), Color(0xFFFCA931)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                     ),
@@ -203,7 +207,7 @@ class _LoginState extends State<Login> {
                     text:
                     TextSpan(
                       text: "Don't have an account?",
-                      style: TextStyle(color: Colors.black26),
+                      style: TextStyle(color: Colors.black54),
                       recognizer: new TapGestureRecognizer()..onTap= () =>Get.to(Signup())
                     )
 

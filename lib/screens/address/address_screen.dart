@@ -128,6 +128,9 @@ class AddressScreen extends StatelessWidget {
 
     }
     _showDialogEdit(value,index,snapshot) async {
+      name=value.name;
+      phone=value.phone;
+      address=value.address;
       await showDialog<String>(
           context: context,
 
@@ -219,7 +222,7 @@ if(user!= null) {
     ),
     backgroundColor: Colors.white,
     body:
-    user!=null?
+
     StreamBuilder(
       stream: address.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
@@ -300,7 +303,7 @@ if(user!= null) {
 
                               final DocumentSnapshot data = snapshot.data!.docs[index];
 
-                              FirebaseFirestore.instance
+                             await FirebaseFirestore.instance
                                   .collection('address')
                                   .doc(data.id).update({'isDefault':true});
 
@@ -322,7 +325,7 @@ if(user!= null) {
                             color: Colors.black,
                           ),
                           title: Text('${items[index].name} \n${items[index].phone} \n${items[index].address}'),
-                          onTap: ()=>Get.back(result: items[index]),
+                          //onTap: ()=>Get.back(result: items[index]),
                         ),
 
 
@@ -339,7 +342,7 @@ if(user!= null) {
           ],
         );
       },
-    ):Container(),
+    ),
 
     floatingActionButton: FloatingActionButton(
       onPressed: (){

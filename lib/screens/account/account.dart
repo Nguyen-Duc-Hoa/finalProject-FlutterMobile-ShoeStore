@@ -2,6 +2,8 @@
 import 'package:finalprojectmobile/models/Ranking.dart';
 import 'package:finalprojectmobile/screens/address/address_screen.dart';
 import 'package:finalprojectmobile/screens/profile/profile.dart';
+import 'package:finalprojectmobile/screens/ranking_detail/ranking_detail.dart';
+import 'package:finalprojectmobile/screens/wallet/wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +37,7 @@ class Account extends StatelessWidget {
                   child: Ink(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Color(0xfff307c1), Color(0xffff64c6)],
+                          colors: [Color(0xFFFC560A), Color(0xFFFCA931)],
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                         ),
@@ -170,7 +172,9 @@ class Account extends StatelessWidget {
             else if(ranking.score!>=50 && ranking.score!<80)
             Text('Đồng')
             else if(ranking.score!>=80 && ranking.score!<150)
-            Text('Vàng')
+            Text('Bạc')
+              else if(ranking.score!>=150 && ranking.score!<200)
+                  Text('Vàng')
             else
             Text('Kim cương'),
 
@@ -178,7 +182,7 @@ class Account extends StatelessWidget {
             ),
 
                               onTap: (){
-
+                                Get.to(RankingDetail(score: ranking.score));
                               },
                               ),
                               );
@@ -197,6 +201,20 @@ class Account extends StatelessWidget {
                               onTap: (){
 
                                 Get.to(Profile());
+
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            color: Color(0x14B6B8B6),
+                            child: ListTile(
+                              title: Text('Ví của tôi'),
+                              leading: Icon(Icons.account_balance_wallet_outlined,color: Colors.red),
+                              trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                              onTap: (){
+
+                                Get.to(WalletScreen());
 
                               },
                             ),
