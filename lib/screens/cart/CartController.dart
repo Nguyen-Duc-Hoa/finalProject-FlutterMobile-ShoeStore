@@ -15,9 +15,15 @@ class CartController extends GetxController {
   Rx<Address> address = Address().obs;
   RxInt numberCart = 0.obs;
   Rx<Method> method = demoMethod[2].obs;
+  RxString pin = "".obs;
 
   void setMethod(Method value){
     method = value.obs;
+    update();
+  }
+
+  void setPin(String value){
+    pin = value.obs;
     update();
   }
 

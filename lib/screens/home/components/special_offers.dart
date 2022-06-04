@@ -37,7 +37,7 @@ class SpecialOffers extends StatelessWidget {
                 numOfBrands: 24,
                 press: () {},
               ),
-              SizedBox(width: getProportionateScreenWidth(20)),
+              SizedBox(width: getProportionateScreenWidth(10)),
             ],
           ),
         ),

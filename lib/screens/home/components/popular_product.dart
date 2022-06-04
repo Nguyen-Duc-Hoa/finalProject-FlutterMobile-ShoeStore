@@ -1,4 +1,5 @@
 import 'package:finalprojectmobile/screens/details/details_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:finalprojectmobile/components/product_card.dart';
 import 'package:finalprojectmobile/models/Product.dart';
@@ -11,8 +12,9 @@ class PopularProducts extends StatelessWidget {
   PopularProducts({Key? key}) : super(key: key);
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference products =
-      FirebaseFirestore.instance.collection('products');
+  var products = FirebaseFirestore.instance
+      .collection('products')
+      .orderBy('rate', descending: true);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +42,14 @@ class PopularProducts extends StatelessWidget {
                 title: doc["title"].toString(),
                 price: doc["price"].toDouble(),
                 description: doc["description"].toString(),
-            disCount: doc["discount"],
-            gender: doc["gendet"],
-            size: []);
+                disCount: doc["discount"],
+                gender: doc["gender"],
+                rating: doc["rate"].toDouble(),
+                size: []);
             lstProduct.add(p);
           });
 
-          print(lstProduct);
+          print(lstProduct.length);
 
           return Column(
             children: [
@@ -55,23 +58,24 @@ class PopularProducts extends StatelessWidget {
                     horizontal: getProportionateScreenWidth(20)),
                 child: SectionTitle(title: "Popular Products", press: () {}),
               ),
-              SizedBox(height: getProportionateScreenWidth(20)),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...List.generate(
                       lstProduct.length,
                       (index) {
-                        if (demoProducts[index].isPopular)
-                          return ProductCard(
-                              product: demoProducts[index],
-                              sPopular: "popular",
-                              press: () => Navigator.pushNamed(
-                                  context, DetailsScreen.routeName));
+                        // if (demoProducts[index].isPopular)
+                        return ProductCard(
+                            product: lstProduct[index],
+                            sPopular: "popular",
+                            press: () => Navigator.pushNamed(
+                                context, DetailsScreen.routeName));
 
-                        return SizedBox
-                            .shrink(); // here by default width and height is 0
+                        // return SizedBox
+                        //     .shrink(); // here by default width and height is 0
                       },
                     ),
                     SizedBox(width: getProportionateScreenWidth(20)),

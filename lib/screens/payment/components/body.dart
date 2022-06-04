@@ -326,7 +326,9 @@ class _BodyState extends State<Body> {
                         title: Text('Payment'),
                         trailing: GestureDetector(
                             onTap: () async {
-                              Method _method = await Get.to(MethodScreen());
+                              Method _method = await Get.to(MethodScreen(
+                                total: _cartController.totalFinalOrder(items, voucher.obs, 30000),
+                              ));
                               if (_method != null) {
                                 setState(() {
                                   method = _method;

@@ -201,7 +201,7 @@ class _BodyState extends State<Body> {
                                       OrderItem item = OrderItem(orderId: doc["orderId"],
                                           productId: doc["productId"],
                                           productName: doc["productName"],
-                                          price: doc["price"],
+                                          price: doc["price"].toDouble(),
                                           image: doc["image"],
                                           color: doc["color"],
                                           size: doc["size"],

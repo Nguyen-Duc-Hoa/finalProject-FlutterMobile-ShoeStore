@@ -25,6 +25,9 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     user = Provider.of<Users>(context);
+    if(user == null){
+      user = Users(uid:'');
+    }
     List<Product> listFavorite =
         demoProducts.where((element) => element.isFavourite).toList();
     return StreamBuilder<QuerySnapshot>(

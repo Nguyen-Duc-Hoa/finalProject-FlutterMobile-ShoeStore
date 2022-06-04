@@ -13,6 +13,8 @@ import '../../../size_config.dart';
 import 'package:finalprojectmobile/common.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CheckoutCard extends StatefulWidget {
   const CheckoutCard({
@@ -26,6 +28,7 @@ class CheckoutCard extends StatefulWidget {
 class _CheckoutCardState extends State<CheckoutCard> {
   final Common _common = Common();
   Voucher voucher = Voucher();
+  int score = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +102,25 @@ class _CheckoutCardState extends State<CheckoutCard> {
                     child: SvgPicture.asset("assets/icons/receipt.svg"),
                   ),
                   Text(
-                    voucher.voucherId!= null?'Mã giảm giá: '+voucher.voucherId.toString():"Voucher",
+                    voucher.voucherId != null
+                        ? 'Mã giảm giá: ' + voucher.voucherId.toString()
+                        : "Voucher",
                     style: const TextStyle(color: Colors.black),
                   ),
                   const Spacer(),
                   GestureDetector(
                       onTap: () async {
-                        if(_cartController.listOrder.isNotEmpty){
-                          Voucher _voucher = await Get.to(VoucherScreen());
+                        if (_cartController.listOrder.isNotEmpty) {
+                          await FirebaseFirestore.instance
+                              .collection('ranking')
+                              .where('userId', isEqualTo: user.uid)
+                              .get()
+                              .then((value) {
+                            score = value.docs[0].get('score');
+                          });
+                          Voucher _voucher = await Get.to(VoucherScreen(
+                            score: score,
+                          ));
                           if (_voucher != null) {
                             setState(() {
                               voucher = _voucher;
@@ -134,9 +148,11 @@ class _CheckoutCardState extends State<CheckoutCard> {
                         text: AppLocalizations.of(context)!.totalPayment + '\n',
                         children: [
                           TextSpan(
-                            text: _common.formatCurrency(_cartController
-                                .totalFinalOrder(_cartController.listOrder, voucher.obs, 0)),
-                            style: const TextStyle(fontSize: 16, color: Colors.black),
+                            text: _common.formatCurrency(
+                                _cartController.totalFinalOrder(
+                                    _cartController.listOrder, voucher.obs, 0)),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black),
                           ),
                         ],
                       ),
