@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/components/default_button.dart';
 import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../../models/user.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RechargeScreen extends StatefulWidget {
   const RechargeScreen({Key? key}) : super(key: key);
@@ -26,10 +33,23 @@ class _RechargeScreenState extends State<RechargeScreen> {
 
   final Common _common = Common();
   int selectedColor = 1;
-
+  var url =
+      'http://192.168.1.2:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
   @override
   Widget build(BuildContext context) {
     _controller.text = defaultPrice[selectedColor]['value'].toString();
+    num money=defaultPrice[selectedColor]['value'];
+    final users=Provider.of<Users>(context);
+    void showToastMessage(String message){
+      Fluttertoast.showToast(
+          msg: message, //message to show toast
+          toastLength: Toast.LENGTH_LONG, //duration for message to show
+          gravity: ToastGravity.BOTTOM, //where you want to show, top, bottom
+          backgroundColor: Colors.black87, //background Color for message
+          textColor: Colors.white, //message text color
+          fontSize: 16.0 //message font size
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -73,6 +93,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                           setState(() {
                             selectedColor = index;
                             _controller.text = defaultPrice[selectedColor]['value'].toString();
+                            money= defaultPrice[selectedColor]['value'];
                           });
                         },
                         child: AnimatedContainer(
@@ -115,7 +136,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
             Text("Nhập số tiền (VND)"),
             TextFormField(
               onChanged: (text) async {
-                print('a');
+                money=int.parse(text.toString().trim());
               },
               controller: _controller,
               decoration: InputDecoration(
@@ -150,7 +171,50 @@ class _RechargeScreenState extends State<RechargeScreen> {
               bottom: getProportionateScreenWidth(10),
               top: getProportionateScreenWidth(10),
             ),
-            child: DefaultButton(text: "Thanh toán ngay", press: () {}),
+            child: DefaultButton(text: "Thanh toán ngay", press: () async{
+
+              //print(money);
+              var request = BraintreeDropInRequest(
+                  tokenizationKey:
+                  'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
+                  collectDeviceData: true,
+                  paypalRequest: BraintreePayPalRequest(
+                    amount: '10.00',
+                    displayName: 'Raja Yogan',
+                  ),
+                  cardEnabled: true);
+              BraintreeDropInResult? result =
+                  await BraintreeDropIn.start(request);
+              if (result != null) {
+                print(result.paymentMethodNonce.description);
+                print(result.paymentMethodNonce.nonce);
+                print(result.deviceData);
+                await FirebaseFirestore.instance.collection('wallet').where('userId', isEqualTo: users.uid).get().then((value) {
+
+                  value.docs[0].reference.update({'money':value.docs[0].get('money')+money });
+                });
+                final add =FirebaseFirestore.instance.collection('history').doc();
+                final json={
+                  'date':DateTime.now(),
+                  'description':'Nạp tiền từ Paypal',
+                  'name':'Nạp tiền vào ví',
+                  'total':money,
+                  'userId':users.uid,
+                  'orderId':''
+                };
+                await add.set(json);
+                final http.Response response = await http.post(Uri
+                    .parse(
+                    '$url?payment_method_nonce=${result
+                        .paymentMethodNonce
+                        .nonce}&device_data=${result.deviceData}'));
+                final payResult = jsonDecode(response.body);
+                if (payResult['result'] == 'success')
+                  print('Pay done!');
+                showToastMessage('Thanh toán thành công');
+
+              }
+            }),
           ),
         ),
       ),
