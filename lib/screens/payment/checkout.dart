@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/models/Cart.dart';
+import 'package:finalprojectmobile/models/Wallet.dart';
 import 'package:finalprojectmobile/models/methodPayment.dart';
 import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
@@ -43,6 +44,9 @@ class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
+    Query<Map<String, dynamic>> w = FirebaseFirestore.instance
+        .collection('wallet')
+        .where('userId', isEqualTo: user.uid);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -78,134 +82,167 @@ class _CheckoutState extends State<Checkout> {
                   );
                 }),
               ),
-              Padding(
-                  padding: EdgeInsets.only(right: 10, left: 10),
-                  child: FlatButton(
-                    onPressed: () async {
-                      if (_cartController.address.value.userId == null) {
-                        showToastMessage(
-                            'Chọn địa chỉ nhận hàng trước khi thanh toán');
-                      }
-                      else {
-                        if (_cartController.method.value.name ==
-                            'Thanh toán bằng Paypal') {
-                          var request = BraintreeDropInRequest(
-                              tokenizationKey:
-                              'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
-                              collectDeviceData: true,
-                              paypalRequest: BraintreePayPalRequest(
-                                amount: '10.00',
-                                displayName: 'Raja Yogan',
+              StreamBuilder(
+                  stream: w.snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {}
+                    Wallet wallet = Wallet();
+                    if (snapshot.data?.docs.length != 0) {
+                      dynamic data = snapshot.data?.docs
+                          .map((e) => e.data())
+                          .toList()
+                          .first;
+                      wallet = Wallet(
+                        userId: data["userId"],
+                        pin: data["pin"],
+                        money: data["money"],
+                      );
+                    }
+                    return Padding(
+                        padding: EdgeInsets.only(right: 10, left: 10),
+                        child: FlatButton(
+                          onPressed: () async {
+                            if (_cartController.address.value.userId == null) {
+                              showToastMessage(
+                                  'Chọn địa chỉ nhận hàng trước khi thanh toán');
+                            } else {
+                              if (_cartController.method.value.name ==
+                                  'Thanh toán bằng Paypal') {
+                                var request = BraintreeDropInRequest(
+                                    tokenizationKey:
+                                    'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
+                                    collectDeviceData: true,
+                                    paypalRequest: BraintreePayPalRequest(
+                                      amount: '10.00',
+                                      displayName: 'Raja Yogan',
+                                    ),
+                                    cardEnabled: true);
+                                BraintreeDropInResult? result =
+                                await BraintreeDropIn.start(request);
+                                if (result != null) {
+                                  print(result.paymentMethodNonce.description);
+                                  print(result.paymentMethodNonce.nonce);
+                                  print(result.deviceData);
+                                  String addDB = await _paymentOrder(
+                                      _cartController.listOrder,
+                                      user,
+                                      _cartController.address.value,
+                                      _cartController.voucher.value,
+                                      _cartController.method.value);
+                                  if (addDB == 'true') {
+                                    showToastMessage('Thanh toán thành công');
+                                    Get.to(const Pages(selectedIndex: 2));
+                                  }
+
+                                  final http.Response response =
+                                  await http.post(Uri.parse(
+                                      '$url?payment_method_nonce=${result
+                                          .paymentMethodNonce
+                                          .nonce}&device_data=${result
+                                          .deviceData}'));
+                                  final payResult = jsonDecode(response.body);
+                                  if (payResult['result'] == 'success')
+                                    print('Pay done!');
+                                  // String addDB = await _paymentOrder(
+                                  //     _cartController.listOrder,
+                                  //     user,
+                                  //     _cartController.address.value,
+                                  //     _cartController.voucher.value);
+                                  // if(addDB=='true'){
+                                  //   Get.to(const Pages(selectedIndex : 2));
+                                  // }
+                                }
+                                // String addDB = await _paymentOrder(
+                                //     _cartController.listOrder,
+                                //     user,
+                                //     _cartController.address.value,
+                                //     _cartController.voucher.value);
+                                // if(addDB == 'true'){
+                                //
+                                // }
+
+                              } else if (_cartController.method.value.name ==
+                                  'Ví ShopshoePay') {
+                                String walletId = '';
+                                await FirebaseFirestore.instance
+                                    .collection('wallet')
+                                    .where('userId', isEqualTo: user.uid)
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((doc) {
+                                    walletId = doc.id;
+                                    print(walletId);
+                                  });
+                                });
+
+                                bool result = await Get.to(PinCodeScreen(
+                                    pin: wallet.pin.toString() ?? ""));
+
+                                if (result == true) {
+                                  String addDB = await _paymentOrder(
+                                      _cartController.listOrder,
+                                      user,
+                                      _cartController.address.value,
+                                      _cartController.voucher.value,
+                                      _cartController.method.value);
+
+                                  if (addDB == 'true') {
+                                    if (walletId != '') {
+                                      double total =
+                                      _cartController.totalFinalOrder(
+                                          _cartController.listOrder,
+                                          _cartController.voucher,
+                                          30000);
+                                      await cartCol.doc(walletId).update({
+                                        'money': wallet.money! - total,
+                                      }).then((value) {
+                                        print('change quantity cart');
+                                        return 'change quantity cart';
+                                      }).catchError((error) =>
+                                          print("Failed to add user: $error"));
+                                    }
+
+
+
+
+                                    showToastMessage('Thanh toán thành công');
+                                    Get.to(const Pages(selectedIndex: 2));
+                                  }
+                                }
+                              } else if (_cartController.method.value.name ==
+                                  'Thanh toán khi nhận hàng') {
+                                String addDB = await _paymentOrder(
+                                    _cartController.listOrder,
+                                    user,
+                                    _cartController.address.value,
+                                    _cartController.voucher.value,
+                                    _cartController.method.value);
+
+                                if (addDB == 'true') {
+                                  showToastMessage('Đặt hàng thành công');
+                                  Get.to(const Pages(selectedIndex: 2));
+                                }
+                              }
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.deepOrangeAccent,
+                                borderRadius: BorderRadius.circular(10)),
+                            height: 50,
+                            width: 100,
+                            child: const Center(
+                              child: Text(
+                                'Thanh toán', //Thanh toán
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
                               ),
-                              cardEnabled: true);
-                          BraintreeDropInResult? result =
-                          await BraintreeDropIn.start(request);
-                          if (result != null) {
-                            print(result.paymentMethodNonce.description);
-                            print(result.paymentMethodNonce.nonce);
-                            print(result.deviceData);
-                            String addDB = await _paymentOrder(
-                                _cartController.listOrder,
-                                user,
-                                _cartController.address.value,
-                                _cartController.voucher.value,
-                                _cartController.method.value);
-                            if (addDB == 'true') {
-                              showToastMessage('Thanh toán thành công');
-                              Get.to(const Pages(selectedIndex: 2));
-                            }
-
-                            final http.Response response = await http.post(Uri
-                                .parse(
-                                '$url?payment_method_nonce=${result
-                                    .paymentMethodNonce
-                                    .nonce}&device_data=${result.deviceData}'));
-                            final payResult = jsonDecode(response.body);
-                            if (payResult['result'] == 'success')
-                              print('Pay done!');
-                            // String addDB = await _paymentOrder(
-                            //     _cartController.listOrder,
-                            //     user,
-                            //     _cartController.address.value,
-                            //     _cartController.voucher.value);
-                            // if(addDB=='true'){
-                            //   Get.to(const Pages(selectedIndex : 2));
-                            // }
-                          }
-                          // String addDB = await _paymentOrder(
-                          //     _cartController.listOrder,
-                          //     user,
-                          //     _cartController.address.value,
-                          //     _cartController.voucher.value);
-                          // if(addDB == 'true'){
-                          //
-                          // }
-
-                        } else if (_cartController.method.value.name ==
-                            'Ví ShopshoePay') {
-                          String walletId = '';
-                          await FirebaseFirestore.instance
-                              .collection('wallet')
-                              .where('userId', isEqualTo: user.uid)
-                              .get()
-                              .then((QuerySnapshot querySnapshot) {
-                            querySnapshot.docs.forEach((doc) {
-                              walletId = doc.id;
-                              print(walletId);
-                            });
-                          });
-
-
-                          bool result = await Get.to(
-                              PinCodeScreen(pin: _cartController.pin.value));
-
-                          if(result == true){
-                            String addDB = await _paymentOrder(
-                                _cartController.listOrder,
-                                user,
-                                _cartController.address.value,
-                                _cartController.voucher.value,
-                                _cartController.method.value);
-
-                            if (addDB == 'true') {
-                              showToastMessage('Đặt hàng thành công');
-                              Get.to(const Pages(selectedIndex: 2));
-                            }
-                          }
-
-                        } else if (_cartController.method.value.name ==
-                            'Thanh toán khi nhận hàng') {
-                          String addDB = await _paymentOrder(
-                              _cartController.listOrder,
-                              user,
-                              _cartController.address.value,
-                              _cartController.voucher.value,
-                              _cartController.method.value);
-
-                          if (addDB == 'true') {
-                            showToastMessage('Đặt hàng thành công');
-                            Get.to(const Pages(selectedIndex: 2));
-                          }
-                        }
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrangeAccent,
-                          borderRadius: BorderRadius.circular(10)),
-                      height: 50,
-                      width: 100,
-                      child: const Center(
-                        child: Text(
-                          'Thanh toán', //Thanh toán
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                  ))
+                            ),
+                          ),
+                        ));
+                  })
             ],
           )),
     );
@@ -219,8 +256,7 @@ class _CheckoutState extends State<Checkout> {
     String payment = 'Thanh toán khi nhận';
     if (method.id == 1) {
       payment = 'ShopshoePay';
-    }
-    else if (method.id == 2) {
+    } else if (method.id == 2) {
       payment = 'Paypal';
     }
     String cartId = "";
@@ -305,8 +341,8 @@ class _CheckoutState extends State<Checkout> {
       }
     });
 
-    CollectionReference trackingCol = FirebaseFirestore.instance.collection(
-        'orderTracking');
+    CollectionReference trackingCol =
+    FirebaseFirestore.instance.collection('orderTracking');
     //Update to OrderTracking
     await trackingCol.add({
       'note': 'Chờ nhân viên xác nhận đơn hàng',
@@ -319,6 +355,25 @@ class _CheckoutState extends State<Checkout> {
       print("Failed to add OrderItem: $error");
       return error;
     });
+
+    if(method.id == 1){
+      final addHis = FirebaseFirestore.instance
+          .collection('history').add(
+          {
+            'date': DateTime.now(),
+            "description": 'Thanh toán thành công',
+            'name': 'Thanh toán mua hàng',
+            'orderId': orderId,
+            'userId': user.uid,
+            'total': _cartController.totalFinalOrder(lstOrder, voucher.obs, 30000),
+          }).then((value) {
+        print("User Order");
+        return "User Order";
+      }).catchError((error) {
+        print("Failed to add user: $error");
+        return error;
+      });
+    }
 
     _cartController.resetListOrder();
     return "true";

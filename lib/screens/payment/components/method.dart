@@ -77,7 +77,6 @@ class _MethodScreenState extends State<MethodScreen> {
                       money: data["money"],
 
                     );
-                    _cartController.setPin(wallet.pin.toString());
                   }
                   return Column(
                       children: List.generate(demoMethod.length, (index) {
