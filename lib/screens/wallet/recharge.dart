@@ -212,6 +212,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                 if (payResult['result'] == 'success')
                   print('Pay done!');
                 showToastMessage('Thanh toán thành công');
+
               }
             }),
           ),
