@@ -176,9 +176,25 @@ class _CheckoutState extends State<Checkout> {
                                 });
 
                                 bool result = await Get.to(PinCodeScreen(
-                                    pin: wallet.pin.toString() ?? ""));
+                                    pin: wallet.pin ?? ""));
 
                                 if (result == true) {
+                                  if (walletId != '') {
+                                    double total =
+                                    _cartController.totalFinalOrder(
+                                        _cartController.listOrder,
+                                        _cartController.voucher,
+                                        30000);
+                                    await FirebaseFirestore.instance
+                                        .collection('wallet').doc(walletId).update({
+                                      'money': wallet.money! - total,
+                                    }).then((value) {
+                                      print('change quantity cart');
+                                      return 'change quantity cart';
+                                    }).catchError((error) =>
+                                        print("Failed to add user: $error"));
+                                  }
+
                                   String addDB = await _paymentOrder(
                                       _cartController.listOrder,
                                       user,
@@ -187,23 +203,6 @@ class _CheckoutState extends State<Checkout> {
                                       _cartController.method.value);
 
                                   if (addDB == 'true') {
-                                    if (walletId != '') {
-                                      double total =
-                                      _cartController.totalFinalOrder(
-                                          _cartController.listOrder,
-                                          _cartController.voucher,
-                                          30000);
-                                      await cartCol.doc(walletId).update({
-                                        'money': wallet.money! - total,
-                                      }).then((value) {
-                                        print('change quantity cart');
-                                        return 'change quantity cart';
-                                      }).catchError((error) =>
-                                          print("Failed to add user: $error"));
-                                    }
-
-
-
 
                                     showToastMessage('Thanh toán thành công');
                                     Get.to(const Pages(selectedIndex: 2));
@@ -307,7 +306,7 @@ class _CheckoutState extends State<Checkout> {
         'color': element.color,
         'image': element.image, // John Doe
         'orderId': orderId, // Stokes and Sons
-        'price': element.product.price, // 42
+        'price': element.product.price*(1-element.product.disCount/100), // 42
         'productId': element.productId,
         'productName': element.product.title,
         'quantity': element.numOfItem,
@@ -362,7 +361,7 @@ class _CheckoutState extends State<Checkout> {
           {
             'date': DateTime.now(),
             "description": 'Thanh toán thành công',
-            'name': 'Thanh toán mua hàng',
+            'name': 'Thanh toán tiền',
             'orderId': orderId,
             'userId': user.uid,
             'total': _cartController.totalFinalOrder(lstOrder, voucher.obs, 30000),

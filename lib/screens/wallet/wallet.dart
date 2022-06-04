@@ -32,7 +32,7 @@ class _WalletScreenState extends State<WalletScreen> {
         .where('userId', isEqualTo: users.uid);
     Query<Map<String, dynamic>> historyCol = FirebaseFirestore.instance
         .collection('history')
-        .where('userId', isEqualTo: users.uid);
+        .where('userId', isEqualTo: users.uid).orderBy('date', descending: true);
     void showToastMessage(String message) {
       Fluttertoast.showToast(
           msg: message,

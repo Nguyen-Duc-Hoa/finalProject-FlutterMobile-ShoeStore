@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:finalprojectmobile/common.dart';
+import 'package:finalprojectmobile/constants.dart';
 import 'package:finalprojectmobile/models/Cart.dart';
 import 'package:finalprojectmobile/models/address.dart';
 import 'package:finalprojectmobile/models/methodPayment.dart';
@@ -9,6 +10,7 @@ import 'package:finalprojectmobile/screens/address/address_screen.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:finalprojectmobile/screens/payment/components/method.dart';
 import 'package:finalprojectmobile/screens/voucher/voucher.dart';
+import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -171,9 +173,27 @@ class _BodyState extends State<Body> {
                                   fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(width: 15),
+                            if(items[index]
+                                .product.disCount != 0)
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      _common.formatCurrency(items[index]
+                                          .product.price),
+                                      style: TextStyle(
+                                        fontSize: getProportionateScreenWidth(13),
+                                        fontWeight: FontWeight.w600,
+                                        color: kSecondaryColor,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+
+                                    ),
+                                  ]),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+
                                 Text(
                                   _common.formatCurrency(items[index]
                                           .product
@@ -230,7 +250,7 @@ class _BodyState extends State<Body> {
                           }
                         },
                         title: Text('Mã giảm giá'),
-                        trailing: voucher.isBlank
+                        trailing: voucher.voucherId == null
                             ? Text(
                                 'Chọn mã giảm giá',
                               )

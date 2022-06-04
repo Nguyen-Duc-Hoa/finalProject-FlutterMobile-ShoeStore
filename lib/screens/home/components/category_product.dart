@@ -83,6 +83,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
 
           return Column(
             children: [
+              Divider(thickness: 2,),
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
