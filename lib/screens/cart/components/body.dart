@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:finalprojectmobile/models/Product.dart';
 import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/models/voucher.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
 import 'package:finalprojectmobile/screens/sign_in/login_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,13 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   CartController _cartController = Get.find();
   CollectionReference cartCol = FirebaseFirestore.instance.collection('cart');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _cartController.voucher = Voucher().obs;
+  }
 
   @override
   Widget build(BuildContext context) {

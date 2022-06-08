@@ -9,6 +9,7 @@ import 'package:finalprojectmobile/models/Color.dart';
 import 'package:finalprojectmobile/models/Product.dart';
 import 'package:finalprojectmobile/models/user.dart';
 import 'package:finalprojectmobile/screens/cart/CartController.dart';
+import 'package:finalprojectmobile/screens/sign_up/signup.dart';
 import 'package:finalprojectmobile/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -346,6 +347,10 @@ class _ModalBottomCartState extends State<ModalBottomCart> {
                       addToCart(_cart, user.uid.toString());
                       Navigator.pop(context);
                     }
+                    else{
+                      showToastMessage('Cần đăng nhập để mua hàng');
+                    }
+
                   })),
         ],
       ),

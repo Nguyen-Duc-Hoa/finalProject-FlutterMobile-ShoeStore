@@ -182,7 +182,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_braintree:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_braintree
       url: "https://pub.dartlang.org"
@@ -316,7 +316,7 @@ packages:
     source: hosted
     version: "0.9.2"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"

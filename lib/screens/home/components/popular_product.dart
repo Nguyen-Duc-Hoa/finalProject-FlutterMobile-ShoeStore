@@ -35,6 +35,8 @@ class PopularProducts extends StatelessWidget {
             final Map<String, dynamic> doc = element as Map<String, dynamic>;
             images = doc["images"]?.cast<String>();
             List<Color> colors = doc["colors"].cast<Color>();
+            List<int> lstSize;
+            lstSize = doc["size"]?.cast<int>();
             Product p = Product(
                 id: doc["id"],
                 images: images,
@@ -45,7 +47,7 @@ class PopularProducts extends StatelessWidget {
                 disCount: doc["discount"],
                 gender: doc["gender"],
                 rating: doc["rate"].toDouble(),
-                size: []);
+                size: lstSize);
             lstProduct.add(p);
           });
 

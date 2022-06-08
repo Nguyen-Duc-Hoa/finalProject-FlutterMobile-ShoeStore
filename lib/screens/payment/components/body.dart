@@ -41,6 +41,7 @@ class _BodyState extends State<Body> {
     super.initState();
     voucher = _cartController.voucher.value;
     method = demoMethod[2];
+    _cartController.setMethod(method);
   }
 
   @override

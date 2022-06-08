@@ -202,7 +202,10 @@ class _RechargeScreenState extends State<RechargeScreen> {
                   'userId':users.uid,
                   'orderId':''
                 };
+
                 await add.set(json);
+                showToastMessage('Thanh toán thành công');
+
                 final http.Response response = await http.post(Uri
                     .parse(
                     '$url?payment_method_nonce=${result
@@ -211,7 +214,6 @@ class _RechargeScreenState extends State<RechargeScreen> {
                 final payResult = jsonDecode(response.body);
                 if (payResult['result'] == 'success')
                   print('Pay done!');
-                showToastMessage('Thanh toán thành công');
 
               }
             }),

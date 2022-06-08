@@ -95,10 +95,10 @@ class _BodyState extends State<Body> {
     } else {
       Query<Map<String, dynamic>> order;
       if(widget.status==3)
-        order = FirebaseFirestore.instance.collection('order').where('status',whereIn: [3, 4]).where('userId', isEqualTo: user.uid);
+        order = FirebaseFirestore.instance.collection('order').where('status',whereIn: [3, 4]).where('userId', isEqualTo: user.uid).orderBy('orderDate', descending: true);
 
       else
-        order = FirebaseFirestore.instance.collection('order').where('status', isEqualTo: widget.status).where('userId', isEqualTo: user.uid);
+        order = FirebaseFirestore.instance.collection('order').where('status', isEqualTo: widget.status).where('userId', isEqualTo: user.uid).orderBy('orderDate', descending: true);
       return StreamBuilder<QuerySnapshot>(
           stream: order.snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -459,6 +459,11 @@ class _BodyState extends State<Body> {
                                         else if(orders[index].total>=2000000)
                                           value.docs[0].reference.update({'score':value.docs[0].get('score')+30 });
 
+                                      });
+
+                                      FirebaseFirestore.instance.collection('rankingDetail').where('userId', isEqualTo: user.uid).get().then((value) {
+                                        value.docs[0].reference.update({'totalPrice':value.docs[0].get('totalPrice')+orders[index].total });
+                                        value.docs[0].reference.update({'numOfOrder':value.docs[0].get('numOfOrder')+1 });
                                       });
 
                                     },

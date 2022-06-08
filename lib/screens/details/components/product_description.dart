@@ -2,6 +2,7 @@ import 'package:finalprojectmobile/common.dart';
 import 'package:finalprojectmobile/components/default_button.dart';
 import 'package:finalprojectmobile/models/favorite.dart';
 import 'package:finalprojectmobile/models/user.dart';
+import 'package:finalprojectmobile/screens/sign_up/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -192,7 +193,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
           Align(
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                showToastMessage('Cần đăng nhập');
+              },
               child: Container(
                 padding: EdgeInsets.all(getProportionateScreenWidth(15)),
                 width: getProportionateScreenWidth(64),

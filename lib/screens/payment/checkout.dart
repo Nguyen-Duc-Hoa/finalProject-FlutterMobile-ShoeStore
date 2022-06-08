@@ -36,9 +36,9 @@ class _CheckoutState extends State<Checkout> {
   CollectionReference cartCol = FirebaseFirestore.instance.collection('cart');
   CollectionReference orderCol = FirebaseFirestore.instance.collection('order');
   CollectionReference orderItemCol =
-  FirebaseFirestore.instance.collection('orderItem');
+      FirebaseFirestore.instance.collection('orderItem');
   var url =
-      'http://192.168.1.2:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
+      'http://10.0.2.2:5001/final-project-shoestore-334b6/us-central1/paypalPayment';
   final Common _common = Common();
 
   @override
@@ -68,7 +68,7 @@ class _CheckoutState extends State<Checkout> {
                     children: [
                       const Text("Tổng tiền"), //Tổng tiền
                       Text(
-                        //_cartController.voucher.value.voucherId.toString(),
+                          //_cartController.voucher.value.voucherId.toString(),
                           _common.formatCurrency(
                               _cartController.totalFinalOrder(
                                   _cartController.listOrder,
@@ -108,41 +108,46 @@ class _CheckoutState extends State<Checkout> {
                             } else {
                               if (_cartController.method.value.name ==
                                   'Thanh toán bằng Paypal') {
+                                double total = _cartController.totalFinalOrder(
+                                    _cartController.listOrder,
+                                    _cartController.voucher,
+                                    30000);
+                                String amount =
+                                    (total / 22000).toStringAsFixed(2);
                                 var request = BraintreeDropInRequest(
                                     tokenizationKey:
-                                    'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
+                                        'sandbox_gp7hsnyd_7dxbrf6yqvmhdzdk',
                                     collectDeviceData: true,
                                     paypalRequest: BraintreePayPalRequest(
-                                      amount: '10.00',
+                                      amount: amount,
                                       displayName: 'Raja Yogan',
                                     ),
                                     cardEnabled: true);
                                 BraintreeDropInResult? result =
-                                await BraintreeDropIn.start(request);
+                                    await BraintreeDropIn.start(request);
                                 if (result != null) {
                                   print(result.paymentMethodNonce.description);
                                   print(result.paymentMethodNonce.nonce);
                                   print(result.deviceData);
-                                  String addDB = await _paymentOrder(
-                                      _cartController.listOrder,
-                                      user,
-                                      _cartController.address.value,
-                                      _cartController.voucher.value,
-                                      _cartController.method.value);
-                                  if (addDB == 'true') {
-                                    showToastMessage('Thanh toán thành công');
-                                    Get.to(const Pages(selectedIndex: 2));
-                                  }
 
-                                  final http.Response response =
-                                  await http.post(Uri.parse(
-                                      '$url?payment_method_nonce=${result
-                                          .paymentMethodNonce
-                                          .nonce}&device_data=${result
-                                          .deviceData}'));
+                                  var response = await http.post(Uri.parse(
+                                      '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
                                   final payResult = jsonDecode(response.body);
-                                  if (payResult['result'] == 'success')
-                                    print('Pay done!');
+                                  print(payResult);
+                                  if (payResult['result'] == 'success') {
+                                    String addDB = await _paymentOrder(
+                                        _cartController.listOrder,
+                                        user,
+                                        _cartController.address.value,
+                                        _cartController.voucher.value,
+                                        _cartController.method.value);
+                                    if (addDB == 'true') {
+                                      showToastMessage('Thanh toán thành công');
+                                      print('Pay done!');
+
+                                      Get.to(const Pages(selectedIndex: 2));
+                                    }
+                                  }
                                   // String addDB = await _paymentOrder(
                                   //     _cartController.listOrder,
                                   //     user,
@@ -175,24 +180,26 @@ class _CheckoutState extends State<Checkout> {
                                   });
                                 });
 
-                                bool result = await Get.to(PinCodeScreen(
-                                    pin: wallet.pin ?? ""));
+                                bool result = await Get.to(
+                                    PinCodeScreen(pin: wallet.pin ?? ""));
 
                                 if (result == true) {
                                   if (walletId != '') {
                                     double total =
-                                    _cartController.totalFinalOrder(
-                                        _cartController.listOrder,
-                                        _cartController.voucher,
-                                        30000);
+                                        _cartController.totalFinalOrder(
+                                            _cartController.listOrder,
+                                            _cartController.voucher,
+                                            30000);
                                     await FirebaseFirestore.instance
-                                        .collection('wallet').doc(walletId).update({
+                                        .collection('wallet')
+                                        .doc(walletId)
+                                        .update({
                                       'money': wallet.money! - total,
                                     }).then((value) {
                                       print('change quantity cart');
                                       return 'change quantity cart';
-                                    }).catchError((error) =>
-                                        print("Failed to add user: $error"));
+                                    }).catchError((error) => print(
+                                            "Failed to add user: $error"));
                                   }
 
                                   String addDB = await _paymentOrder(
@@ -203,7 +210,6 @@ class _CheckoutState extends State<Checkout> {
                                       _cartController.method.value);
 
                                   if (addDB == 'true') {
-
                                     showToastMessage('Thanh toán thành công');
                                     Get.to(const Pages(selectedIndex: 2));
                                   }
@@ -304,13 +310,18 @@ class _CheckoutState extends State<Checkout> {
       //Add to orderitem
       await orderItemCol.add({
         'color': element.color,
-        'image': element.image, // John Doe
-        'orderId': orderId, // Stokes and Sons
-        'price': element.product.price*(1-element.product.disCount/100), // 42
+        'image': element.image,
+        // John Doe
+        'orderId': orderId,
+        // Stokes and Sons
+        'price': element.product.price * (1 - element.product.disCount / 100),
+        // 42
         'productId': element.productId,
         'productName': element.product.title,
         'quantity': element.numOfItem,
-        'size': element.size, // 42
+        'size': element.size,
+        'comment': false
+        // 42
       }).then((value) {
         print("User OrderItem");
         return "User Added";
@@ -341,7 +352,7 @@ class _CheckoutState extends State<Checkout> {
     });
 
     CollectionReference trackingCol =
-    FirebaseFirestore.instance.collection('orderTracking');
+        FirebaseFirestore.instance.collection('orderTracking');
     //Update to OrderTracking
     await trackingCol.add({
       'note': 'Chờ nhân viên xác nhận đơn hàng',
@@ -355,18 +366,18 @@ class _CheckoutState extends State<Checkout> {
       return error;
     });
 
-    if(method.id == 1){
-      final addHis = FirebaseFirestore.instance
-          .collection('history').add(
-          {
-            'date': DateTime.now(),
-            "description": 'Thanh toán thành công',
-            'name': 'Thanh toán tiền',
-            'orderId': orderId,
-            'userId': user.uid,
-            'total': _cartController.totalFinalOrder(lstOrder, voucher.obs, 30000),
-          }).then((value) {
-        print("User Order");
+    if (method.id == 1) {
+      CollectionReference historyCol =
+      FirebaseFirestore.instance.collection('history');
+      await historyCol.add({
+        'date': DateTime.now(),
+        'description': 'Thanh toán thành công',
+        'name': 'Thanh toán tiền',
+        'orderId': orderId,
+        'userId': user.uid,
+        'total': _cartController.totalFinalOrder(lstOrder, voucher.obs, 30000),
+      }).then((value) {
+        print("add hisotory");
         return "User Order";
       }).catchError((error) {
         print("Failed to add user: $error");
@@ -375,6 +386,7 @@ class _CheckoutState extends State<Checkout> {
     }
 
     _cartController.resetListOrder();
+    _cartController.voucher = Voucher().obs;
     return "true";
   }
 
